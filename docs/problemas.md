@@ -2,17 +2,12 @@
 > Descreva de maneira macro os problemas e as dores mais relevantes que o produto
 > de software resolverá. Detalhes a nível de funcionalidades serão elaborados mais adiante. A seguinte pergunta ajuda com isso: Quais são os principais problemas e dores da situação atual?
 
-1. **Falta de organização:** O ToDoDist ajudará a pessoa a organizar suas tarefas diárias, semanais e mensais, tornando o gerenciamento mais eficiente.
+1. Dificuldade em organizar e gerenciar múltiplas tarefas em diferentes projetos.
+2. Falta de uma técnica eficiente para aumentar a concentração e produtividade durante a execução das tarefas.
+3. Ausência de uma ferramenta para priorizar as atividades de acordo com sua importância e urgência.
+4. Desafio em medir de forma precisa o tempo dedicado a cada tarefa e projeto para fins de cobrança ao cliente.
+5. Necessidade de integração com o Google Calendar para sincronização das atividades e agenda.
+6. Dificuldade em visualizar o custo real de cada projeto com base nas horas trabalhadas.
+7. Falta de uma solução completa e especializada para atender às necessidades específicas dos freelancers em sua gestão de trabalho e tempo.
 
-2. **Esquecimento de tarefas importantes:** O produto garantirá que nenhuma tarefa seja esquecida, enviando lembretes e notificações para assegurar que tudo seja concluído a tempo.
-
-3. **Dificuldade em priorizar atividades:** O ToDoDist permitirá a priorização das tarefas, ajudando a pessoa a focar no que é mais importante e urgente.
-
-4. **Ausência de visão geral do progresso:** O software fornecerá uma visão abrangente do progresso das tarefas, facilitando o acompanhamento e a identificação de padrões.
-
-5. **Desorganização de prazos e datas:** O produto auxiliará na definição de prazos e datas limite para cada tarefa, evitando atrasos e conflitos.
-
-6. **Dificuldade em acompanhar o histórico de tarefas:** O ToDoDist fornecerá um registro detalhado das atividades concluídas e pendentes, permitindo uma análise do desempenho passado e auxiliando no planejamento futuro.
-   
-7. **Sobrecarga mental e estresse:** O ToDoDist ajudará a reduzir o estresse mental ao centralizar todas as tarefas em uma única plataforma, proporcionando maior clareza e controle sobre o trabalho a ser realizado.
-
+[Retorna](../README.md)

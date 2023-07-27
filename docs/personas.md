@@ -2,18 +2,17 @@
 > Descreva as principais personas e suas atividades. Descreva-as a partir das perguntas:
 > qual é o perfil dela? o que ela espera do produto de software? 
 
-Persona 1: Profissional Ocupado
-- Perfil: Homem ou mulher, 30 a 40 anos, trabalhador em tempo integral.
-- Expectativas: Espera uma solução simples para organizar suas tarefas pessoais e profissionais, com lembretes e notificações para cumprir prazos.
+## Persona 1: "Ana, a Designer Freelancer"
 
-Persona 2: Estudante Universitário
-- Perfil: Homem ou mulher, 18 a 25 anos, cursando graduação ou pós-graduação.
-- Expectativas: Busca uma plataforma para gerenciar tarefas acadêmicas, com flexibilidade de personalização.
+- **Perfil:** Ana é uma designer gráfica freelancer com vasta experiência em branding e identidade visual. Ela trabalha de forma independente e gerencia vários projetos simultaneamente.
+- **Expectativas:** Ana espera que o produto de software seja uma solução completa para o gerenciamento de suas tarefas e tempo. Ela deseja uma interface intuitiva que facilite o registro, atualização e remoção de tarefas, além de uma funcionalidade de cronometragem baseada na técnica de pomodoro para melhorar sua concentração e produtividade. Ela também espera que o software permita priorizar suas atividades com base no método de Eisenhower e ofereça a integração com o Google Calendar para uma melhor organização de suas atividades diárias.
 
-Persona 3: Dona de Casa e Mãe
-- Perfil: Mulher, 35 a 50 anos, cuida da casa, família e talvez tenha trabalho parcial ou home office.
-- Expectativas: Procura uma solução prática para organizar tarefas domésticas, com relatórios e sincronização de calendário.
+- **Atividades:** Ana utiliza o software para criar e monitorar suas tarefas em diferentes projetos, utiliza a técnica de pomodoro para manter o foco e evitar distrações, prioriza suas atividades com base na importância e urgência, e integra o calendário do Google para melhorar sua programação e cumprir prazos.
 
-Persona 4: Empreendedor(a) Independente
-- Perfil: Homem ou mulher, 25 a 40 anos, gestor de negócio próprio ou freelancer.
-- Expectativas: Necessita priorizar tarefas e projetos, com segurança e privacidade dos dados.
+## Persona 2: "Carlos, o Cliente Empreendedor"
+
+- **Perfil:** Carlos é um empreendedor e dono de uma agência de marketing digital. Ele frequentemente contrata freelancers para desenvolver campanhas e projetos específicos para seus clientes.
+- **Expectativas:** Carlos espera que o produto de software ofereça transparência e precisão no registro do tempo gasto pelos freelancers em cada tarefa e projeto. Ele deseja receber relatórios detalhados sobre o progresso dos trabalhos contratados, para tomar decisões informadas e garantir a eficiência da equipe freelancer.
+- **Atividades:** Carlos utiliza a plataforma para monitorar os relatórios de tempo e custo fornecidos pelos freelancers contratados, utiliza as informações para validar o trabalho realizado e fazer pagamentos precisos, e realiza avaliações de desempenho com base nas métricas apresentadas pelo software. Ele também usa os dados para tomar decisões estratégicas sobre a alocação de recursos em projetos futuros.
+
+[Retorna](../README.md)
