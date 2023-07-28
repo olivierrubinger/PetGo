@@ -24,7 +24,7 @@ Para freelancers que trabalham em diversos projetos, cujo desafio é gerenciar t
 
 ## MVP 1 
 
-### Etapa 2: Arquitetura e Design do produto
+### Etapa 2: Arquitetura e design do produto
 
 * [Diagrama de Contexto](docs/diagrama-de-contexto.md)
 * [Diagrama de Contêiner](docs/diagrama-de-conteiner.md)
@@ -32,14 +32,14 @@ Para freelancers que trabalham em diversos projetos, cujo desafio é gerenciar t
 * [Projeto do banco de dados](docs/projeto-do-banco-de-dados.md)
 * [Especificação das APIs](docs/apis.md)
 
-### Etapa 3: Implementação do produto
+### Etapa 3: Implementação e testes do produto
 
 * [Roteiro de implementação](docs/roteiro-de-implementacao.md)
 
-### Etapa 4: Testes & Deploy 
+### Etapa 4: Deploy em nuvem do produto 
 
 * [Roteiro de testes](docs/roteiro-de-teste-e-deploy.md)
 
-### Etapa 5: Entrega e apresentação
+### Etapa 5: Entrega e apresentação do produto
 
 * [Roteiro para entrega e apresentação](docs/roteiro-de-entrega-e-apresentacao.md)
