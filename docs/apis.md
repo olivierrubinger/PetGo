@@ -1,24 +1,16 @@
 # Especificação de APIs
 
-| Endpoint             | Método | Descrição                                      | Parâmetros de URL | Corpo da Requisição                     | Respostas                                            | Autenticação e Autorização |
-|----------------------|--------|------------------------------------------------|-------------------|-----------------------------------------|------------------------------------------------------|----------------------------|
-| /api/tasks           | GET    | Obter todas as tarefas cadastradas             | Nenhum            | Nenhum                                  | 200 OK - Retorna uma lista de tarefas                | Nenhum                     |
-|                      |        |                                                |                   |                                         | 401 Unauthorized - Não autorizado                    | JWT Token                  |
-|                      |        |                                                |                   |                                         | 500 Internal Server Error - Erro interno no servidor |                            |
-| /api/tasks           | POST   | Criar uma nova tarefa                          | Nenhum            | JSON com os dados da nova tarefa        | 201 Created - Tarefa criada com sucesso              | JWT Token                  |
-|                      |        |                                                |                   |                                         | 400 Bad Request - Requisição inválida                |                            |
-|                      |        |                                                |                   |                                         | 401 Unauthorized - Não autorizado                    |                            |
-|                      |        |                                                |                   |                                         | 500 Internal Server Error - Erro interno no servidor |                            |
-| /api/tasks/{task_id} | GET    | Obter detalhes de uma tarefa específica        | task_id (string)  | Nenhum                                  | 200 OK - Retorna os detalhes da tarefa               | Nenhum                     |
-|                      |        |                                                |                   |                                         | 404 Not Found - Tarefa não encontrada                | JWT Token                  |
-|                      |        |                                                |                   |                                         | 401 Unauthorized - Não autorizado                    |                            |
-|                      |        |                                                |                   |                                         | 500 Internal Server Error - Erro interno no servidor |                            |
-| /api/tasks/{task_id} | PUT    | Atualizar os detalhes de uma tarefa específica | task_id (string)  | JSON com os dados atualizados da tarefa | 200 OK - Tarefa atualizada com sucesso               | JWT Token                  |
-|                      |        |                                                |                   |                                         | 404 Not Found - Tarefa não encontrada                |                            |
-|                      |        |                                                |                   |                                         | 400 Bad Request - Requisição inválida                |                            |
-|                      |        |                                                |                   |                                         | 401 Unauthorized - Não autorizado                    |                            |
-|                      |        |                                                |                   |                                         | 500 Internal Server Error - Erro interno no servidor |                            |
-| /api/tasks/{task_id} | DELETE | Excluir uma tarefa específica                  | task_id (string)  | Nenhum                                  | 204 No Content - Tarefa excluída com sucesso         | JWT Token                  |
-|                      |        |                                                |                   |                                         | 404 Not Found - Tarefa não encontrada                |                            |
-|                      |        |                                                |                   |                                         | 401 Unauthorized - Não autorizado                    |                            |
-|                      |        |                                                |                   |                                         | 500 Internal Server Error - Erro interno no servidor |                            |
+> A especificação de APIs descreve os principais endpoints da API RESTful do produto
+> de software, os métodos HTTP associados a cada endpoint, suas descrições, os formatos
+> de respostas, os parâmetros de URL esperados e o mecanismo de autenticação e autorização 
+> utilizado.
+
+| Endpoint                             | Método | Descrição                                      | Parâmetros                        | Formato da Resposta | Autenticação e Autorização |
+|--------------------------------------|--------|------------------------------------------------|-----------------------------------|---------------------|----------------------------|
+| /api/users/{user_id}/tasks/          | GET    | Obter todas as tarefas cadastradas             | user_id (string)                  | JSON                | JWT Token                  |
+| /api/users/{user_id}/tasks/{task_id} | POST   | Criar uma nova tarefa                          | user_id (string) task_id (string) | JSON                | JWT Token                  |
+| /api/users/{user_id}/tasks/{task_id} | GET    | Obter detalhes de uma tarefa específica        | user_id (string) task_id (string) | JSON                | JWT Token                  |
+| /api/users/{user_id}/tasks/{task_id} | PUT    | Atualizar os detalhes de uma tarefa específica | user_id (string) task_id (string) | JSON                | JWT Token                  |
+| /api/users/{user_id}/tasks/{task_id} | DELETE | Excluir uma tarefa específica                  | user_id (string) task_id (string) | JSON                | JWT Token                  |
+
+[Retorna](../README.md)
