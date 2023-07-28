@@ -19,28 +19,27 @@ Para freelancers que trabalham em diversos projetos, cujo desafio é gerenciar t
 * [Personas do produto](docs/personas.md)
 * [Entendendo as funcionalidades](docs/funcionalidades.md)
 * [Priorização das funcionalidades](/docs/priorizacao.md)
+* [Trade-off de requisitos não funcionais](docs/tradeoffs.md)
 * [Backlog do produto](docs/backlog.md)
 
 ## MVP 1 
 
 ### Etapa 2: Arquitetura do produto
 
-* [Diagrama de Contexto](docs/contexo.md)
-* [Diagrama de Contêiner](docs/conteiner.md)
-* [Diagrama de Componentes](docs/componentes.md)
+* [Diagrama de Contexto](docs/diagrama-de-contexto.md)
+* [Diagrama de Contêiner](docs/diagrama-de-conteiner.md)
+* [Diagrama de Componentes](docs/diagrama-de-componentes.md)
+* [Projeto do banco de dados](docs/projeto-do-banco-de-dados.md)
 * [Especificação das APIs](docs/apis.md)
 
 ### Etapa 3: Implementação do produto
 
-* [Restrições de implementação](docs/contexo.md)
+* [Roteiro de implementação](docs/roteiro-de-implementacao.md)
 
 ### Etapa 4: Testes & Deploy 
 
-* [Roteiro de testes](docs/contexo.md)
+* [Roteiro de testes](docs/roteiro-de-teste-e-deploy.md)
 *
 ### Etapa 5: Entrega e apresentação
 
-* [Roteiro para entrega e apresentação](docs/contexo.md)
-* [Diagrama de Contêiner](docs/conteiner.md)
-* [Diagrama de Componentes](docs/componentes.md)
-* [Especificação das APIs](docs/apis.md)
+* [Roteiro para entrega e apresentação](docs/roteiro-de-entrega-e-apresentacao.md)
