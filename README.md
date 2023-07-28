@@ -24,7 +24,7 @@ Para freelancers que trabalham em diversos projetos, cujo desafio é gerenciar t
 
 ## MVP 1 
 
-### Etapa 2: Arquitetura do produto
+### Etapa 2: Arquitetura e Design do produto
 
 * [Diagrama de Contexto](docs/diagrama-de-contexto.md)
 * [Diagrama de Contêiner](docs/diagrama-de-conteiner.md)
@@ -39,7 +39,7 @@ Para freelancers que trabalham em diversos projetos, cujo desafio é gerenciar t
 ### Etapa 4: Testes & Deploy 
 
 * [Roteiro de testes](docs/roteiro-de-teste-e-deploy.md)
-*
+
 ### Etapa 5: Entrega e apresentação
 
 * [Roteiro para entrega e apresentação](docs/roteiro-de-entrega-e-apresentacao.md)
