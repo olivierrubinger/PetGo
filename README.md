@@ -18,25 +18,19 @@ Para freelancers que trabalham em diversos projetos, cujo desafio é gerenciar t
 * [Expectativas com o produto](docs/expectativas.md)
 * [Personas do produto](docs/personas.md)
 * [Entendendo as funcionalidades](docs/funcionalidades.md)
-* [Priorização das funcionalidades](/docs/priorizacao.md)
+* [Especificação das APIs](docs/apis.md)
+
+### Etapa 2: Integração de APIs com banco de dados e serviços externos
+
 * [Trade-off de requisitos não funcionais](docs/tradeoffs.md)
-* [Backlog do produto](docs/backlog.md)
+* [Roteiro de implementação](docs/roteiro-de-implementacao.md)
 
-## MVP 1 
-
-### Etapa 2: Arquitetura e design do produto
+### Etapa 3: Arquitetura da aplicação em nuvem
 
 * [Diagrama de Contexto](docs/diagrama-de-contexto.md)
 * [Diagrama de Contêiner](docs/diagrama-de-conteiner.md)
-* [Diagrama de Componentes](docs/diagrama-de-componentes.md)
-* [Projeto do banco de dados](docs/projeto-do-banco-de-dados.md)
-* [Especificação das APIs](docs/apis.md)
 
-### Etapa 3: Implementação e testes do produto
-
-* [Roteiro de implementação](docs/roteiro-de-implementacao.md)
-
-### Etapa 4: Deploy em nuvem do produto 
+### Etapa 4: Testes e implantação da aplicação em nuvem
 
 * [Roteiro de testes](docs/roteiro-de-teste-e-deploy.md)
 
