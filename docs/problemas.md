@@ -1,4 +1,4 @@
-# Problemas
+# Problemas & dores
 
 > Descreva de forma abrangente os principais problemas e dores que o produto de software resolverá.
 > Detalhes específicos sobre as funcionalidades serão elaborados posteriormente. A seguinte pergunta
