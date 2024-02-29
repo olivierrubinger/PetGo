@@ -6,7 +6,7 @@ using todoz.api.Repositories;
 namespace todoz.api.Controllers
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/[controller]")]
     public class TodoController : ControllerBase
     {
         public TodoController()
