@@ -18,18 +18,16 @@ Para freelancers que trabalham em diversos projetos, cujo desafio é gerenciar t
 * [Expectativas com o produto](docs/expectativas.md)
 * [Personas do produto](docs/personas.md)
 * [Entendendo as funcionalidades](docs/funcionalidades.md)
-* [Especificação das APIs](docs/apis.md)
-* [Roteiro de implementação](docs/roteiro-de-implementacao.md)
+* [Trade-off de requisitos não funcionais](docs/tradeoffs.md)
+* [Diagrama de Contexto](docs/diagrama-de-contexto.md)
 
 ### Etapa 2: Integração de APIs com banco de dados e serviços externos
 
-* [Trade-off de requisitos não funcionais](docs/tradeoffs.md)
-* [Diagrama de Contexto](docs/diagrama-de-contexto.md)
+* [Diagrama de Contêiner](docs/diagrama-de-conteiner.md)
+* [Especificação das APIs](docs/apis.md)
 * [Roteiro de implementação](docs/roteiro-de-implementacao.md)
 
 ### Etapa 3: Arquitetura da aplicação em nuvem
-
-* [Diagrama de Contêiner](docs/diagrama-de-conteiner.md)
 * [Roteiro de implementação](docs/roteiro-de-implementacao.md)
 
 ### Etapa 4: Testes e implantação da aplicação em nuvem
@@ -38,5 +36,10 @@ Para freelancers que trabalham em diversos projetos, cujo desafio é gerenciar t
 * [Roteiro de implementação](docs/roteiro-de-implementacao.md)
 
 ### Etapa 5: Entrega e apresentação do produto
-
 * [Roteiro para entrega e apresentação](docs/roteiro-de-entrega-e-apresentacao.md)
+
+
+### Referências bibliográficas
+* CAROLI, Paulo. **Lean Inception: Saiba como alinhar pessoas e construir o produto certo**. Disponível em: [https://caroli.org/lean-inception-3/](https://caroli.org/lean-inception-3/). Acessado em: 12 de agosto de 2024.
+* BROWN, Simon. **O modelo C4 de documentação para Arquitetura de Software**. Disponível em: [https://www.infoq.com/br/articles/C4-architecture-model/](https://www.infoq.com/br/articles/C4-architecture-model/). Acessado em: 12 de agosto de 2024.
+* DRESHER, Tamir; ZUKER, Amir; FRIEDMAN, Shay. **Hands-on full stack web development with ASP.NET Core:** learn end-to-end web development with leading frontend frameworks, such as Angular, React, and Vue. Birmingham, UK: Packt Publishing, 2018. E-book. ISBN 9781788622882.
