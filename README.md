@@ -25,7 +25,9 @@ Para freelancers que trabalham em diversos projetos, cujo desafio é gerenciar t
 
 * [Diagrama de Contêiner](docs/diagrama-de-conteiner.md)
 * [Especificação das APIs](docs/apis.md)
-* [Roteiro de implementação](docs/roteiro-de-implementacao.md)
+* [Diagrama Entidade-Relacionamento](docs/projeto-do-banco-de-dados.md)
+* [Roteiro de implementação](docs/roteiro-de-implementacao-etapa-2.md)
+
 
 ### Etapa 3: Arquitetura da aplicação em nuvem
 * [Roteiro de implementação](docs/roteiro-de-implementacao.md)
