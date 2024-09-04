@@ -9,56 +9,68 @@ namespace todoz.api.Controllers
     [Route("api/[controller]")]
     public class TodoController : ControllerBase
     {
+        private readonly ITodoRepository _todozRepository;
+
+
+        public TodoController(ITodoRepository todozRepository)
+        {
+            _todozRepository = todozRepository;
+        }
+
         public TodoController()
         {
+            _todozRepository = new TodoInMemory();
         }
 
         [HttpGet]
-        public ActionResult<List<Todo>> GetAll() =>
-            TodosInMemory.GetAll();
+        public ActionResult<List<Todo>> GetAll()
+        {
+            var todos = _todozRepository.GetAll();
+            return Ok(todos);
+        }
 
         [HttpGet("{id}")]
         public ActionResult<Todo> Get(int id)
         {
-            var todo = TodosInMemory.Get(id);
+            var todo = _todozRepository.Get(id);
 
             if (todo == null)
                 return NotFound();
 
-            return todo;
+            return Ok(todo);
         }
 
         [HttpPost]
-        public IActionResult Create(Todo todo)
+        public ActionResult Create(Todo todo)
         {
-            TodosInMemory.Add(todo);
+            _todozRepository.Add(todo);
             return CreatedAtAction(nameof(Get), new { id = todo.Id }, todo);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, Todo todo)
+        public ActionResult Update(int id, Todo todo)
         {
             if (id != todo.Id)
                 return BadRequest();
 
-            var existingTodo = TodosInMemory.Get(id);
+            var existingTodo = _todozRepository.Get(id);
             if (existingTodo is null)
                 return NotFound();
 
-            TodosInMemory.Update(todo);
+            _todozRepository.Update(todo);
 
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public ActionResult Delete(int id)
         {
-            var todo = TodosInMemory.Get(id);
+            var todo = _todozRepository.Get(id);
 
             if (todo is null)
                 return NotFound();
 
-            TodosInMemory.Delete(id);
+            _todozRepository.Delete(id);
 
             return NoContent();
         }
