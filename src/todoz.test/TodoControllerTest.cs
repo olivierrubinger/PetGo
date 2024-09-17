@@ -25,6 +25,7 @@ namespace todoz.test
         [Test]
         public void GetAll_WhenCalled_ReturnsAllItens()
         {
+            // Arrange
             // Act
 #pragma warning disable CS8602
             var result = _controller.GetAll();

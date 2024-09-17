@@ -9,5 +9,8 @@ namespace todoz.api.Controllers
         Todo? Get(int id);
         List<Todo> GetAll();
         void Update(Todo todo);
+
+        void Dispose();
+        void Save();
     }
 }

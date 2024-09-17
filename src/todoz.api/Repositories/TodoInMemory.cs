@@ -46,4 +46,8 @@ public class TodoInMemory : ITodoRepository
 
         Todos[index] = todo;
     }
+
+    public void Dispose() { }
+
+    public void Save() { }
 }
