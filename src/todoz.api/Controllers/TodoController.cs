@@ -8,25 +8,25 @@ namespace todoz.api.Controllers
     [Route("api/[controller]")]
     public class TodoController : ControllerBase
     {
-        private readonly ITodoRepository _todozRepository;
+        private readonly ITodoRepository _repository;
 
 
-        public TodoController(ITodoRepository todozRepository)
+        public TodoController(ITodoRepository repository)
         {
-            _todozRepository = todozRepository;
+            _repository = repository;
         }
 
         [HttpGet]
         public ActionResult<List<Todo>> GetAll()
         {
-            var todos = _todozRepository.GetAll();
+            var todos = _repository.GetAll();
             return Ok(todos);
         }
 
         [HttpGet("{id}")]
         public ActionResult<Todo> Get(int id)
         {
-            var todo = _todozRepository.Get(id);
+            var todo = _repository.Get(id);
 
             if (todo == null)
                 return NotFound();
@@ -37,7 +37,9 @@ namespace todoz.api.Controllers
         [HttpPost]
         public ActionResult Create(Todo todo)
         {
-            _todozRepository.Add(todo);
+            _repository.Add(todo);
+            _repository.Save();
+
             return CreatedAtAction(nameof(Get), new { id = todo.Id }, todo);
         }
 
@@ -47,11 +49,12 @@ namespace todoz.api.Controllers
             if (id != todo.Id)
                 return BadRequest();
 
-            var existingTodo = _todozRepository.Get(id);
+            var existingTodo = _repository.Get(id);
             if (existingTodo is null)
                 return NotFound();
 
-            _todozRepository.Update(todo);
+            _repository.Update(todo);
+            _repository.Save();
 
             return NoContent();
         }
@@ -59,12 +62,13 @@ namespace todoz.api.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            var todo = _todozRepository.Get(id);
+            var todo = _repository.Get(id);
 
             if (todo is null)
                 return NotFound();
 
-            _todozRepository.Delete(id);
+            _repository.Delete(id);
+            _repository.Save();
 
             return NoContent();
         }
