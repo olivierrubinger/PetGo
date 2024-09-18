@@ -9,17 +9,14 @@ public class TodoInMemory : ITodoRepository
     private int nextId = 3;
     public TodoInMemory()
     {
-        Todos = new List<Todo>
-        {
+        Todos =
+        [
             new Todo { Id = 1, Title = "Aprender C#", Description = "Estudar a estrutura básica do C#", IsComplete = false },
             new Todo { Id = 2, Title = "Construir uma aplicação", Description = "Utilizar o .net", IsComplete = false }
-        };
+        ];
     }
 
-    public List<Todo> GetAll()
-    {
-        return Todos;
-    }
+    public List<Todo> GetAll() => Todos;
 
     public Todo? Get(int id) => Todos.FirstOrDefault(t => t.Id == id);
 
