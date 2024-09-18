@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
 using todoz.api.Models;
-using todoz.api.Repositories;
 
 namespace todoz.api.Controllers
 {
@@ -15,11 +14,6 @@ namespace todoz.api.Controllers
         public TodoController(ITodoRepository todozRepository)
         {
             _todozRepository = todozRepository;
-        }
-
-        public TodoController()
-        {
-            _todozRepository = new TodoInMemory();
         }
 
         [HttpGet]
