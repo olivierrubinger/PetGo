@@ -4,6 +4,22 @@ using todoz.api.Data;
 using todoz.api.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
+// ----------------------------------------------------------------------------------------- CORS
+// Obtém a URL do front-end da variável de ambiente.
+var frontendUrl = Environment.GetEnvironmentVariable("FRONTEND_URL") ?? "http://localhost:5193";
+
+// Configuração de CORS para permitir o front-end se comunicar com a API.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy.WithOrigins(frontendUrl)
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+// ----------------------------------------------------------------------------------------- CORS
 
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
@@ -24,9 +40,7 @@ else
 
 // Adicionando injeção de dependência para os repositórios de banco de dados.
 builder.Services.AddScoped<ITodoRepository, TodoInDatabase>();
-
 builder.Services.AddControllers();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -36,7 +50,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
+// ----------------------------------------------------------------------------------------- CORS
+app.UseCors("AllowFrontend");
+// ----------------------------------------------------------------------------------------- CORS
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

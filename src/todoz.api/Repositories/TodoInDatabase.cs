@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using todoz.api.Controllers;
 using todoz.api.Data;
 using todoz.api.Models;
@@ -18,7 +19,7 @@ public class TodoInDatabase : ITodoRepository
         return _context.Todos.ToList();
     }
 
-    public Todo? Get(int id) => _context.Todos.FirstOrDefault(t => t.Id == id);
+    public Todo? Get(int id) => _context.Todos.AsNoTracking().FirstOrDefault(t => t.Id == id);
 
     public void Add(Todo todo)
     {

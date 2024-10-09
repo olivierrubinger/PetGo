@@ -1,0 +1,121 @@
+﻿@page
+@model todoz.web.Pages.IndexModel
+@{
+
+    var apiUrl = (string)ViewData["ApiUrl"];
+    ViewData["Title"] = apiUrl;
+}
+
+<h1>Todo List</h1>
+
+<!-- Formulário para adicionar/editar tarefas -->
+<div class="container mb-3">
+    <form id="todo-form" onsubmit="event.preventDefault(); saveTodo();">
+        <input type="hidden" id="todo-id">
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" placeholder="Enter task title" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" rows="3" placeholder="Enter task description"></textarea>
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="isComplete">
+            <label class="form-check-label" for="isComplete">Is Complete</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Task</button>
+    </form>
+</div>
+
+<!-- Lista de tarefas -->
+<div class="container">
+    <ul class="list-group" id="todo-items">
+        <!-- Itens da lista serão carregados aqui -->
+    </ul>
+</div>
+
+<script>
+    const apiUrl = '@(apiUrl)'; // URL da API via ViewData
+
+    // Função para obter todas as tarefas
+    async function fetchTodos() {
+        const response = await fetch(`${apiUrl}/api/Todo`);
+        const todos = await response.json();
+        const todoList = document.getElementById('todo-items');
+        todoList.innerHTML = '';
+        todos.forEach(todo => {
+            let li = document.createElement('li');
+            li.className = 'list-group-item d-flex justify-content-between align-items-center';
+            li.innerHTML = `
+                <span>${todo.title} - ${todo.description} (${todo.isComplete ? 'Completed' : 'Incomplete'})</span>
+                <div>
+                    <button class="btn btn-sm btn-info" onclick="editTodo(${todo.id})">Edit</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTodo(${todo.id})">Delete</button>
+                </div>
+            `;
+            todoList.appendChild(li);
+        });
+    }
+
+    // Função para salvar ou atualizar uma tarefa
+    async function saveTodo() {
+        const id = document.getElementById('todo-id').value;
+        const title = document.getElementById('title').value;
+        const description = document.getElementById('description').value;
+        const isComplete = document.getElementById('isComplete').checked;
+
+        const todo = { title, description, isComplete };
+
+        if (id) {
+            // Atualizar tarefa
+            await fetch(`${apiUrl}/api/Todo/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: parseInt(id), ...todo })
+            });
+        } else {
+            // Criar nova tarefa
+            await fetch(`${apiUrl}/api/Todo`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(todo)
+            });
+        }
+
+        // Limpar formulário
+        document.getElementById('todo-id').value = '';
+        document.getElementById('title').value = '';
+        document.getElementById('description').value = '';
+        document.getElementById('isComplete').checked = false;
+
+        // Atualizar lista de tarefas
+        fetchTodos();
+    }
+
+    // Função para editar uma tarefa
+    async function editTodo(id) {
+        const response = await fetch(`${apiUrl}/api/Todo/${id}`);
+        const todo = await response.json();
+
+        document.getElementById('todo-id').value = todo.id;
+        document.getElementById('title').value = todo.title;
+        document.getElementById('description').value = todo.description;
+        document.getElementById('isComplete').checked = todo.isComplete;
+    }
+
+    // Função para deletar uma tarefa
+    async function deleteTodo(id) {
+        await fetch(`${apiUrl}/api/Todo/${id}`, {
+            method: 'DELETE'
+        });
+        fetchTodos();
+    }
+
+    // Carregar as tarefas na inicialização da página
+    window.onload = fetchTodos;
+</script>
