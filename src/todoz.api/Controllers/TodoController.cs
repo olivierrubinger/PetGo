@@ -6,15 +6,9 @@ namespace todoz.api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TodoController : ControllerBase
+    public class TodosController(ITodosRepository repository) : ControllerBase
     {
-        private readonly ITodoRepository _repository;
-
-
-        public TodoController(ITodoRepository repository)
-        {
-            _repository = repository;
-        }
+        private readonly ITodosRepository _repository = repository;
 
         [HttpGet]
         public ActionResult<List<Todo>> GetAll()

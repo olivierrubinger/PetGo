@@ -3,11 +3,11 @@ using todoz.api.Models;
 
 namespace todoz.api.Repositories;
 
-public class TodoInMemory : ITodoRepository
+public class TodosInMemory : ITodosRepository
 {
     private List<Todo>? Todos { get; }
     private int nextId = 3;
-    public TodoInMemory()
+    public TodosInMemory()
     {
         Todos =
         [
@@ -16,14 +16,18 @@ public class TodoInMemory : ITodoRepository
         ];
     }
 
+#pragma warning disable CS8603 // Possible null reference return.
     public List<Todo> GetAll() => Todos;
+#pragma warning restore CS8603 // Possible null reference return.
 
     public Todo? Get(int id) => Todos.FirstOrDefault(t => t.Id == id);
 
     public void Add(Todo todo)
     {
         todo.Id = nextId++;
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         Todos.Add(todo);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
     }
 
     public void Delete(int id)
@@ -32,12 +36,16 @@ public class TodoInMemory : ITodoRepository
         if (todo is null)
             return;
 
-        Todos.Remove(todo);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+        _ = Todos.Remove(todo);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
     }
 
     public void Update(Todo todo)
     {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         var index = Todos.FindIndex(t => t.Id == todo.Id);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         if (index == -1)
             return;
 

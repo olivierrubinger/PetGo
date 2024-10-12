@@ -2,7 +2,7 @@
 
 namespace todoz.api.Controllers
 {
-    public interface ITodoRepository
+    public interface ITodosRepository
     {
         void Add(Todo todo);
         void Delete(int id);

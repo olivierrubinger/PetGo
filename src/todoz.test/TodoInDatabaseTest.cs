@@ -8,7 +8,7 @@ namespace todoz.test
     [TestFixture]
     public class TodoInDatabaseTest
     {
-        private TodoInDatabase _repository;
+        private TodosInDatabase _repository;
         private TodoContext _context;
         private const string DatabaseName = "todoz.test.sqlite3";
 
@@ -28,7 +28,7 @@ namespace todoz.test
 
             // Instancia o contexto com as opções configuradas
             _context = new TodoContext(options);
-            _repository = new TodoInDatabase(_context);
+            _repository = new TodosInDatabase(_context);
 
             // Cria o banco de dados se ele não existir
             _context.Database.EnsureCreated();
@@ -87,7 +87,9 @@ namespace todoz.test
 
             // Assert
             var result = _repository.Get(3);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             Assert.That(result.Id, Is.EqualTo(todo.Id));
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
             Assert.That(result.Title, Is.EqualTo(todo.Title));
             Assert.That(result.Description, Is.EqualTo(todo.Description));
             Assert.IsFalse(result.IsComplete); ;
@@ -98,7 +100,9 @@ namespace todoz.test
         {
             // Arrange
             var todo = _repository.Get(1);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             todo.Title = "Aprender NUnit 3.0";
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
             todo.Description = "Assistir ao curso em video no youtube";
             todo.IsComplete = true;
 
@@ -109,7 +113,9 @@ namespace todoz.test
             // Assert
             var result = _repository.Get(1);
             Assert.That(result?.Id, Is.EqualTo(todo.Id));
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             Assert.That(result.Title, Is.EqualTo(todo.Title));
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
             Assert.That(result.Description, Is.EqualTo(todo.Description));
             Assert.IsTrue(result.IsComplete); ;
         }

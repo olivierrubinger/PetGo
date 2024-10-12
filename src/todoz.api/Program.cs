@@ -39,7 +39,7 @@ else
 }
 
 // Adicionando injeção de dependência para os repositórios de banco de dados.
-builder.Services.AddScoped<ITodoRepository, TodoInDatabase>();
+builder.Services.AddScoped<ITodosRepository, TodosInDatabase>();
 builder.Services.AddControllers();
 var app = builder.Build();
 
@@ -50,7 +50,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 // ----------------------------------------------------------------------------------------- CORS
 app.UseCors("AllowFrontend");
 // ----------------------------------------------------------------------------------------- CORS

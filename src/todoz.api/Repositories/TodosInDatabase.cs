@@ -5,19 +5,11 @@ using todoz.api.Models;
 
 namespace todoz.api.Repositories;
 
-public class TodoInDatabase : ITodoRepository
+public class TodosInDatabase(TodoContext context) : ITodosRepository
 {
-    private TodoContext _context;
+    private TodoContext _context = context;
 
-    public TodoInDatabase(TodoContext context)
-    {
-        _context = context;
-    }
-
-    public List<Todo> GetAll()
-    {
-        return _context.Todos.ToList();
-    }
+    public List<Todo> GetAll() => [.. _context.Todos];
 
     public Todo? Get(int id) => _context.Todos.AsNoTracking().FirstOrDefault(t => t.Id == id);
 
@@ -28,17 +20,14 @@ public class TodoInDatabase : ITodoRepository
 
     public void Delete(int id)
     {
-        var todo = Get(id);
+        Todo? todo = Get(id);
         if (todo is null)
             return;
 
         _context.Todos.Remove(todo);
     }
 
-    public void Update(Todo todo)
-    {
-        _context.Entry(todo).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-    }
+    public void Update(Todo todo) => _context.Entry(todo).State = EntityState.Modified;
 
     public void Dispose() { _context.Dispose(); }
 
