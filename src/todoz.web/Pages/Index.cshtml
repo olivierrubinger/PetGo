@@ -2,7 +2,7 @@
 @model todoz.web.Pages.IndexModel
 @{
 
-    var apiUrl = (string)ViewData["ApiUrl"];
+    String? apiUrl = (string)ViewData["ApiUrl"];
     ViewData["Title"] = apiUrl;
 }
 

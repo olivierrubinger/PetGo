@@ -6,15 +6,28 @@ namespace todoz.api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TodosController(ITodosRepository repository) : ControllerBase
+    public class TodosController : ControllerBase
     {
-        private readonly ITodosRepository _repository = repository;
+        private readonly ITodosRepository _repository;
+
+        public TodosController(ITodosRepository repository)
+        {
+            _repository = repository;
+        }
 
         [HttpGet]
         public ActionResult<List<Todo>> GetAll()
         {
-            var todos = _repository.GetAll();
-            return Ok(todos);
+            try
+            {
+                var todos = _repository.GetAll();
+                return Ok(todos);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving todos: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpGet("{id}")]

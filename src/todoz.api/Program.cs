@@ -1,12 +1,28 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+
 using todoz.api.Controllers;
 using todoz.api.Data;
 using todoz.api.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
-// ----------------------------------------------------------------------------------------- CORS
-// Obtém a URL do front-end da variável de ambiente.
-var frontendUrl = Environment.GetEnvironmentVariable("FRONTEND_URL") ?? "http://localhost:5193";
+
+// Configura o Application Insights usando uma variável de ambiente
+var applicationInsightsConnectionString = Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING");
+if (!string.IsNullOrEmpty(applicationInsightsConnectionString))
+{
+    builder.Services.AddApplicationInsightsTelemetry(options =>
+    {
+        options.ConnectionString = applicationInsightsConnectionString;
+    });
+}
+
+// Configura o logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+builder.Logging.AddEventSourceLogger();
+
 
 // Configuração de CORS para permitir o front-end se comunicar com a API.
 builder.Services.AddCors(options =>
@@ -14,7 +30,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.WithOrigins(frontendUrl)
+            policy.AllowAnyOrigin()
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
@@ -23,37 +39,58 @@ builder.Services.AddCors(options =>
 
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "Todoz API", Version = "v1" });
+    });
 
 // Configura o banco de dados com base no ambiente
 string? connectionString;
+
 if (builder.Environment.IsDevelopment())
 {
-    connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
     builder.Services.AddDbContext<TodoContext>(options => { options.UseSqlite(connectionString); });
 }
 else
 {
-    connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    connectionString = Environment.GetEnvironmentVariable("SQLCONNSTR_DefaultConnection") ?? "local";
+    if (string.IsNullOrEmpty(connectionString))
+    {
+        throw new InvalidOperationException("A variável de ambiente 'SQLCONNSTR_DefaultConnection' não está configurada.");
+    }
     builder.Services.AddDbContext<TodoContext>(options => { options.UseSqlServer(connectionString); });
-}
 
+}
 // Adicionando injeção de dependência para os repositórios de banco de dados.
-builder.Services.AddScoped<ITodosRepository, TodosInDatabase>();
+builder.Services.AddScoped<ITodosRepository, TodosInMemory>();
 builder.Services.AddControllers();
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
-
+else
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts(); // Adiciona suporte a HSTS em produção
+}
+// Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
+
+app.UseRouting();
+app.UseAuthorization();
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Todoz API V1");
+});
+
 // ----------------------------------------------------------------------------------------- CORS
 app.UseCors("AllowFrontend");
 // ----------------------------------------------------------------------------------------- CORS
-app.UseAuthorization();
+
 app.MapControllers();
 app.Run();
