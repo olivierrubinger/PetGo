@@ -8,20 +8,20 @@ using todoz.api.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Configura o Application Insights usando uma variável de ambiente
-var applicationInsightsConnectionString = Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING");
-if (!string.IsNullOrEmpty(applicationInsightsConnectionString))
-{
-    builder.Services.AddApplicationInsightsTelemetry(options =>
-    {
-        options.ConnectionString = applicationInsightsConnectionString;
-    });
-}
+//var applicationInsightsConnectionString = Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_CONNECTION_STRING");
+//if (!string.IsNullOrEmpty(applicationInsightsConnectionString))
+//{
+//    builder.Services.AddApplicationInsightsTelemetry(options =>
+//    {
+//        options.ConnectionString = applicationInsightsConnectionString;
+//    });
+//}
 
 // Configura o logging
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
-builder.Logging.AddDebug();
-builder.Logging.AddEventSourceLogger();
+//builder.Logging.ClearProviders();
+//builder.Logging.AddConsole();
+//builder.Logging.AddDebug();
+//builder.Logging.AddEventSourceLogger();
 
 
 // Configuração de CORS para permitir o front-end se comunicar com a API.
@@ -45,25 +45,25 @@ builder.Services.AddSwaggerGen(c =>
     });
 
 // Configura o banco de dados com base no ambiente
-string? connectionString;
+//string? connectionString;
 
-if (builder.Environment.IsDevelopment())
+//if (builder.Environment.IsDevelopment())
+//{
+//    connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
+//    builder.Services.AddDbContext<TodoContext>(options => { options.UseSqlite(connectionString); });
+//}
+//else
+//{
+var connectionString = builder.Configuration.GetConnectionString("SQLCONNSTR_TODOZDB");
+if (string.IsNullOrEmpty(connectionString))
 {
-    connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
-    builder.Services.AddDbContext<TodoContext>(options => { options.UseSqlite(connectionString); });
+    throw new InvalidOperationException("A variável de ambiente 'SQLCONNSTR_TODOZDB' não está configurada.");
 }
-else
-{
-    connectionString = Environment.GetEnvironmentVariable("SQLCONNSTR_DefaultConnection") ?? "local";
-    if (string.IsNullOrEmpty(connectionString))
-    {
-        throw new InvalidOperationException("A variável de ambiente 'SQLCONNSTR_DefaultConnection' não está configurada.");
-    }
-    builder.Services.AddDbContext<TodoContext>(options => { options.UseSqlServer(connectionString); });
+builder.Services.AddDbContext<TodoContext>(options => { options.UseSqlServer(connectionString); });
 
-}
+//}
 // Adicionando injeção de dependência para os repositórios de banco de dados.
-builder.Services.AddScoped<ITodosRepository, TodosInMemory>();
+builder.Services.AddScoped<ITodosRepository, TodosInDatabase>();
 builder.Services.AddControllers();
 var app = builder.Build();
 
