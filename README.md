@@ -32,9 +32,8 @@ Para freelancers que trabalham em diversos projetos, cujo desafio é gerenciar t
 ### Etapa 3: Arquitetura da aplicação em nuvem
 * [Roteiro de implementação](docs/roteiro-de-implementacao-etapa-3.md)
 
-### Etapa 4: Testes e implantação da aplicação em nuvem
+### Etapa 4: Implantação da aplicação em nuvem
 
-* [Roteiro de testes](docs/roteiro-de-teste-e-deploy.md)
 * [Roteiro de implementação](docs/roteiro-de-implementacao.md)
 
 ### Etapa 5: Entrega e apresentação do produto
