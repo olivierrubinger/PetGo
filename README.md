@@ -9,7 +9,7 @@
 
 > Para [o nome do cliente final], cujo [o problema que precisa ser resolvido]. O [o nome do produto] é [a categoria do produto] que [o benefício-chave, razão para adquiri-lo]. Diferentemente de [alternativa da concorrência], o nosso produto [a diferença-chave].
 
-Para freelancers que trabalham em diversos projetos, cujo desafio é cobrar em tempo hábil. O ToDoZ é um software de gerenciamento de tarefas e tempo baseado na técnica de pomodoro e método de Eisenhower, que melhora a concentração, aumenta a produtividade e permite um melhor planejamento financeiro. Diferentemente de outras opções no mercado, nosso produto oferece uma solução completa e eficiente para o dia a dia do freelancer.
+Para freelancers que trabalham em diversos projetos, cujo o problema é organizar a cobrança de seus serviços e emitir notas fiscais eletrônicas de forma eficiente. O ToDoZ é um software de registro de tarefas executadas para um determinado cliente que automatiza a criação de relatórios de cobrança detalhados, facilitando a aprovação do cliente e a emissão da nota fiscal eletrônica, e reduzindo a possibilidade de erros. Diferentemente de outras soluções no mercado, o ToDoZ centraliza todo o processo em uma única plataforma, otimizando o fluxo de trabalho diário do freelancer, economizando tempo precioso.
 
 ## Etapa 1: Requisitos do produto
 
