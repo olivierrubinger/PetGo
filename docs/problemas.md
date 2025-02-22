@@ -2,12 +2,11 @@
 
 > Apresente os principais problemas e dificuldades que o software irá solucionar, oferecendo uma visão geral dos seus benefícios. Os detalhes sobre as funcionalidades serão abordados em seguida. Para nortear a sua descrição, responda à seguinte pergunta: quais são os problemas e dificuldades mais relevantes no contexto atual?
 
-1. Dificuldade em organizar e gerenciar múltiplas tarefas em projetos distintos.
-2. Dificuldade de concentração, resultando em redução da produtividade durante a execução das atividades.
-3. Necessidade de priorizar as atividades de acordo com sua importância e urgência.
-4. Medição precisa do tempo dedicado a cada tarefa e projeto para fins de cobrança ao cliente.
-5. Necessidade de integração com o Google Calendar para sincronização das atividades e agenda.
-6. Dificuldade em visualizar o custo real de cada projeto com base nas horas trabalhadas.
-7. Falta de uma solução unificada para a gestão do trabalho e do tempo de freelancers.
+1. Organizar e gerenciar as horas trabalhadas em múltiplos projetos e clientes, levando à desorganização e perda de produtividade.
+2. A necessidade de priorizar tarefas por importância e urgência é um desafio, resultando em sobrecarga e prazos perdidos.
+3. A falta de medição precisa do tempo dedicado a cada tarefa e projeto dificulta a cobrança justa e precisa dos serviços.
+4. A emissão para emissão de notas fiscais eletrônicas é um processo manual demorado e sujeito a erros.
+5. A dificuldade em visualizar o custo real de cada projeto com base nas horas trabalhadas impede a análise da rentabilidade e a tomada de decisões estratégicas.
+6. A ausência de uma solução unificada para gestão de trabalho e tempo força freelancers a usar múltiplas ferramentas, resultando em ineficiência e perda de tempo.
 
 [Retorna](../README.md)
