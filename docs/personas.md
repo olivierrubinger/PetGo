@@ -3,12 +3,19 @@
 > Identifique as principais personas e descreva suas atividades, respondendo às seguintes perguntas:
 > qual é o perfil de cada persona? O que elas esperam do produto de software?
 
-## Persona 1: Ana, a Designer Freelancer
+## Persona 1: Ana, Freelancer de Design Gráfico
 
-- **Perfil:** Ana é uma designer gráfica freelancer com vasta experiência em branding e identidade visual. Ela trabalha de forma independente e gerencia vários projetos simultaneamente.
-- **Expectativas:** Ana espera que o produto de software seja uma solução completa para o gerenciamento de suas tarefas e tempo. Ela deseja uma interface intuitiva que facilite o registro, atualização e remoção de tarefas, além de uma funcionalidade de cronometragem baseada na técnica de pomodoro para melhorar sua concentração e produtividade. Ela também espera que o software permita priorizar suas atividades com base no método de Eisenhower e ofereça a integração com o Google Calendar para uma melhor organização de suas atividades diárias.
-
-- **Atividades:** Ana utiliza o software para criar e monitorar suas tarefas em diferentes projetos, utiliza a técnica de pomodoro para manter o foco e evitar distrações, prioriza suas atividades com base na importância e urgência, e integra o calendário do Google para melhorar sua programação e cumprir prazos.
+- **Perfil:**
+  * Ana é uma designer gráfica freelancer experiente, especializada em branding e identidade visual.
+  * Ela é organizada, detalhista e busca constantemente otimizar seu fluxo de trabalho.
+  * Ana valoriza ferramentas que a ajudem a manter o foco, cumprir prazos e gerenciar múltiplos projetos simultaneamente.
+  * Ela necessita de um sistema que a auxilie na organização de seus clientes, e no processo de emissão de notas fiscais.
+- **Expectativas:**
+  * Ela busca recursos como cronometragem precisa, técnicas de produtividade e geração de relatórios de tempo e custos.
+  * Ana espera que o software tenha uma integração com a receita federal, ou que de alguma forma auxilie ela no processo de emissão de notas fiscais.
+- **Atividades:**
+  * Ana usa o software para criar e monitorar tarefas, registrar horas trabalhadas, priorizar atividades, aplicar técnicas de produtividade, sincronizar prazos com o Google Calendar e gerar relatórios para clientes.
+  * Ana utiliza o software para gerar os dados de suas notas fiscais, e organizar seus clientes
 
 ## Persona 2: Carlos, o Cliente Empreendedor
 
