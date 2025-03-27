@@ -9,7 +9,7 @@
 
 > Para [o nome do cliente final], cujo [o problema que precisa ser resolvido]. O [o nome do produto] é [a categoria do produto] que [o benefício-chave, razão para adquiri-lo]. Diferentemente de [alternativa da concorrência], o nosso produto [a diferença-chave].
 
-Para **freelancers** cujo o problema é **cobrar pelas suas horas trabalhadas em diversos projetos de produtos de software**. O ToDoZ é uma **aplicação web** que **simplifica** o registro as horas trabalhadas em projetos e automatiza a emissão da nota fiscal eletrônica com **simplicidade**, **minimizando erros**. Diferentemente das soluções tradicionais, que utilizam uma combinação de ferramentas como planilhas, agendas eletrônicas e o portal do governo, o ToDoZ fornece uma **única plataforma** que otimiza o fluxo de cobrança do freelancer, economizando tempo precioso**.
+Para **freelancers** cujo o problema é **cobrar pelas suas horas trabalhadas em diversos projetos de produtos de software**. O ToDoZ é uma **aplicação web** que **simplifica** o registro as horas trabalhadas em projetos e automatiza a emissão da nota fiscal eletrônica com **simplicidade**, **minimizando erros**. Diferentemente das soluções tradicionais, que utilizam uma combinação de ferramentas como planilhas, agendas eletrônicas e o portal do governo, o ToDoZ fornece uma **única plataforma** que otimiza o fluxo de cobrança do freelancer, **economizando tempo precioso**.
 
 ## Etapa 1: Requisitos do produto
 
