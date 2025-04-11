@@ -2,6 +2,7 @@
 * Implementar mais duas API's REST conectada ao banco de dados que realize as operações de CRUD.
 * Implementar testes de unidade para cada operação CRUD para as duas novas API's REST.
 * Implementar as interface com o usuário simples que utilize as duas novas API's REST.
+* Implemente uma API REST e testes de unidade para gerenciamento dos usuários do sistema.
 * Implementar uma página de autenticação e autorização do sistema
 
 ## Orientações gerais.
