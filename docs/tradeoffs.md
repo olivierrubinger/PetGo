@@ -1,36 +1,35 @@
 # Trade-offs de Características de Qualidade
 
-As categorias de requisitos não-funcionais para o produto de software "FocusFlow", conforme o modelo FURPS+, seriam:
+As categorias de requisitos não-funcionais para o produto de software **PetGo**, conforme o modelo FURPS+, seriam:
 
-1. **Usabilidade**: 
-   
-   a. O sistema deve ser fácil de usar com uma interface intuitiva e amigável, permitindo que 90% dos usuários realizem tarefas sem precisar de assistência após uma única sessão de treinamento.
+1. **Usabilidade**:  
+   a. A interface deve ser simples, clara e intuitiva, permitindo que pelo menos 90% dos usuários consigam realizar uma ação principal (ex.: marcar um passeio ou visualizar animais disponíveis para adoção) sem ajuda.  
+   b. O design deve ser responsivo, adaptando-se a diferentes dispositivos (desktop, tablets e smartphones).  
 
-2. **Desempenho**: 
-   
-   a. O sistema deve ser altamente responsivo às ações do usuário, garantindo que o tempo de resposta para qualquer interação não ultrapasse 2 segundos, independentemente do número de tarefas que está sendo gerenciado.
+2. **Desempenho**:  
+   a. O sistema deve responder em até 5 segundos para as principais consultas, mesmo em períodos de pico de acesso.  
+   b. Deve garantir fluidez na navegação e boa experiência de uso, mesmo com múltiplos usuários conectados simultaneamente.  
 
-   b. O sistema deve possuir escalabilidade horizontal através do desacoplamento, alcançada pela implementação de APIs RESTful.
+3. **Confiabilidade / Segurança**:  
+   a. O sistema deve oferecer autenticação básica por login e senha, armazenadas de forma segura com técnicas de hash.  
+   b. O histórico de interações deve ser registrado (ex.: simulações de processos de adoção) para garantir rastreabilidade e transparência.  
+   c. Deve assegurar alta disponibilidade, minimizando falhas e interrupções do serviço.  
 
-3. **Confiabilidade**: 
-   
-   a. O sistema deve ser robusto e livre de erros, sendo equipado com mecanismos para enfrentar falhas, garantir a recuperação de dados e assegurar uma disponibilidade de 99,9%, o que significa que ele não deve exceder 8,76 horas de inatividade por ano.
-   
-   b. O sistema deve requerer a autenticação de usuários para acessar suas tarefas e configurações pessoais, suportando um mecanismo robusto, como autenticação de dois fatores, para garantir acesso seguro às informações. Em relação à segurança, após três tentativas de login falhas, o usuário é bloqueado temporariamente para evitar tentativas de força bruta. Além disso, as senhas são armazenadas com segurança usando técnicas de hash e sal.
+4. **Suportabilidade / Manutenibilidade**:  
+   a. O sistema deve ser modular o suficiente para permitir ajustes de código de forma ágil durante o semestre.  
+   b. A arquitetura deve permitir evolução contínua do software, incorporando novas funcionalidades a partir do feedback dos usuários.  
 
-4. **Suportabilidade**: 
-   
-   a. O sistema deve ser projetado de forma a facilitar futuras atualizações e manutenção, garantindo que todas as solicitações de suporte sejam respondidas dentro de 24 horas.
+---
 
-A importância relativa de cada categoria:
+## Importância relativa de cada categoria
 
-| Categoria | Usabilidade | Desempenho | Confiabilidade | Suportabilidade |
-| --- | --- | --- | --- | --- |
-| Usabilidade | - | > | > | > |
-| Desempenho | < | - | < | > |
-| Confiabilidade | < | > | - | > |
-| Suportabilidade | < | < | < | - |
+| Categoria       | Usabilidade | Desempenho | Confiabilidade | Suportabilidade |
+|-----------------|-------------|------------|----------------|-----------------|
+| Usabilidade     | -           | >          | >              | >               |
+| Desempenho      | <           | -          | <              | >               |
+| Confiabilidade  | <           | >          | -              | >               |
+| Suportabilidade | <           | <          | <              | -               |
 
-> Nesta matriz, o sinal ">" indica que a categoria da linha é mais importante que a categoria da coluna, e o sinal "<" indica que a categoria da linha é menos importante que a categoria da coluna. Por exemplo, a Usabilidade é considerada mais importante que o Desempenho, Confiabilidade e Suportabilidade, enquanto o Desempenho é considerado mais importante que a Suportabilidade, mas menos importante que a Usabilidade e Confiabilidade, e assim por diante.
+---
 
 [Retorna](../README.md)
