@@ -2,11 +2,11 @@
 
 > Apresente os principais problemas e dificuldades que o software irá solucionar, oferecendo uma visão geral dos seus benefícios. Os detalhes sobre as funcionalidades serão abordados em seguida. Para nortear a sua descrição, responda à seguinte pergunta: quais são os problemas e dificuldades mais relevantes no contexto atual?
 
-1. Organizar e gerenciar as horas trabalhadas em múltiplos projetos e clientes, levando à desorganização e perda de produtividade.
-2. A necessidade de priorizar tarefas por importância e urgência é um desafio, resultando em sobrecarga e prazos perdidos.
-3. A falta de medição precisa do tempo dedicado a cada tarefa e projeto dificulta a cobrança justa e precisa dos serviços.
-4. A emissão para emissão de notas fiscais eletrônicas é um processo manual demorado e sujeito a erros.
-5. A dificuldade em visualizar o custo real de cada projeto com base nas horas trabalhadas impede a análise da rentabilidade e a tomada de decisões estratégicas.
-6. A ausência de uma solução unificada para gestão de trabalho e tempo força freelancers a usar múltiplas ferramentas, resultando em ineficiência e perda de tempo.
+1. A rotina acelerada dos centros urbanos dificulta que tutores ofereçam passeios adequados e cuidados frequentes aos seus pets.  
+2. A dificuldade em encontrar passeadores confiáveis gera insegurança e limita a socialização e o bem-estar dos animais.  
+3. O acesso a produtos e serviços especializados para pets ainda é limitado e, muitas vezes, fragmentado em diferentes canais.  
+4. O processo de adoção de animais carece de plataformas seguras e transparentes, o que dificulta a conexão entre adotantes e instituições.  
+5. A ausência de uma solução unificada obriga os tutores a recorrer a diferentes aplicativos ou redes sociais, resultando em perda de tempo e falta de padronização.  
+6. A escassez de canais digitais voltados para a comunidade pet limita a troca de experiências e o fortalecimento de uma rede de apoio entre tutores e amantes de animais.  
 
 [Retorna](../README.md)
