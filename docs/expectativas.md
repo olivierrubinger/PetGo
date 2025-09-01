@@ -1,17 +1,12 @@
 # Expectativas
 
-> Neste momento, concentre-se em descrever as expectativas para o produto, sem entrar em detalhes
-> sobre a solução. Enumere as possibilidades que auxiliam a resolver os problemas e dificuldades dos usuários no
-> no cenário correntes, respondendo às perguntas: quais são as expectativas em relação ao produto? Aonde você
-> almeja chegar com ele?
-
-1. Espera-se que o produto seja uma ferramenta que realmente simplifique a rotina de freelancers, eliminando processos manuais e demorados.
-2. Os usuários esperam ter controle total sobre o tempo dedicado a cada projeto e tarefa, com cronometragem precisa e recursos para análise de produtividade.
-3. A integração de técnicas de produtividade demonstra o desejo por ferramentas que ajudem a otimizar o tempo e aumentar o foco.
-4. Freelancers esperam ter uma visão clara do custo de cada projeto, com base nas horas trabalhadas, para garantir a rentabilidade e a precificação adequada dos serviços.
-5. A emissão de notas fiscais de forma simples e integrada tambem é um ponto importante dentro das expectativas.
-6. A expectativa é que o software seja fácil de usar, com uma interface amigável e recursos que simplifiquem a navegação e a execução das tarefas.
-7. Espera-se uma solução completa que atenda às demandas específicas dos freelancers, otimizando seu fluxo de trabalho e produtividade.
+1. Espera-se que o PetGo se torne uma plataforma confiável que simplifique a rotina dos tutores de animais, reunindo em um único ambiente serviços essenciais para o bem-estar pet.  
+2. Usuários esperam encontrar passeadores qualificados com rapidez e segurança, garantindo tranquilidade no cuidado de seus animais.  
+3. Espera-se que a plataforma ofereça acesso facilitado a produtos e serviços especializados para pets, promovendo conveniência e praticidade.  
+4. O processo de adoção deve ser seguro, transparente e acessível, fortalecendo a conexão entre pessoas e instituições responsáveis.  
+5. A comunidade pet deve ser fortalecida, permitindo que tutores e amantes de animais compartilhem experiências, dicas e recomendações em um espaço digital dedicado.  
+6. Em termos de software, espera-se uma experiência de uso intuitiva, responsiva e acessível em diferentes dispositivos.  
+7. Também se espera desempenho ágil, segurança robusta na gestão de dados pessoais e confiabilidade no funcionamento da aplicação.  
+8. O objetivo final é que o PetGo se estabeleça como a principal referência em cuidado animal, reconhecido pela praticidade, confiança e impacto positivo na vida dos pets e suas famílias.  
 
 [Retorna](../README.md)
-
