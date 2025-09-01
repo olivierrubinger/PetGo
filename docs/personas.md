@@ -1,10 +1,5 @@
 # Personas
 
-> Identifique as principais personas e descreva suas atividades, respondendo às seguintes perguntas:
-> qual é o perfil de cada persona? O que elas esperam do produto de software?
-
----
-
 ## Persona 1: Mariana, a Tutora Atarefada
 
 ![Mariana](./figuras/Mariana.jpg)
