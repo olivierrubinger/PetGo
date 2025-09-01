@@ -7,7 +7,7 @@
 
 ## Persona 1: Mariana, a Tutora Atarefada
 
-![Mariana](../figuras/Mariana.jpg)
+![Mariana](./figuras/Mariana.jpg)
 
 - **Perfil:**
   * Mariana tem 32 anos, mora em Belo Horizonte e trabalha em período integral como analista de marketing.  
@@ -26,7 +26,7 @@
 
 ## Persona 2: Rafael, o Prestador de Serviços (Dog Walker / Pet Sitter)
 
-![Rafael](../figuras/Rafael.jpg)
+![Rafael](./figuras/Rafael.jpg)
 
 - **Perfil:**
   * Rafael tem 24 anos, é estudante de Educação Física e atua como dog walker para complementar a renda.  
@@ -45,7 +45,7 @@
 
 ## Persona 3: Camila, a Voluntária de ONG de Adoção
 
-![Camila](../figuras/Camilla.jpg)
+![Camila](./figuras/Camilla.jpg)
 
 - **Perfil:**
   * Camila tem 27 anos, é estudante de Medicina Veterinária e atua como voluntária em uma ONG que resgata cães e gatos abandonados.  
