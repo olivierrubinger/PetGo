@@ -3,33 +3,57 @@
 > Identifique as principais personas e descreva suas atividades, respondendo às seguintes perguntas:
 > qual é o perfil de cada persona? O que elas esperam do produto de software?
 
-## Persona 1: Ana, a Freelancer de Design Gráfico
+---
+
+## Persona 1: Mariana, a Tutora Atarefada
 
 - **Perfil:**
-  * Ana é uma designer gráfica freelancer experiente, especializada em branding e identidade visual.
-  * Ela é organizada, detalhista e busca constantemente otimizar seu fluxo de trabalho.
-  * Ana valoriza ferramentas que a ajudem a manter o foco, cumprir prazos e gerenciar múltiplos projetos simultaneamente.
-  * Ela necessita de um sistema que a auxilie na organização de seus clientes, e no processo de emissão de notas fiscais.
-- **Expectativas:**
-  * Ela busca recursos como cronometragem precisa, técnicas de produtividade e geração de relatórios de tempo e custos.
-  * Ana espera que o software tenha uma integração com a receita federal, ou que de alguma forma auxilie ela no processo de emissão de notas fiscais.
-- **Atividades:**
-  * Ana usa o software para criar e monitorar tarefas, registrar horas trabalhadas, priorizar atividades, aplicar técnicas de produtividade, sincronizar prazos com o Google Calendar e gerar relatórios para clientes.
-  * Ana utiliza o software para gerar os dados de suas notas fiscais, e organizar seus clientes
+  * Mariana tem 32 anos, mora em Belo Horizonte e trabalha em período integral como analista de marketing.  
+  * Ela ama sua cadela Luna, mas devido à rotina corrida, tem pouco tempo para passeios longos e cuidados durante o dia.  
+  * Valoriza praticidade, segurança e soluções que garantam o bem-estar da Luna mesmo quando está ocupada.  
 
-## Persona 2: Carlos, o Cliente Empreendedor
+- **Expectativas:**
+  * Espera que o PetGo conecte facilmente com passeadores de confiança, sem burocracia.  
+  * Deseja encontrar produtos especializados (ração, brinquedos, acessórios) no mesmo lugar.  
+
+- **Atividades:**
+  * Usa o PetGo para agendar passeios.  
+  * Pesquisa e compra produtos essenciais direto pelo app.  
+
+---
+
+## Persona 2: Rafael, o Prestador de Serviços (Dog Walker / Pet Sitter)
 
 - **Perfil:**
-  * Carlos é um empreendedor dinâmico e dono de uma agência de marketing digital.
-  * Ele valoriza a transparência, a eficiência e a comunicação clara com seus colaboradores freelancers.
-  * Carlos precisa de ferramentas que o ajudem a acompanhar o progresso dos projetos, controlar os custos e garantir a qualidade do trabalho entregue.
-  * Carlos necessita de uma ferramenta que lhe auxilie a organizar os diversos freelancers que prestam serviço a ele.
+  * Rafael tem 24 anos, é estudante de Educação Física e atua como dog walker para complementar a renda.  
+  * Apaixonado por animais, já cuida dos pets de vizinhos no bairro.  
+  * Busca uma plataforma que lhe dê mais visibilidade e segurança nos pagamentos.  
+
 - **Expectativas:**
-  * Carlos espera que o software forneça informações precisas sobre o tempo gasto pelos freelancers em cada tarefa e projeto.
-  * Ele deseja receber relatórios detalhados e atualizados sobre o progresso, os custos e o desempenho dos freelancers.
-  * Carlos busca uma plataforma que facilite a comunicação e a colaboração com os freelancers, garantindo a entrega de projetos dentro do prazo e do orçamento.
+  * Espera que o PetGo facilite a conexão com novos clientes.  
+  * Quer receber avaliações para fortalecer sua reputação e conquistar mais trabalhos.  
+
 - **Atividades:**
-  * Carlos usa o software para monitorar relatórios de tempo e custos, avaliar o desempenho dos freelancers, aprovar pagamentos, comunicar-se com os freelancers e analisar dados para tomar decisões estratégicas.
-  * Carlos utiliza o programa para organizar os diversos freelancers que trabalham com ele.
+  * Usa o PetGo para divulgar seus serviços e horários disponíveis.  
+  * Recebe solicitações de passeios, confirma e organiza sua agenda.  
+
+---
+
+## Persona 3: Camila, a Voluntária de ONG de Adoção
+
+- **Perfil:**
+  * Camila tem 27 anos, é estudante de Medicina Veterinária e atua como voluntária em uma ONG que resgata cães e gatos abandonados.  
+  * É engajada, organizada e busca facilitar processos de adoção responsável.  
+  * Precisa de canais seguros e com visibilidade para conectar animais a adotantes.  
+
+- **Expectativas:**
+  * Espera que o PetGo ofereça um espaço dedicado para adoções, com perfis detalhados dos animais.  
+  * Quer avaliar candidatos à adoção de forma simples e segura.  
+
+- **Atividades:**
+  * Cadastra animais disponíveis para adoção na plataforma.  
+  * Responde interessados e avalia candidatos.  
+
+---
 
 [Retorna](../README.md)
