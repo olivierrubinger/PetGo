@@ -1,41 +1,58 @@
 # Funcionalidades
 
-> Identifique as ações e/ou as interações de cada persona no produto. Descreva as 
-> funcionalidades a partir das questões: o usuário está tentando fazer algo, então o 
-> produto deve ter uma funcionalidade para isso. Qual é? Quais problemas da persona 
-> essa funcionalidade resolve? Quais benefícios ela traz para a persona? 
+## Funcionalidades para Mariana, a Tutora Atarefada
 
-## Funcionalidades para Ana, a Designer Freelancer:
+1. **Agendamento de Passeios:** Permite que Mariana encontre e agende passeios com pet walkers confiáveis, resolvendo a falta de tempo para passear com sua cadela Luna.  
+   *Benefício:* garante bem-estar do pet e tranquilidade para a tutora.  
 
-1. Registro de tarefas e projetos: Permite que Ana crie e organize tarefas e projetos com detalhes como prazos, clientes e informações relevantes. Resolvendo a dificuldade de gerenciar múltiplos projetos e garante uma visão clara do fluxo de trabalho;
-2. Cronometragem de tarefa: Oferece um cronômetro configurações personalizáveis de tempo de trabalho e pausas para registro preciso das horas em utilizadas;
-3. Priorização de Tarefas: Funcionalidade que permite classificar tarefas por importância e urgência. Ajuda Ana a priorizar tarefas críticas e evitar sobrecarga;
-4. Geração de Notas Fiscais Eletrônicas: Permite que Ana integre suas tarefas e projetos ao Google Calendar, facilitando o acompanhamento de prazos e uma melhor organização de sua agenda;
-5. Relatório de Tempo por Projeto: Gera relatórios detalhados de tempo gasto em cada projeto, auxiliando Ana a calcular o custo real de seus serviços e facilitando a cobrança aos clientes.
+2. **Loja Integrada de Produtos Pet:** Mariana pode comprar ração, brinquedos e acessórios diretamente no app, resolvendo a dificuldade de tempo para ir a pet shops.  
+   *Benefício:* economia de tempo e conveniência com entregas em domicílio.  
 
-## Funcionalidades para Carlos, o Cliente Empreendedor:
-1. Acompanhamento de Freelancers: Permite que Carlos visualize o progresso dos freelancers, o tempo gasto em cada tarefa e o status dos projetos. Garante transparência, controle e comunicação eficiente com os freelancers;
-2. Relatórios de Tempo e Custos: Oferece relatórios detalhados com filtros e opções de personalização para análise do desempenho dos freelancers e dos custos dos projetos. Facilita a tomada de decisões informadas e a avaliação da eficiência dos freelancers;
-3. Avaliação de Desempenho com Métricas e Feedback: Fornece métricas de desempenho dos freelancers, como tempo de resposta, qualidade do trabalho e cumprimento de prazos, e permite o envio de feedback. Ajuda Carlos a identificar os melhores freelancers e a melhorar a qualidade dos projetos;
-4. Integração com Pagamento: Funcionalidade que possibilita a integração com sistemas de pagamento, permitindo que Carlos realize pagamentos precisos com base nos relatórios de tempo dos freelancers.
-5. Comunicação com Freelancers: Oferece um canal de comunicação para que Carlos possa se comunicar facilmente com os freelancers, tirar dúvidas e fornecer feedback sobre os projetos.
+3. **Perfil do Pet:** Cadastro de informações detalhadas sobre a Luna (raça, idade, preferências), para personalizar serviços e produtos.  
+   *Benefício:* serviços mais adequados ao perfil do pet.  
 
+---
 
-## Tabela de Funcionalidades:
+## Funcionalidades para Rafael, o Prestador de Serviços (Dog Walker / Pet Sitter)
 
-| Funcionalidades | Ana (Designer Freelancer) | Carlos (Cliente Empreendedor) |
-|---|---|---|
-| Registro de Tarefas e Projetos Detalhados | Sim | - |
-| Cronômetro Pomodoro com Personalização | Sim | - |
-| Priorização Inteligente de Tarefas (Método Eisenhower) | Sim | - |
-| Geração de Notas Fiscais Eletrônicas Integrada à Receita Federal | Sim | - |
-| Relatórios Detalhados de Tempo e Custos por Projeto | Sim | Sim |
-| Gerenciamento de Clientes | Sim | - |
-| Painel de Acompanhamento de Freelancers em Tempo Real | - | Sim |
-| Relatórios Personalizáveis de Tempo, Custos e Desempenho | - | Sim |
-| Avaliação de Desempenho com Métricas e Feedback | - | Sim |
-| Integração com Sistemas de Pagamento e Faturamento Automatizado | - | Sim |
-| Canal de Comunicação Integrado com Notificações | - | Sim |
-| Gerenciamento de Freelancers | - | Sim |
+1. **Perfil Profissional:** Rafael pode cadastrar seus serviços, horários disponíveis e valores, resolvendo o problema de baixa visibilidade.  
+   *Benefício:* maior alcance de clientes e confiança com avaliações.  
+
+2. **Agenda Automática:** Organização de passeios e compromissos com lembretes.  
+   *Benefício:* evita esquecimentos, aumentando a confiabilidade e gestão de tempo.  
+
+3. **Sistema de Avaliações:** Clientes podem avaliar os passeios realizados.  
+   *Benefício:* fortalecimento da reputação e conquista de novos clientes.  
+
+---
+
+## Funcionalidades para Camila, a Voluntária de ONG de Adoção
+
+1. **Cadastro de Animais para Adoção:** Camila pode adicionar pets resgatados com fotos, histórico e características.  
+   *Benefício:* maior visibilidade para os animais, aumentando as chances de adoção.  
+
+2. **Sistema de Inscrição de Adotantes:** Interessados podem se candidatar para adotar, preenchendo formulários.  
+   *Benefício:* processo mais organizado e seguro.  
+
+3. **Triagem de Adotantes:** Ferramenta para Camila avaliar candidatos com base em critérios pré-definidos.  
+   *Benefício:* adoções mais responsáveis e confiáveis.  
+
+---
+
+## Tabela de Funcionalidades
+
+| Funcionalidades                                   | Mariana (Tutora) | Rafael (Prestador de Serviços) | Camila (Voluntária ONG) |
+|--------------------------------------------------|-----------------|-------------------------------|-------------------------|
+| Agendamento de Passeios                          | Sim             | -                             | -                       |
+| Loja Integrada de Produtos Pet                   | Sim             | -                             | -                       |
+| Perfil do Pet                                    | Sim             | -                             | -                       |
+| Perfil Profissional com Avaliações               | -               | Sim                           | -                       |
+| Agenda Automática com Notificações               | -               | Sim                           | -                       |
+| Sistema de Avaliação de Serviços                 | -               | Sim                           | -                       |
+| Cadastro de Animais para Adoção                  | -               | -                             | Sim                     |
+| Sistema de Inscrição de Adotantes                | -               | -                             | Sim                     |
+| Triagem e Avaliação de Adotantes                 | -               | -                             | Sim                     |
+
+---
 
 [Retorna](../README.md)
