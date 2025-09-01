@@ -1,7 +1,5 @@
 # Problemas & dores
 
-> Apresente os principais problemas e dificuldades que o software irá solucionar, oferecendo uma visão geral dos seus benefícios. Os detalhes sobre as funcionalidades serão abordados em seguida. Para nortear a sua descrição, responda à seguinte pergunta: quais são os problemas e dificuldades mais relevantes no contexto atual?
-
 1. A rotina acelerada dos centros urbanos dificulta que tutores ofereçam passeios adequados e cuidados frequentes aos seus pets.  
 2. A dificuldade em encontrar passeadores confiáveis gera insegurança e limita a socialização e o bem-estar dos animais.  
 3. O acesso a produtos e serviços especializados para pets ainda é limitado e, muitas vezes, fragmentado em diferentes canais.  
