@@ -31,6 +31,6 @@ namespace todoz.api.Models
         public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
         public List<Endereco> Enderecos { get; set; } = new List<Endereco>();
         public Passeador? Passeador { get; set; }
-        public List<Pet> Pets { get; set; }
+        public List<Pet> Pets { get; set; } = new List<Pet>();
     }
 }

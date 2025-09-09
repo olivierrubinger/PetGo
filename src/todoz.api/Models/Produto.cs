@@ -21,11 +21,13 @@ namespace todoz.api.Models
         public string Descricao { get; set; }
         [Required]
         public decimal Preco { get; set; }
-        public List<string> Imagens { get; set; }
+        public List<string> Imagens { get; set; } = new List<string>();
         [Required]
         public int CategoriaId { get; set; }
         [Required]
         public int Estoque { get; set; }
+        [Required]
+        public StatusProduto Status { get; set; }
         public CategoriaProduto CategoriaProduto { get; set; }
     }
 }
