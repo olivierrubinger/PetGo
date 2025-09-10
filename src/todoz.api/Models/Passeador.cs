@@ -21,6 +21,6 @@ namespace todoz.api.Models
         [Required]
         public int QuantidadeAvaliacoes { get; set; }
         public Usuario Usuario { get; set; }
-        public List<ServicoPasseador> Servicos { get; set; } = new List<ServicoPasseador>();
+        public ICollection<ServicoPasseador> Servicos { get; set; } = new List<ServicoPasseador>();
     }
 }

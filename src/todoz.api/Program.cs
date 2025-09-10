@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 using todoz.api.Controllers;
 using todoz.api.Data;
-using todoz.api.Repositories;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +12,7 @@ if (string.IsNullOrEmpty(connectionString))
 {
     throw new InvalidOperationException("A variável de ambiente 'DefaultConnection' não está configurada.");
 }
-builder.Services.AddDbContext<TodoContext>(options =>
+builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(connectionString);
 });
@@ -33,8 +33,7 @@ builder.Services.AddCors(options =>
         });
 });
 
-// Add dependency injection to the container.
-builder.Services.AddScoped<ITodosRepository, TodosInDatabase>();
+
 builder.Services.AddControllers();
 var app = builder.Build();
 
