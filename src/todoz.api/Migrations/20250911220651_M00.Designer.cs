@@ -12,7 +12,7 @@ using todoz.api.Data;
 namespace todoz.api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250910222252_M00")]
+    [Migration("20250911220651_M00")]
     partial class M00
     {
         /// <inheritdoc />
