@@ -47,14 +47,17 @@ namespace todoz.api.Controllers
         public async Task<ActionResult> Update(int id, Produto produto)
         {
             if (id != produto.Id) return BadRequest();
-            var produtoDb = await _context.Produtos.AsNoTracking()
-                .FirstOrDefaultAsync(c => c.Id == id);
-
+            var produtoDb = await _context.Produtos.FindAsync(id);
             if (produtoDb == null) return NotFound();
 
-            _context.Produtos.Update(produto);
-            await _context.SaveChangesAsync();
+            produtoDb.Nome = produto.Nome;
+            produtoDb.Descricao = produto.Descricao;
+            produtoDb.Preco = produto.Preco;
+            produtoDb.Estoque = produto.Estoque;
+            produtoDb.Status = produto.Status;
+            produtoDb.CategoriaId = produto.CategoriaId;
 
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 
