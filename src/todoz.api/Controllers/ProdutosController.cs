@@ -37,7 +37,7 @@ namespace todoz.api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetById(int id)
+        public async Task<ActionResult<Produto>> GetById(int id)
         {
             var produto = await _context.Produtos.FindAsync(id);
             return produto == null ? NotFound() : Ok(produto);
