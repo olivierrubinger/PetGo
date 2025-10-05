@@ -1,5 +1,5 @@
 # Diagrama Entidade-Relacionamento
 
-> Elabore o diagrama entidade-relacionamento do banco de dados da aplicação.
+> Diagrama entidade-relacionamento do banco de dados da aplicação - Pet Go.
 
 ![Diagrama Entidade-Relacionamento](docs/../figuras/diagrama-relacionamento.png)
