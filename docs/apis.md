@@ -1,9 +1,6 @@
 # Especificação de APIs
 
-> A especificação de APIs descreve os principais endpoints da API RESTful do produto
-> de software, os métodos HTTP associados a cada endpoint, suas descrições, os formatos
-> de respostas, os parâmetros de URL esperados e o mecanismo de autenticação e autorização 
-> utilizado.
+> Especificação de APIs - Pet Go
 
 | Endpoint                             | Método | Descrição                                      | Parâmetros                        | Formato da Resposta | Autenticação e Autorização |
 |--------------------------------------|--------|------------------------------------------------|-----------------------------------|---------------------|----------------------------|
