@@ -24,12 +24,13 @@ builder.Services.AddSwaggerGen();
 // Add CORS services to the container.
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
+    options.AddPolicy("AllowNextJs",
         policy =>
         {
-            policy.AllowAnyOrigin()
+            policy.WithOrigins("http://localhost:3000", "https://localhost:3000")
                   .AllowAnyHeader()
-                  .AllowAnyMethod();
+                  .AllowAnyMethod()
+                  .AllowCredentials();
         });
 });
 
@@ -54,7 +55,7 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
 // ----------------------------------------------------------------------------------------- CORS
-app.UseCors("AllowAll");
+app.UseCors("AllowNextJs");
 //---------------------------------------------------------------------------------------- CORS
 
 app.UseRouting();
