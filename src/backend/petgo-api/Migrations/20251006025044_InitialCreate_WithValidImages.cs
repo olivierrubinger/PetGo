@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace petgo.api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate_NET9_SQLite : Migration
+    public partial class InitialCreate_WithValidImages : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

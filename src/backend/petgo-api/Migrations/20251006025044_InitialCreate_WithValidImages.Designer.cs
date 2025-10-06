@@ -11,8 +11,8 @@ using petgo.api.Data;
 namespace petgo.api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251006021140_InitialCreate_NET9_SQLite")]
-    partial class InitialCreate_NET9_SQLite
+    [Migration("20251006025044_InitialCreate_WithValidImages")]
+    partial class InitialCreate_WithValidImages
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
