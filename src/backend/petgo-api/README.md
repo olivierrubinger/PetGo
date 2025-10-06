@@ -1,7 +1,7 @@
 
-# Todoz API
+# PetGo API
 
-**Todoz API** fornece um conjunto de APIs para gestão de tarefas, permitindo a criação, leitura, atualização e exclusão (CRUD) de tarefas de forma eficiente.
+**PetGo API** fornece um conjunto de APIs para gestão de tarefas, permitindo a criação, leitura, atualização e exclusão (CRUD) de tarefas de forma eficiente.
 
 ## Requisitos
 
@@ -24,7 +24,7 @@ dotnet add package Microsoft.EntityFrameworkCore.Tools --version 8.0.8
 
 ```bash
 git chttps://github.com/gomesluiz/template-sint-projeto-de-aplicacao-distribuido
-cd template-sint-projeto-de-aplicacao-distribuido/src/todoz.api
+cd template-sint-projeto-de-aplicacao-distribuido/src/petgo.api
 ```
 
 2. Compile o projeto:

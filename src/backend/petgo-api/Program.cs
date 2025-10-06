@@ -1,17 +1,16 @@
 using Microsoft.EntityFrameworkCore;
-using todoz.api.Controllers;
-using todoz.api.Data;
+using petgo.api.Controllers;
+using petgo.api.Data;   
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-if (string.IsNullOrEmpty(connectionString))
-{
-    throw new InvalidOperationException("A variável de ambiente 'DefaultConnection' não está configurada.");
-}
+// Usar SQLite para desenvolvimento
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+    ?? "Data Source=petgo.db";
+
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlServer(connectionString);
+    options.UseSqlite(connectionString);
 });
 
 builder.Services.AddEndpointsApiExplorer();

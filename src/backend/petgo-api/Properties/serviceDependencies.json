@@ -3,12 +3,12 @@
     "mssql1": {
       "ignored": "true",
       "type": "mssql",
-      "connectionId": "ConnectionStrings:TODOZ_DB_DEV",
+      "connectionId": "ConnectionStrings:PETGO_DB_DEV",
       "dynamicId": null
     },
     "mssql2": {
       "type": "mssql",
-      "connectionId": "ConnectionStrings:SQLCONNSTR_TODOZDB"
+      "connectionId": "ConnectionStrings:SQLCONNSTR_PETGODB"
     },
     "mssql3": {
       "type": "mssql",

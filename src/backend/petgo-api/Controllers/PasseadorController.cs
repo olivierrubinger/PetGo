@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace todoz.api.Controllers
+namespace petgo.api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

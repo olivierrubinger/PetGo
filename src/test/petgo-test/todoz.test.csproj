@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\todoz.api\todoz.api.csproj" />
+    <ProjectReference Include="..\petgo.api\petgo.api.csproj" />
   </ItemGroup>
 
   <ItemGroup>

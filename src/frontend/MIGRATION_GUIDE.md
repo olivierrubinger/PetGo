@@ -42,7 +42,7 @@ src/
 ### 1. Backend (.NET Core)
 
 ```bash
-cd src/backend/todoz.api
+cd src/backend/petgo.api
 dotnet restore
 dotnet run
 ```

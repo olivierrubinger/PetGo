@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using todoz.api.Controllers;
-using todoz.api.Data;
-using todoz.api.Models;
+using petgo.api.Controllers;
+using petgo.api.Data;
+using petgo.api.Models;
 
-namespace todoz.test
+namespace petgo.test
 {
     [TestFixture]
     public class ProdutosControllerTest

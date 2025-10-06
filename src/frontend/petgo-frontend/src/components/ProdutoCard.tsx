@@ -103,28 +103,26 @@ export function ProdutoCard({
           </div>
         </div>
 
-        {/* Ações */}
+        {/* Ações - CORRIGIDO */}
         {showActions && (
           <div className="flex gap-2">
             <Button
-              variant="outline"
+              variant="secondary"
               size="sm"
               onClick={() => onEdit?.(produto)}
-              leftIcon={<Edit className="h-4 w-4" />}
               className="flex-1"
             >
+              <Edit className="h-4 w-4 mr-2" />
               Editar
             </Button>
             <Button
-              variant="destructive"
+              variant="danger" 
               size="sm"
               onClick={handleDelete}
-              isLoading={isDeleting}
-              leftIcon={
-                !isDeleting ? <Trash2 className="h-4 w-4" /> : undefined
-              }
+              loading={isDeleting} 
               className="flex-1"
             >
+              <Trash2 className="h-4 w-4 mr-2" />
               Excluir
             </Button>
           </div>

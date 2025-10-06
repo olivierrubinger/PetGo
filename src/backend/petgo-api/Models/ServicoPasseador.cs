@@ -1,33 +1,37 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace todoz.api.Models
+namespace petgo.api.Models
 {
+    public enum TipoServico
+    {
+        PASSEIO,
+        CUIDADO_DIARIO,
+        HOSPEDAGEM,
+        OUTRO
+    }
+
     public class ServicoPasseador
     {
-        public enum Tipo
-        {
-            PASSEIO,
-            CRECHE,
-            TREINAMENTO
-        }
-
         [Key]
         public int Id { get; set; }
+        
         [ForeignKey("Passeador")]
         public int PasseadorId { get; set; }
+        
         [Required]
-        public string Titulo { get; set; }
+        public required string Titulo { get; set; }
+        
         [Required]
-        public string Descricao { get; set; }
+        public required string Descricao { get; set; }
+        
         [Required]
-        public Tipo TipoServico { get; set; }
+        public TipoServico TipoServico { get; set; }
+        
         [Required]
-        public bool Ativo { get; set; } = true;
-        public Passeador Passeador { get; set; }
+        public bool Ativo { get; set; }
+        
+        // Navigation property
+        public Passeador? Passeador { get; set; }
     }
 }

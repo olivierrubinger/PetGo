@@ -5,6 +5,17 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react", "@tanstack/react-query"],
   },
+  onDemandEntries: {
+    maxInactiveAge: 25 * 1000,
+    pagesBufferLength: 2,
+  },
+
+  eslint: {
+    ignoreDuringBuilds: false, 
+  },
+  typescript: {
+    ignoreBuildErrors: false,
+  },
 
   // Configurações de imagem
   images: {

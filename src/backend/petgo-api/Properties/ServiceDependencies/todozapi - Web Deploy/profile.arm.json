@@ -21,7 +21,7 @@
     },
     "resourceName": {
       "type": "string",
-      "defaultValue": "todozapi",
+      "defaultValue": "petgoapi",
       "metadata": {
         "description": "Name of the main resource to be created by this template."
       }

@@ -1,8 +1,6 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Net;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace todoz.api.Models
+namespace petgo.api.Models
 {
     public enum TipoUsuario
     {
@@ -15,20 +13,28 @@ namespace todoz.api.Models
     {
         [Key]
         public int Id { get; set; }
+        
         [Required]
-        public string Nome { get; set; }
+        public required string Nome { get; set; }
+        
         [Required, EmailAddress]
-        public string Email { get; set; }
+        public required string Email { get; set; }
+        
         [Required]
-        public string Senha { get; set; }
+        public required string Senha { get; set; }
+        
         [Required]
-        public string Telefone { get; set; }
+        public required string Telefone { get; set; }
+        
         [Required]
         public TipoUsuario Tipo { get; set; }
+        
         [Required]
-        public string FotoPerfil { get; set; }
+        public required string FotoPerfil { get; set; }
+        
         [Required]
         public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
+        
         public ICollection<Endereco> Enderecos { get; set; } = new List<Endereco>();
         public Passeador? Passeador { get; set; }
         public ICollection<Pet> Pets { get; set; } = new List<Pet>();

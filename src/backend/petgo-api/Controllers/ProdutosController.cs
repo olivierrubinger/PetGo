@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using todoz.api.Data;
-using todoz.api.Models;
+using petgo.api.Data;
+using petgo.api.Models;
 
-namespace todoz.api.Controllers
+namespace petgo.api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

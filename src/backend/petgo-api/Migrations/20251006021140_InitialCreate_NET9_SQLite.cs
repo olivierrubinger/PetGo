@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace todoz.api.Migrations
+namespace petgo.api.Migrations
 {
     /// <inheritdoc />
-    public partial class M00 : Migration
+    public partial class InitialCreate_NET9_SQLite : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,15 +15,15 @@ namespace todoz.api.Migrations
                 name: "Avaliacoes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AlvoTipo = table.Column<int>(type: "int", nullable: false),
-                    AlvoId = table.Column<int>(type: "int", nullable: false),
-                    Nota = table.Column<int>(type: "int", nullable: false),
-                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Comentario = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AutorNome = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    AlvoTipo = table.Column<int>(type: "INTEGER", nullable: false),
+                    AlvoId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Nota = table.Column<int>(type: "INTEGER", nullable: false),
+                    Titulo = table.Column<string>(type: "TEXT", nullable: false),
+                    Comentario = table.Column<string>(type: "TEXT", nullable: false),
+                    AutorNome = table.Column<string>(type: "TEXT", nullable: true),
+                    DataCriacao = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -34,9 +34,9 @@ namespace todoz.api.Migrations
                 name: "CategoriasProdutos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nome = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,15 +47,15 @@ namespace todoz.api.Migrations
                 name: "Usuarios",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Senha = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Telefone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Tipo = table.Column<int>(type: "int", nullable: false),
-                    FotoPerfil = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DataCriacao = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nome = table.Column<string>(type: "TEXT", nullable: false),
+                    Email = table.Column<string>(type: "TEXT", nullable: false),
+                    Senha = table.Column<string>(type: "TEXT", nullable: false),
+                    Telefone = table.Column<string>(type: "TEXT", nullable: false),
+                    Tipo = table.Column<int>(type: "INTEGER", nullable: false),
+                    FotoPerfil = table.Column<string>(type: "TEXT", nullable: false),
+                    DataCriacao = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -66,16 +66,16 @@ namespace todoz.api.Migrations
                 name: "Produtos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Preco = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Imagens = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CategoriaId = table.Column<int>(type: "int", nullable: false),
-                    Estoque = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    CategoriaProdutoId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nome = table.Column<string>(type: "TEXT", nullable: false),
+                    Descricao = table.Column<string>(type: "TEXT", nullable: false),
+                    Preco = table.Column<decimal>(type: "TEXT", precision: 18, scale: 2, nullable: false),
+                    Imagens = table.Column<string>(type: "TEXT", nullable: false),
+                    CategoriaId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Estoque = table.Column<int>(type: "INTEGER", nullable: false),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false),
+                    CategoriaProdutoId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -92,13 +92,13 @@ namespace todoz.api.Migrations
                 name: "Enderecos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false),
-                    Rua = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Cep = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Pais = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UsuarioId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Rua = table.Column<string>(type: "TEXT", nullable: false),
+                    Estado = table.Column<string>(type: "TEXT", nullable: false),
+                    Cep = table.Column<string>(type: "TEXT", nullable: false),
+                    Pais = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -115,11 +115,11 @@ namespace todoz.api.Migrations
                 name: "Passeadores",
                 columns: table => new
                 {
-                    UsuarioId = table.Column<int>(type: "int", nullable: false),
-                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ValorCobrado = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AvaliacaoMedia = table.Column<double>(type: "float", nullable: false),
-                    QuantidadeAvaliacoes = table.Column<int>(type: "int", nullable: false)
+                    UsuarioId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Descricao = table.Column<string>(type: "TEXT", nullable: false),
+                    ValorCobrado = table.Column<decimal>(type: "TEXT", precision: 18, scale: 2, nullable: false),
+                    AvaliacaoMedia = table.Column<double>(type: "REAL", nullable: false),
+                    QuantidadeAvaliacoes = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -136,18 +136,18 @@ namespace todoz.api.Migrations
                 name: "Pets",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Especie = table.Column<int>(type: "int", nullable: false),
-                    Raca = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    idadeMeses = table.Column<int>(type: "int", nullable: false),
-                    Porte = table.Column<int>(type: "int", nullable: false),
-                    Cidade = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Fotos = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Observacoes = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UsuarioId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Nome = table.Column<string>(type: "TEXT", nullable: false),
+                    Especie = table.Column<int>(type: "INTEGER", nullable: false),
+                    Raca = table.Column<string>(type: "TEXT", nullable: false),
+                    idadeMeses = table.Column<int>(type: "INTEGER", nullable: false),
+                    Porte = table.Column<int>(type: "INTEGER", nullable: false),
+                    Cidade = table.Column<string>(type: "TEXT", nullable: false),
+                    Estado = table.Column<string>(type: "TEXT", nullable: false),
+                    Fotos = table.Column<string>(type: "TEXT", nullable: false),
+                    Observacoes = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -164,13 +164,13 @@ namespace todoz.api.Migrations
                 name: "ServicosPasseadores",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PasseadorId = table.Column<int>(type: "int", nullable: false),
-                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TipoServico = table.Column<int>(type: "int", nullable: false),
-                    Ativo = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    PasseadorId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Titulo = table.Column<string>(type: "TEXT", nullable: false),
+                    Descricao = table.Column<string>(type: "TEXT", nullable: false),
+                    TipoServico = table.Column<int>(type: "INTEGER", nullable: false),
+                    Ativo = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -187,13 +187,13 @@ namespace todoz.api.Migrations
                 name: "AnunciosDoacoes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PetId = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ContatoWhatsapp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Moderacao = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    PetId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false),
+                    Descricao = table.Column<string>(type: "TEXT", nullable: false),
+                    ContatoWhatsapp = table.Column<string>(type: "TEXT", nullable: true),
+                    Moderacao = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

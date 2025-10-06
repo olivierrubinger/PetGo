@@ -2,52 +2,45 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using todoz.api.Data;
+using petgo.api.Data;
 
 #nullable disable
 
-namespace todoz.api.Migrations
+namespace petgo.api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250911220651_M00")]
-    partial class M00
+    [Migration("20251006021140_InitialCreate_NET9_SQLite")]
+    partial class InitialCreate_NET9_SQLite
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("todoz.api.Models.AnuncioDoacao", b =>
+            modelBuilder.Entity("petgo.api.Models.AnuncioDoacao", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ContatoWhatsapp")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Moderacao")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("PetId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Status")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -57,85 +50,79 @@ namespace todoz.api.Migrations
                     b.ToTable("AnunciosDoacoes");
                 });
 
-            modelBuilder.Entity("todoz.api.Models.Avaliacao", b =>
+            modelBuilder.Entity("petgo.api.Models.Avaliacao", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("AlvoId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("AlvoTipo")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("AutorNome")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Comentario")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Nota")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.ToTable("Avaliacoes");
                 });
 
-            modelBuilder.Entity("todoz.api.Models.CategoriaProduto", b =>
+            modelBuilder.Entity("petgo.api.Models.CategoriaProduto", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.ToTable("CategoriasProdutos");
                 });
 
-            modelBuilder.Entity("todoz.api.Models.Endereco", b =>
+            modelBuilder.Entity("petgo.api.Models.Endereco", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Cep")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Estado")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Pais")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Rua")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -144,72 +131,71 @@ namespace todoz.api.Migrations
                     b.ToTable("Enderecos");
                 });
 
-            modelBuilder.Entity("todoz.api.Models.Passeador", b =>
+            modelBuilder.Entity("petgo.api.Models.Passeador", b =>
                 {
                     b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<double>("AvaliacaoMedia")
-                        .HasColumnType("float");
+                        .HasColumnType("REAL");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("QuantidadeAvaliacoes")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("ValorCobrado")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("TEXT");
 
                     b.HasKey("UsuarioId");
 
                     b.ToTable("Passeadores");
                 });
 
-            modelBuilder.Entity("todoz.api.Models.Pet", b =>
+            modelBuilder.Entity("petgo.api.Models.Pet", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Cidade")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Especie")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Estado")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Fotos")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Observacoes")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Porte")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Raca")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("idadeMeses")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -218,40 +204,39 @@ namespace todoz.api.Migrations
                     b.ToTable("Pets");
                 });
 
-            modelBuilder.Entity("todoz.api.Models.Produto", b =>
+            modelBuilder.Entity("petgo.api.Models.Produto", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("CategoriaId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("CategoriaProdutoId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Estoque")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Imagens")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Preco")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Status")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -260,30 +245,28 @@ namespace todoz.api.Migrations
                     b.ToTable("Produtos");
                 });
 
-            modelBuilder.Entity("todoz.api.Models.ServicoPasseador", b =>
+            modelBuilder.Entity("petgo.api.Models.ServicoPasseador", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Ativo")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("PasseadorId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("TipoServico")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -292,59 +275,57 @@ namespace todoz.api.Migrations
                     b.ToTable("ServicosPasseadores");
                 });
 
-            modelBuilder.Entity("todoz.api.Models.Usuario", b =>
+            modelBuilder.Entity("petgo.api.Models.Usuario", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("FotoPerfil")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Senha")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Telefone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Tipo")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("todoz.api.Models.AnuncioDoacao", b =>
+            modelBuilder.Entity("petgo.api.Models.AnuncioDoacao", b =>
                 {
-                    b.HasOne("todoz.api.Models.Pet", "Pet")
+                    b.HasOne("petgo.api.Models.Pet", "Pet")
                         .WithOne("AnuncioDoacao")
-                        .HasForeignKey("todoz.api.Models.AnuncioDoacao", "PetId")
+                        .HasForeignKey("petgo.api.Models.AnuncioDoacao", "PetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Pet");
                 });
 
-            modelBuilder.Entity("todoz.api.Models.Endereco", b =>
+            modelBuilder.Entity("petgo.api.Models.Endereco", b =>
                 {
-                    b.HasOne("todoz.api.Models.Usuario", "Usuario")
+                    b.HasOne("petgo.api.Models.Usuario", "Usuario")
                         .WithMany("Enderecos")
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -353,20 +334,20 @@ namespace todoz.api.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("todoz.api.Models.Passeador", b =>
+            modelBuilder.Entity("petgo.api.Models.Passeador", b =>
                 {
-                    b.HasOne("todoz.api.Models.Usuario", "Usuario")
+                    b.HasOne("petgo.api.Models.Usuario", "Usuario")
                         .WithOne("Passeador")
-                        .HasForeignKey("todoz.api.Models.Passeador", "UsuarioId")
+                        .HasForeignKey("petgo.api.Models.Passeador", "UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("todoz.api.Models.Pet", b =>
+            modelBuilder.Entity("petgo.api.Models.Pet", b =>
                 {
-                    b.HasOne("todoz.api.Models.Usuario", "Usuario")
+                    b.HasOne("petgo.api.Models.Usuario", "Usuario")
                         .WithMany("Pets")
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -375,9 +356,9 @@ namespace todoz.api.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("todoz.api.Models.Produto", b =>
+            modelBuilder.Entity("petgo.api.Models.Produto", b =>
                 {
-                    b.HasOne("todoz.api.Models.CategoriaProduto", "CategoriaProduto")
+                    b.HasOne("petgo.api.Models.CategoriaProduto", "CategoriaProduto")
                         .WithMany()
                         .HasForeignKey("CategoriaProdutoId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -386,9 +367,9 @@ namespace todoz.api.Migrations
                     b.Navigation("CategoriaProduto");
                 });
 
-            modelBuilder.Entity("todoz.api.Models.ServicoPasseador", b =>
+            modelBuilder.Entity("petgo.api.Models.ServicoPasseador", b =>
                 {
-                    b.HasOne("todoz.api.Models.Passeador", "Passeador")
+                    b.HasOne("petgo.api.Models.Passeador", "Passeador")
                         .WithMany("Servicos")
                         .HasForeignKey("PasseadorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -397,18 +378,17 @@ namespace todoz.api.Migrations
                     b.Navigation("Passeador");
                 });
 
-            modelBuilder.Entity("todoz.api.Models.Passeador", b =>
+            modelBuilder.Entity("petgo.api.Models.Passeador", b =>
                 {
                     b.Navigation("Servicos");
                 });
 
-            modelBuilder.Entity("todoz.api.Models.Pet", b =>
+            modelBuilder.Entity("petgo.api.Models.Pet", b =>
                 {
-                    b.Navigation("AnuncioDoacao")
-                        .IsRequired();
+                    b.Navigation("AnuncioDoacao");
                 });
 
-            modelBuilder.Entity("todoz.api.Models.Usuario", b =>
+            modelBuilder.Entity("petgo.api.Models.Usuario", b =>
                 {
                     b.Navigation("Enderecos");
 
