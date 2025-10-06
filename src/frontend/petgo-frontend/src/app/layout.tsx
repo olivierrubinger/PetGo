@@ -28,10 +28,13 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning={true}
       >
         <Providers>
-          <Navigation />
-          <main className="min-h-screen">{children}</main>
+          <div className="min-h-screen flex flex-col">
+            <Navigation />
+            <main className="flex-1">{children}</main>
+          </div>
         </Providers>
       </body>
     </html>

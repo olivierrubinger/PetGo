@@ -11,15 +11,45 @@ const nextConfig: NextConfig = {
   },
 
   eslint: {
-    ignoreDuringBuilds: false, 
+    ignoreDuringBuilds: false,
   },
   typescript: {
     ignoreBuildErrors: false,
   },
 
-  // Configurações de imagem
+  // Configurações de imagem - CORRIGIDO
   images: {
-    domains: ["localhost"],
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "5021",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "localhost",
+        port: "5021",
+        pathname: "/**",
+      },
+      // Adicionar via.placeholder.com para desenvolvimento
+      {
+        protocol: "https",
+        hostname: "via.placeholder.com",
+        pathname: "/**",
+      },
+      // Adicionar outros domínios comuns para imagens
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "picsum.photos",
+        pathname: "/**",
+      },
+    ],
     formats: ["image/webp", "image/avif"],
   },
 
@@ -50,6 +80,10 @@ const nextConfig: NextConfig = {
           {
             key: "Referrer-Policy",
             value: "origin-when-cross-origin",
+          },
+          {
+            key: "X-XSS-Protection",
+            value: "1; mode=block",
           },
         ],
       },

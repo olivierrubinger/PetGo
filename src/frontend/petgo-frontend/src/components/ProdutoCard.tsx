@@ -63,6 +63,7 @@ export function ProdutoCard({
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            unoptimized={produto.imagens[0].includes("via.placeholder.com")}
           />
         ) : (
           <div className="flex items-center justify-center h-full text-gray-400">
@@ -103,7 +104,7 @@ export function ProdutoCard({
           </div>
         </div>
 
-        {/* Ações - CORRIGIDO */}
+        {/* Ações */}
         {showActions && (
           <div className="flex gap-2">
             <Button
@@ -116,10 +117,10 @@ export function ProdutoCard({
               Editar
             </Button>
             <Button
-              variant="danger" 
+              variant="danger"
               size="sm"
               onClick={handleDelete}
-              loading={isDeleting} 
+              loading={isDeleting}
               className="flex-1"
             >
               <Trash2 className="h-4 w-4 mr-2" />

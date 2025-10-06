@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using petgo.api.Controllers;
-using petgo.api.Data;   
+using petgo.api.Data;
+using petgo.api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,8 +37,15 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 var app = builder.Build();
 
+// Seed database em desenvolvimento
 if (app.Environment.IsDevelopment())
 {
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        await DatabaseSeeder.SeedAsync(context);
+    }
+    
     app.UseDeveloperExceptionPage();
 }
 else
