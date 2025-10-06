@@ -1,12 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-
 using todoz.api.Controllers;
 using todoz.api.Data;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add database services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (string.IsNullOrEmpty(connectionString))
 {
@@ -17,23 +14,25 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString);
 });
 
-// Add swagger services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add CORS services to the container.
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowNextJs",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000", "https://localhost:3000")
+            policy.WithOrigins(
+                    "http://localhost:3000",   
+                    "https://localhost:3000",   
+                    "http://localhost:5173",   
+                    "https://petgo-frontend.vercel.app" 
+                  )
                   .AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowCredentials();
         });
 });
-
 
 builder.Services.AddControllers();
 var app = builder.Build();
@@ -45,21 +44,17 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    //app.UseHsts(); // Adiciona suporte a HSTS em produção
 }
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
-// Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
 
-// ----------------------------------------------------------------------------------------- CORS
-app.UseCors("AllowNextJs");
-//---------------------------------------------------------------------------------------- CORS
+app.UseCors("AllowNextJs"); 
 
 app.UseRouting();
 app.UseAuthorization();
-
 app.MapControllers();
+
 app.Run();
