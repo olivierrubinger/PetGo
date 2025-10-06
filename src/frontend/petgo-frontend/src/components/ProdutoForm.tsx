@@ -1,12 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "./ui/Button";
 import { LoadingSpinner } from "./ui/LoadingSpinner";
-import { X, Upload, Trash2 } from "lucide-react";
+import { X, Upload, Trash2, Image as ImageIcon } from "lucide-react";
 import { StatusProduto } from "../types";
 
 // Schema de validação
@@ -27,7 +27,7 @@ const produtoFormSchema = z.object({
 type ProdutoFormData = z.infer<typeof produtoFormSchema>;
 
 interface ProdutoFormProps {
-  produto?: any; // Para edição
+  produto?: any;
   onSubmit: (data: ProdutoFormData) => void;
   onCancel: () => void;
   isLoading?: boolean;
@@ -50,6 +50,8 @@ export function ProdutoForm({
   isLoading,
   title,
 }: ProdutoFormProps) {
+  const [uploadingImage, setUploadingImage] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -84,7 +86,57 @@ export function ProdutoForm({
 
   const imagens = watch("imagens") || [];
 
-  const handleImageAdd = () => {
+  // Função para converter arquivo para base64
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  // Handle upload de imagem do computador
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploadingImage(true);
+
+    try {
+      const file = files[0];
+
+      // Validar tipo de arquivo
+      if (!file.type.startsWith("image/")) {
+        alert("Por favor, selecione apenas arquivos de imagem.");
+        return;
+      }
+
+      // Validar tamanho do arquivo (máximo 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert("A imagem deve ter no máximo 5MB.");
+        return;
+      }
+
+      // Converter para base64
+      const base64Image = await fileToBase64(file);
+
+      // Adicionar à lista de imagens
+      setValue("imagens", [...imagens, base64Image]);
+    } catch (error) {
+      console.error("Erro ao fazer upload da imagem:", error);
+      alert("Erro ao fazer upload da imagem. Tente novamente.");
+    } finally {
+      setUploadingImage(false);
+      // Limpar o input
+      event.target.value = "";
+    }
+  };
+
+  // Handle adição de imagem via URL
+  const handleImageAddByUrl = () => {
     const url = prompt("Digite a URL da imagem:");
     if (url && url.trim()) {
       setValue("imagens", [...imagens, url.trim()]);
@@ -125,13 +177,13 @@ export function ProdutoForm({
         <form onSubmit={handleSubmit(onFormSubmit)} className="p-6 space-y-6">
           {/* Nome */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-900 mb-2">
               Nome do Produto *
             </label>
             <input
               {...register("nome")}
               type="text"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500"
               placeholder="Ex: Ração Premium para Cães"
             />
             {errors.nome && (
@@ -141,13 +193,13 @@ export function ProdutoForm({
 
           {/* Descrição */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-900 mb-2">
               Descrição *
             </label>
             <textarea
               {...register("descricao")}
               rows={4}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500"
               placeholder="Descreva as características e benefícios do produto..."
             />
             {errors.descricao && (
@@ -160,7 +212,7 @@ export function ProdutoForm({
           {/* Preço e Estoque */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-900 mb-2">
                 Preço (R$) *
               </label>
               <input
@@ -168,7 +220,7 @@ export function ProdutoForm({
                 type="number"
                 step="0.01"
                 min="0"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500"
                 placeholder="0,00"
               />
               {errors.preco && (
@@ -179,14 +231,14 @@ export function ProdutoForm({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-900 mb-2">
                 Estoque *
               </label>
               <input
                 {...register("estoque", { valueAsNumber: true })}
                 type="number"
                 min="0"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500"
                 placeholder="0"
               />
               {errors.estoque && (
@@ -199,12 +251,12 @@ export function ProdutoForm({
 
           {/* Categoria */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-900 mb-2">
               Categoria *
             </label>
             <select
               {...register("categoriaProdutoId", { valueAsNumber: true })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
             >
               {CATEGORIAS_MOCK.map((categoria) => (
                 <option key={categoria.id} value={categoria.id}>
@@ -221,12 +273,12 @@ export function ProdutoForm({
 
           {/* Status */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-900 mb-2">
               Status *
             </label>
             <select
               {...register("status", { valueAsNumber: true })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
             >
               <option value={StatusProduto.RASCUNHO}>Rascunho</option>
               <option value={StatusProduto.ATIVO}>Ativo</option>
@@ -238,12 +290,13 @@ export function ProdutoForm({
             )}
           </div>
 
-          {/* Imagens */}
+          {/* Imagens - MELHORADO */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-900 mb-2">
               Imagens do Produto
             </label>
-            <div className="space-y-3">
+            <div className="space-y-4">
+              {/* Preview das imagens */}
               {imagens.length > 0 && (
                 <div className="grid grid-cols-2 gap-3">
                   {imagens.map((url, index) => (
@@ -260,7 +313,7 @@ export function ProdutoForm({
                       <button
                         type="button"
                         onClick={() => handleImageRemove(index)}
-                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
                       >
                         <Trash2 size={12} />
                       </button>
@@ -268,16 +321,78 @@ export function ProdutoForm({
                   ))}
                 </div>
               )}
-              <button
-                type="button"
-                onClick={handleImageAdd}
-                className="w-full border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-gray-400 transition-colors"
-              >
-                <Upload size={24} className="mx-auto mb-2 text-gray-400" />
-                <span className="text-sm text-gray-600">
-                  Clique para adicionar imagem (URL)
-                </span>
-              </button>
+
+              {/* Botões de upload */}
+              <div className="flex gap-3">
+                {/* Upload do computador */}
+                <div className="flex-1">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                    id="image-upload"
+                    disabled={uploadingImage}
+                  />
+                  <label
+                    htmlFor="image-upload"
+                    className={`
+                      w-full border-2 border-dashed border-gray-300 rounded-lg p-4 text-center 
+                      hover:border-blue-400 transition-colors cursor-pointer
+                      ${
+                        uploadingImage
+                          ? "opacity-50 cursor-not-allowed"
+                          : "hover:bg-gray-50"
+                      }
+                    `}
+                  >
+                    {uploadingImage ? (
+                      <div className="flex items-center justify-center">
+                        <LoadingSpinner size="sm" className="mr-2" />
+                        <span className="text-sm text-gray-600">
+                          Enviando...
+                        </span>
+                      </div>
+                    ) : (
+                      <>
+                        <ImageIcon
+                          size={24}
+                          className="mx-auto mb-2 text-gray-400"
+                        />
+                        <span className="text-sm text-gray-600">
+                          Clique para enviar do computador
+                        </span>
+                        <p className="text-xs text-gray-500 mt-1">
+                          PNG, JPG até 5MB
+                        </p>
+                      </>
+                    )}
+                  </label>
+                </div>
+
+                {/* Upload via URL */}
+                <div className="flex-1">
+                  <button
+                    type="button"
+                    onClick={handleImageAddByUrl}
+                    className="w-full border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-gray-400 transition-colors hover:bg-gray-50"
+                  >
+                    <Upload size={24} className="mx-auto mb-2 text-gray-400" />
+                    <span className="text-sm text-gray-600">
+                      Adicionar via URL
+                    </span>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Cole um link de imagem
+                    </p>
+                  </button>
+                </div>
+              </div>
+
+              {imagens.length === 0 && (
+                <p className="text-xs text-gray-500 text-center mt-2">
+                  💡 Adicione pelo menos uma imagem para o produto
+                </p>
+              )}
             </div>
           </div>
 
@@ -287,11 +402,15 @@ export function ProdutoForm({
               type="button"
               variant="secondary"
               onClick={onCancel}
-              disabled={isLoading}
+              disabled={isLoading || uploadingImage}
             >
               Cancelar
             </Button>
-            <Button type="submit" loading={isLoading} disabled={isLoading}>
+            <Button
+              type="submit"
+              loading={isLoading}
+              disabled={isLoading || uploadingImage}
+            >
               {produto ? "Atualizar Produto" : "Criar Produto"}
             </Button>
           </div>
