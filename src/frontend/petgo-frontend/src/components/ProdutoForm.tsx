@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "./ui/Button";
 import { LoadingSpinner } from "./ui/LoadingSpinner";
-import { X, Trash2, Image as ImageIcon } from "lucide-react";
+import { X, Trash2, Image as ImageIcon, Upload } from "lucide-react";
 import { StatusProduto } from "../types";
 
 // Schema de validação
@@ -154,7 +154,7 @@ export function ProdutoForm({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b">
+        <div className="flex items-center justify-between p-6 border-b bg-gradient-to-r from-blue-50 to-indigo-50">
           <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
           <button
             onClick={onCancel}
@@ -281,7 +281,7 @@ export function ProdutoForm({
             )}
           </div>
 
-          {/* Imagens - SIMPLIFICADO E CORRIGIDO */}
+          {/* Imagens - CORRIGIDO */}
           <div>
             <label className="block text-sm font-medium text-gray-900 mb-2">
               Imagens do Produto
@@ -292,31 +292,29 @@ export function ProdutoForm({
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {imagens.map((base64Image, index) => (
                     <div key={index} className="relative group">
-                      {/* Usar img normal para base64 em vez de next/image */}
                       <img
                         src={base64Image}
                         alt={`Produto ${index + 1}`}
-                        className="w-full h-24 object-cover rounded-lg border bg-gray-100"
+                        className="w-full h-24 object-cover rounded-lg border-2 border-gray-200 bg-gray-100"
                         onError={(e) => {
-                          // Fallback para erro de imagem
                           e.currentTarget.style.display = "none";
                         }}
                       />
                       <button
                         type="button"
                         onClick={() => handleImageRemove(index)}
-                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 shadow-md"
                         title="Remover imagem"
                       >
-                        <Trash2 size={12} />
+                        <Trash2 size={14} />
                       </button>
                     </div>
                   ))}
                 </div>
               )}
 
-              {/* Upload do computador */}
-              <div>
+              {/* Upload Area - CORRIGIDA */}
+              <div className="w-full">
                 <input
                   type="file"
                   accept="image/*"
@@ -329,55 +327,60 @@ export function ProdutoForm({
                 <label
                   htmlFor="image-upload"
                   className={`
-                    w-full border-2 border-dashed border-gray-300 rounded-lg p-6 text-center 
-                    hover:border-blue-400 transition-colors cursor-pointer
+                    flex flex-col items-center justify-center
+                    w-full h-32 
+                    border-2 border-dashed border-gray-300 
+                    rounded-lg 
+                    cursor-pointer 
+                    transition-all duration-200
                     ${
                       uploadingImage
-                        ? "opacity-50 cursor-not-allowed"
-                        : "hover:bg-gray-50"
+                        ? "opacity-50 cursor-not-allowed bg-gray-50"
+                        : "hover:border-blue-400 hover:bg-blue-50"
                     }
                   `}
                 >
                   {uploadingImage ? (
-                    <div className="flex items-center justify-center">
-                      <LoadingSpinner size="sm" className="mr-2" />
-                      <span className="text-sm text-gray-600">
+                    <div className="flex flex-col items-center justify-center space-y-2">
+                      <LoadingSpinner size="sm" />
+                      <span className="text-sm text-gray-600 font-medium">
                         Enviando imagens...
                       </span>
                     </div>
                   ) : (
-                    <>
-                      <ImageIcon
-                        size={32}
-                        className="mx-auto mb-3 text-gray-400"
-                      />
-                      <div className="space-y-2">
+                    <div className="flex flex-col items-center justify-center space-y-2">
+                      <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full">
+                        <Upload size={24} className="text-gray-400" />
+                      </div>
+                      <div className="text-center">
                         <p className="text-base font-medium text-gray-700">
                           Clique para enviar imagens
                         </p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-500 mt-1">
                           Selecione múltiplas imagens do seu computador
                         </p>
-                        <p className="text-xs text-gray-400">
+                        <p className="text-xs text-gray-400 mt-1">
                           PNG, JPG, WEBP até 2MB cada
                         </p>
                       </div>
-                    </>
+                    </div>
                   )}
                 </label>
               </div>
 
-              {/* Informações adicionais */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                <div className="flex items-start">
-                  <ImageIcon className="h-4 w-4 text-blue-600 mt-0.5 mr-2 flex-shrink-0" />
-                  <div className="text-xs text-blue-800">
-                    <p className="font-medium">Dicas para melhores fotos:</p>
-                    <ul className="mt-1 space-y-1 list-disc list-inside ml-2">
+              {/* Dicas */}
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                <div className="flex items-start space-x-3">
+                  <ImageIcon className="h-5 w-5 text-amber-600 mt-0.5 flex-shrink-0" />
+                  <div className="text-sm text-amber-800">
+                    <p className="font-medium mb-2">
+                      💡 Dicas para melhores fotos:
+                    </p>
+                    <ul className="space-y-1 list-disc list-inside ml-2">
                       <li>Use boa iluminação natural</li>
                       <li>Mostre o produto de diferentes ângulos</li>
                       <li>Mantenha o fundo limpo e neutro</li>
-                      <li>Incluindo embalagem quando relevante</li>
+                      <li>Inclua a embalagem quando relevante</li>
                     </ul>
                   </div>
                 </div>
