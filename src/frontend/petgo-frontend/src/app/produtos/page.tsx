@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   useProdutos,
   useDeleteProduto,
   useCreateProduto,
   useUpdateProduto,
+  useProduto,
 } from "../../hooks/useProdutos";
 import { ProdutoCard } from "../../components/ProdutoCard";
 import { ProdutoForm } from "../../components/ProdutoForm";
@@ -21,10 +23,17 @@ type ModalState = {
 };
 
 export default function ProdutosPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const editId = searchParams.get("edit");
+
   const { data: produtos, isLoading, error } = useProdutos();
   const deleteMutation = useDeleteProduto();
   const createMutation = useCreateProduto();
   const updateMutation = useUpdateProduto();
+
+  // Buscar produto para edição se editId estiver presente
+  const { data: produtoParaEdicao } = useProduto(editId ? parseInt(editId) : 0);
 
   const [modal, setModal] = useState<ModalState>({
     isOpen: false,
@@ -35,6 +44,17 @@ export default function ProdutosPage() {
   const [filterStatus, setFilterStatus] = useState<
     "all" | "ativo" | "rascunho"
   >("all");
+
+  // Effect para abrir modal de edição quando editId mudar
+  useEffect(() => {
+    if (editId && produtoParaEdicao) {
+      setModal({
+        isOpen: true,
+        mode: "edit",
+        produto: produtoParaEdicao,
+      });
+    }
+  }, [editId, produtoParaEdicao]);
 
   // Filtrar produtos
   const filteredProdutos = produtos?.filter((produto) => {
@@ -76,6 +96,11 @@ export default function ProdutosPage() {
       isOpen: false,
       mode: "create",
     });
+
+    // Limpar query params se estiver editando
+    if (editId) {
+      router.replace("/produtos");
+    }
   };
 
   const handleFormSubmit = (data: any) => {

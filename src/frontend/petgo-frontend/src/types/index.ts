@@ -134,3 +134,16 @@ export interface LoadingState {
   isLoading: boolean;
   error: string | null;
 }
+
+export interface ProdutoDetalhado extends Produto {
+  avaliacoes?: Avaliacao[];
+  relacionados?: Produto[];
+}
+
+export interface Avaliacao {
+  id: number;
+  usuario: string;
+  rating: number;
+  comentario: string;
+  data: string;
+}

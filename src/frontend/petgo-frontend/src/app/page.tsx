@@ -1,5 +1,6 @@
 import React from "react";
 import { Heart, Package, Users, Star, Shield, Clock } from "lucide-react";
+import Link from "next/link";
 
 const features = [
   {
@@ -66,12 +67,16 @@ export default function HomePage() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 font-semibold text-lg shadow-lg">
-              Começar Agora
-            </button>
-            <button className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-xl hover:bg-blue-600 hover:text-white transition-all duration-300 font-semibold text-lg">
-              Saiba Mais
-            </button>
+            <Link href="/produtos">
+              <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 font-semibold text-lg shadow-lg">
+                Ver Produtos
+              </button>
+            </Link>
+            <Link href="/sobre">
+              <button className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-xl hover:bg-blue-600 hover:text-white transition-all duration-300 font-semibold text-lg">
+                Saiba Mais
+              </button>
+            </Link>
           </div>
         </div>
       </section>

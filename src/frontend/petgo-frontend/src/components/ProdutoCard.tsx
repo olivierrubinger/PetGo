@@ -1,10 +1,12 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { Produto, StatusProduto } from "../types";
 import { Button } from "./ui/Button";
 import { formatCurrency, truncateText } from "../lib/utils";
-import { Edit, Trash2, Package } from "lucide-react";
+import { Edit, Trash2, Package, Eye } from "lucide-react";
+import { SafeImage } from "./SafeImage";
 
 interface ProdutoCardProps {
   produto: Produto;
@@ -51,72 +53,77 @@ export function ProdutoCard({
     }
   };
 
+  const temImagens = produto.imagens && produto.imagens.length > 0;
+  const primeiraImagem = temImagens ? produto.imagens[0] : null;
+
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200 border border-gray-200">
-      {/* Imagem do produto */}
-      <div className="relative h-48 bg-gray-100">
-        {produto.imagens && produto.imagens.length > 0 ? (
-          <img
-            src={produto.imagens[0]}
-            alt={produto.nome}
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              // Fallback para imagem quebrada
-              e.currentTarget.style.display = "none";
-              const fallback =
-                e.currentTarget.parentElement?.querySelector(".fallback-icon");
-              if (fallback) {
-                (fallback as HTMLElement).style.display = "flex";
+    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200 border border-gray-200 group">
+      <Link href={`/produtos/${produto.id}`} className="block">
+        <div className="relative w-full h-48 overflow-hidden bg-gray-100">
+          {primeiraImagem ? (
+            <SafeImage
+              src={primeiraImagem}
+              alt={produto.nome}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              fallback={
+                <div className="flex flex-col items-center justify-center h-full text-gray-400">
+                  <Package className="h-12 w-12 mb-2" />
+                  <p className="text-xs">Sem imagem</p>
+                </div>
               }
-            }}
-          />
-        ) : null}
+            />
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full text-gray-400">
+              <Package className="h-12 w-12 mb-2" />
+              <p className="text-xs">Sem imagem</p>
+            </div>
+          )}
 
-        {/* Fallback icon */}
-        <div
-          className="fallback-icon absolute inset-0 flex items-center justify-center text-gray-400"
-          style={{
-            display:
-              produto.imagens && produto.imagens.length > 0 ? "none" : "flex",
-          }}
-        >
-          <Package className="h-12 w-12" />
-        </div>
-
-        {/* Badge de status */}
-        <div className="absolute top-2 right-2">
-          <span className={getStatusBadge(produto.status)}>
-            {getStatusText(produto.status)}
-          </span>
-        </div>
-      </div>
-
-      {/* Conteúdo do card */}
-      <div className="p-4">
-        <div className="flex justify-between items-start mb-2">
-          <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">
-            {produto.nome}
-          </h3>
-        </div>
-
-        <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-          {truncateText(produto.descricao, 100)}
-        </p>
-
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <span className="text-2xl font-bold text-green-600">
-              {formatCurrency(produto.preco)}
+          <div className="absolute top-2 right-2 z-10">
+            <span className={getStatusBadge(produto.status)}>
+              {getStatusText(produto.status)}
             </span>
           </div>
-          <div className="text-right">
-            <p className="text-sm text-gray-500">
-              Estoque: <span className="font-medium">{produto.estoque}</span>
-            </p>
-          </div>
-        </div>
 
-        {/* Ações */}
+          {primeiraImagem && (
+            <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+              <div className="transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                <div className="bg-white text-gray-900 px-4 py-2 rounded-lg font-medium flex items-center shadow-lg">
+                  <Eye size={16} className="mr-2" />
+                  Ver Detalhes
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </Link>
+
+      <div className="p-4">
+        <Link href={`/produtos/${produto.id}`} className="block">
+          <div className="flex justify-between items-start mb-2">
+            <h3 className="text-lg font-semibold text-gray-900 line-clamp-1 hover:text-blue-600 transition-colors">
+              {produto.nome}
+            </h3>
+          </div>
+
+          <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+            {truncateText(produto.descricao, 100)}
+          </p>
+
+          <div className="flex justify-between items-center mb-4">
+            <div>
+              <span className="text-2xl font-bold text-green-600">
+                {formatCurrency(produto.preco)}
+              </span>
+            </div>
+            <div className="text-right">
+              <p className="text-sm text-gray-500">
+                Estoque: <span className="font-medium">{produto.estoque}</span>
+              </p>
+            </div>
+          </div>
+        </Link>
+
         {showActions && (
           <div className="flex gap-2">
             <Button

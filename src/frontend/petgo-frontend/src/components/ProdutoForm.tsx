@@ -122,7 +122,6 @@ export function ProdutoForm({
 
       const base64Images = await Promise.all(uploadPromises);
 
-      // Adicionar todas as imagens à lista
       setValue("imagens", [...imagens, ...base64Images]);
     } catch (error: any) {
       console.error("Erro ao fazer upload das imagens:", error);
@@ -144,7 +143,6 @@ export function ProdutoForm({
   };
 
   const onFormSubmit = (data: ProdutoFormData) => {
-    // Garantir que ambos os campos de categoria tenham o mesmo valor
     const formattedData = {
       ...data,
       categoriaId: data.categoriaProdutoId,
