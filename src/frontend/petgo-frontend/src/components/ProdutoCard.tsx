@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import { Produto, StatusProduto } from "../types";
 import { Button } from "./ui/Button";
 import { formatCurrency, truncateText } from "../lib/utils";
@@ -57,19 +56,32 @@ export function ProdutoCard({
       {/* Imagem do produto */}
       <div className="relative h-48 bg-gray-100">
         {produto.imagens && produto.imagens.length > 0 ? (
-          <Image
+          <img
             src={produto.imagens[0]}
             alt={produto.nome}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            unoptimized={produto.imagens[0].includes("via.placeholder.com")}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              // Fallback para imagem quebrada
+              e.currentTarget.style.display = "none";
+              const fallback =
+                e.currentTarget.parentElement?.querySelector(".fallback-icon");
+              if (fallback) {
+                (fallback as HTMLElement).style.display = "flex";
+              }
+            }}
           />
-        ) : (
-          <div className="flex items-center justify-center h-full text-gray-400">
-            <Package className="h-12 w-12" />
-          </div>
-        )}
+        ) : null}
+
+        {/* Fallback icon */}
+        <div
+          className="fallback-icon absolute inset-0 flex items-center justify-center text-gray-400"
+          style={{
+            display:
+              produto.imagens && produto.imagens.length > 0 ? "none" : "flex",
+          }}
+        >
+          <Package className="h-12 w-12" />
+        </div>
 
         {/* Badge de status */}
         <div className="absolute top-2 right-2">

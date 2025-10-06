@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "./ui/Button";
 import { LoadingSpinner } from "./ui/LoadingSpinner";
-import { X, Upload, Trash2, Image as ImageIcon } from "lucide-react";
+import { X, Trash2, Image as ImageIcon } from "lucide-react";
 import { StatusProduto } from "../types";
 
 // Schema de validação
@@ -58,7 +58,6 @@ export function ProdutoForm({
     formState: { errors },
     watch,
     setValue,
-    reset,
   } = useForm<ProdutoFormData>({
     resolver: zodResolver(produtoFormSchema),
     defaultValues: produto
@@ -96,7 +95,7 @@ export function ProdutoForm({
     });
   };
 
-  // Handle upload de imagem do computador
+  // Handle upload de múltiplas imagens do computador
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -106,40 +105,34 @@ export function ProdutoForm({
     setUploadingImage(true);
 
     try {
-      const file = files[0];
+      const uploadPromises = Array.from(files).map(async (file) => {
+        // Validar tipo de arquivo
+        if (!file.type.startsWith("image/")) {
+          throw new Error(`${file.name} não é um arquivo de imagem válido`);
+        }
 
-      // Validar tipo de arquivo
-      if (!file.type.startsWith("image/")) {
-        alert("Por favor, selecione apenas arquivos de imagem.");
-        return;
-      }
+        // Validar tamanho do arquivo (máximo 2MB)
+        if (file.size > 2 * 1024 * 1024) {
+          throw new Error(`${file.name} é muito grande. Máximo 2MB.`);
+        }
 
-      // Validar tamanho do arquivo (máximo 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        alert("A imagem deve ter no máximo 5MB.");
-        return;
-      }
+        // Converter para base64
+        return await fileToBase64(file);
+      });
 
-      // Converter para base64
-      const base64Image = await fileToBase64(file);
+      const base64Images = await Promise.all(uploadPromises);
 
-      // Adicionar à lista de imagens
-      setValue("imagens", [...imagens, base64Image]);
-    } catch (error) {
-      console.error("Erro ao fazer upload da imagem:", error);
-      alert("Erro ao fazer upload da imagem. Tente novamente.");
+      // Adicionar todas as imagens à lista
+      setValue("imagens", [...imagens, ...base64Images]);
+    } catch (error: any) {
+      console.error("Erro ao fazer upload das imagens:", error);
+      alert(
+        error.message || "Erro ao fazer upload das imagens. Tente novamente."
+      );
     } finally {
       setUploadingImage(false);
       // Limpar o input
       event.target.value = "";
-    }
-  };
-
-  // Handle adição de imagem via URL
-  const handleImageAddByUrl = () => {
-    const url = prompt("Digite a URL da imagem:");
-    if (url && url.trim()) {
-      setValue("imagens", [...imagens, url.trim()]);
     }
   };
 
@@ -290,7 +283,7 @@ export function ProdutoForm({
             )}
           </div>
 
-          {/* Imagens - MELHORADO */}
+          {/* Imagens - SIMPLIFICADO E CORRIGIDO */}
           <div>
             <label className="block text-sm font-medium text-gray-900 mb-2">
               Imagens do Produto
@@ -298,22 +291,24 @@ export function ProdutoForm({
             <div className="space-y-4">
               {/* Preview das imagens */}
               {imagens.length > 0 && (
-                <div className="grid grid-cols-2 gap-3">
-                  {imagens.map((url, index) => (
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {imagens.map((base64Image, index) => (
                     <div key={index} className="relative group">
+                      {/* Usar img normal para base64 em vez de next/image */}
                       <img
-                        src={url}
+                        src={base64Image}
                         alt={`Produto ${index + 1}`}
-                        className="w-full h-24 object-cover rounded-lg border"
+                        className="w-full h-24 object-cover rounded-lg border bg-gray-100"
                         onError={(e) => {
-                          e.currentTarget.src =
-                            "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMyIgeT0iMyIgd2lkdGg9IjE4IiBoZWlnaHQ9IjE4IiByeD0iMiIgZmlsbD0iI0Y5RkFGQiIgc3Ryb2tlPSIjRDFENUQ4IiBzdHJva2Utd2lkdGg9IjIiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiPgo8cGF0aCBkPSJtMjEgMTktNy01LTMuNSAzLjUtOS0xMVY3YTIgMiAwIDAgMSAyLTJoMTZhMiAyIDAgMCAxIDIgMnoiIHN0cm9rZT0iIzlDQTNBRiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cjwvc3ZnPgo=";
+                          // Fallback para erro de imagem
+                          e.currentTarget.style.display = "none";
                         }}
                       />
                       <button
                         type="button"
                         onClick={() => handleImageRemove(index)}
                         className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                        title="Remover imagem"
                       >
                         <Trash2 size={12} />
                       </button>
@@ -322,77 +317,73 @@ export function ProdutoForm({
                 </div>
               )}
 
-              {/* Botões de upload */}
-              <div className="flex gap-3">
-                {/* Upload do computador */}
-                <div className="flex-1">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                    id="image-upload"
-                    disabled={uploadingImage}
-                  />
-                  <label
-                    htmlFor="image-upload"
-                    className={`
-                      w-full border-2 border-dashed border-gray-300 rounded-lg p-4 text-center 
-                      hover:border-blue-400 transition-colors cursor-pointer
-                      ${
-                        uploadingImage
-                          ? "opacity-50 cursor-not-allowed"
-                          : "hover:bg-gray-50"
-                      }
-                    `}
-                  >
-                    {uploadingImage ? (
-                      <div className="flex items-center justify-center">
-                        <LoadingSpinner size="sm" className="mr-2" />
-                        <span className="text-sm text-gray-600">
-                          Enviando...
-                        </span>
-                      </div>
-                    ) : (
-                      <>
-                        <ImageIcon
-                          size={24}
-                          className="mx-auto mb-2 text-gray-400"
-                        />
-                        <span className="text-sm text-gray-600">
-                          Clique para enviar do computador
-                        </span>
-                        <p className="text-xs text-gray-500 mt-1">
-                          PNG, JPG até 5MB
+              {/* Upload do computador */}
+              <div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageUpload}
+                  className="hidden"
+                  id="image-upload"
+                  disabled={uploadingImage}
+                />
+                <label
+                  htmlFor="image-upload"
+                  className={`
+                    w-full border-2 border-dashed border-gray-300 rounded-lg p-6 text-center 
+                    hover:border-blue-400 transition-colors cursor-pointer
+                    ${
+                      uploadingImage
+                        ? "opacity-50 cursor-not-allowed"
+                        : "hover:bg-gray-50"
+                    }
+                  `}
+                >
+                  {uploadingImage ? (
+                    <div className="flex items-center justify-center">
+                      <LoadingSpinner size="sm" className="mr-2" />
+                      <span className="text-sm text-gray-600">
+                        Enviando imagens...
+                      </span>
+                    </div>
+                  ) : (
+                    <>
+                      <ImageIcon
+                        size={32}
+                        className="mx-auto mb-3 text-gray-400"
+                      />
+                      <div className="space-y-2">
+                        <p className="text-base font-medium text-gray-700">
+                          Clique para enviar imagens
                         </p>
-                      </>
-                    )}
-                  </label>
-                </div>
-
-                {/* Upload via URL */}
-                <div className="flex-1">
-                  <button
-                    type="button"
-                    onClick={handleImageAddByUrl}
-                    className="w-full border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-gray-400 transition-colors hover:bg-gray-50"
-                  >
-                    <Upload size={24} className="mx-auto mb-2 text-gray-400" />
-                    <span className="text-sm text-gray-600">
-                      Adicionar via URL
-                    </span>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Cole um link de imagem
-                    </p>
-                  </button>
-                </div>
+                        <p className="text-sm text-gray-500">
+                          Selecione múltiplas imagens do seu computador
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          PNG, JPG, WEBP até 2MB cada
+                        </p>
+                      </div>
+                    </>
+                  )}
+                </label>
               </div>
 
-              {imagens.length === 0 && (
-                <p className="text-xs text-gray-500 text-center mt-2">
-                  💡 Adicione pelo menos uma imagem para o produto
-                </p>
-              )}
+              {/* Informações adicionais */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <div className="flex items-start">
+                  <ImageIcon className="h-4 w-4 text-blue-600 mt-0.5 mr-2 flex-shrink-0" />
+                  <div className="text-xs text-blue-800">
+                    <p className="font-medium">Dicas para melhores fotos:</p>
+                    <ul className="mt-1 space-y-1 list-disc list-inside ml-2">
+                      <li>Use boa iluminação natural</li>
+                      <li>Mostre o produto de diferentes ângulos</li>
+                      <li>Mantenha o fundo limpo e neutro</li>
+                      <li>Incluindo embalagem quando relevante</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 

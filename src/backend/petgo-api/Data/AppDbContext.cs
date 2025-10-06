@@ -1,61 +1,82 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using petgo.api.Models;
+using System.Text.Json;
 
 namespace petgo.api.Data
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
 
-        public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<Passeador> Passeadores { get; set; }
-        public DbSet<Pet> Pets { get; set; }
-        public DbSet<Endereco> Enderecos { get; set; }
-        public DbSet<ServicoPasseador> ServicosPasseadores { get; set; }
         public DbSet<Produto> Produtos { get; set; }
-        public DbSet<Avaliacao> Avaliacoes { get; set; }
-        public DbSet<AnuncioDoacao> AnunciosDoacoes { get; set; }
         public DbSet<CategoriaProduto> CategoriasProdutos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Produto>()
-                .Property(p => p.Preco)
-                .HasPrecision(18, 2);
+            // Configurar Produto
+            modelBuilder.Entity<Produto>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                
+                entity.Property(e => e.Nome)
+                    .IsRequired()
+                    .HasMaxLength(100);
+                    
+                entity.Property(e => e.Descricao)
+                    .IsRequired()
+                    .HasMaxLength(500);
+                    
+                entity.Property(e => e.Preco)
+                    .IsRequired()
+                    .HasColumnType("decimal(18,2)");
+                    
+                entity.Property(e => e.Estoque)
+                    .IsRequired();
+                    
+                entity.Property(e => e.Status)
+                    .IsRequired()
+                    .HasConversion<int>();
 
-            modelBuilder.Entity<Passeador>()
-                .Property(p => p.ValorCobrado)
-                .HasPrecision(18, 2);
+                entity.Property(e => e.CategoriaId)
+                    .IsRequired();
+                    
+                entity.Property(e => e.CategoriaProdutoId)
+                    .IsRequired();
 
-            var stringListComparer = new ValueComparer<List<string>>(
-                (c1, c2) => c1!.SequenceEqual(c2!),
-                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-                c => c.ToList());
+                // Configurar imagens como JSON
+                entity.Property(e => e.ImagensJson)
+                    .HasColumnName("ImagensJson")
+                    .HasDefaultValue("[]");
 
-            modelBuilder.Entity<Pet>()
-                .Property(p => p.Fotos)
-                .HasConversion(
-                    v => string.Join(';', v),
-                    v => v.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList()
-                )
-                .Metadata.SetValueComparer(stringListComparer);
+                // Relacionamento com categoria
+                entity.HasOne(e => e.CategoriaProduto)
+                    .WithMany()
+                    .HasForeignKey(e => e.CategoriaProdutoId)
+                    .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Produto>()
-                .Property(p => p.Imagens)
-                .HasConversion(
-                    v => string.Join(';', v),
-                    v => v.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList()
-                )
-                .Metadata.SetValueComparer(stringListComparer);
+                // Index para performance
+                entity.HasIndex(e => e.Nome);
+                entity.HasIndex(e => e.Status);
+                entity.HasIndex(e => e.CategoriaProdutoId);
+            });
+
+            // Configurar CategoriaProduto
+            modelBuilder.Entity<CategoriaProduto>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                
+                entity.Property(e => e.Nome)
+                    .IsRequired()
+                    .HasMaxLength(100);
+                    
+                entity.HasIndex(e => e.Nome).IsUnique();
+            });
         }
     }
 }

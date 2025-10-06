@@ -33,20 +33,37 @@ class ProdutoService {
 
   async create(produto: CreateProdutoInput): Promise<Produto> {
     try {
+      console.log("📤 Enviando produto para criação:", produto);
       const response = await api.post(this.baseUrl, produto);
+      console.log("✅ Produto criado:", response.data);
       return response.data;
-    } catch (error) {
-      console.error("Erro ao criar produto:", error);
+    } catch (error: any) {
+      console.error("❌ Erro ao criar produto:", error);
+      console.error("📋 Response data:", error?.response?.data);
       throw error;
     }
   }
 
   async update(id: number, produto: UpdateProdutoInput): Promise<Produto> {
     try {
-      const response = await api.put(`${this.baseUrl}/${id}`, produto);
+      // Log detalhado para debug
+      console.log("📤 Enviando produto para atualização:");
+      console.log("🆔 ID:", id);
+      console.log("📋 Dados:", produto);
+
+      // Garantir que o ID está correto
+      const produtoComId = { ...produto, id };
+
+      const response = await api.put(`${this.baseUrl}/${id}`, produtoComId);
+      console.log("✅ Produto atualizado:", response.data);
       return response.data;
-    } catch (error) {
-      console.error(`Erro ao atualizar produto ${id}:`, error);
+    } catch (error: any) {
+      console.error("❌ Erro ao atualizar produto:", error);
+      console.error("🆔 ID tentativa:", id);
+      console.error("📋 Dados enviados:", produto);
+      console.error("📋 Response data:", error?.response?.data);
+      console.error("📋 Status:", error?.response?.status);
+      console.error("📋 Headers:", error?.response?.headers);
       throw error;
     }
   }
@@ -77,10 +94,7 @@ class ProdutoService {
       const response = await api.get(`${this.baseUrl}/category/${categoryId}`);
       return response.data;
     } catch (error) {
-      console.error(
-        `Erro ao buscar produtos da categoria ${categoryId}:`,
-        error
-      );
+      console.error("Erro ao buscar produtos por categoria:", error);
       throw error;
     }
   }

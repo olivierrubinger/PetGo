@@ -24,7 +24,7 @@ namespace petgo.api.Services
                 await context.SaveChangesAsync();
             }
 
-            // Criar produtos de exemplo se não existirem
+            // Criar produtos de exemplo se não existirem (SEM IMAGENS inicialmente)
             if (!await context.Produtos.AnyAsync())
             {
                 var produtos = new[]
@@ -32,49 +32,53 @@ namespace petgo.api.Services
                     new Produto
                     {
                         Nome = "Ração Premium Golden para Cães Adultos",
-                        Descricao = "Ração super premium completa e balanceada para cães adultos de todas as raças.",
+                        Descricao = "Ração super premium completa e balanceada para cães adultos de todas as raças. Ingredientes naturais e alta digestibilidade.",
                         Preco = 89.90m,
                         Estoque = 50,
                         Status = StatusProduto.ATIVO,
                         CategoriaId = 1,
                         CategoriaProdutoId = 1,
-                        Imagens = new List<string> { 
-                            "https://picsum.photos/300/300?random=1&blur=0",
-                            "https://picsum.photos/300/300?random=2&blur=0" 
-                        }
+                        Imagens = new List<string>() 
                     },
                     new Produto
                     {
                         Nome = "Brinquedo Kong Classic",
-                        Descricao = "Brinquedo resistente e durável, ideal para cães que gostam de mastigar.",
+                        Descricao = "Brinquedo resistente e durável, ideal para cães que gostam de mastigar. Material atóxico e seguro.",
                         Preco = 45.50m,
                         Estoque = 25,
                         Status = StatusProduto.ATIVO,
                         CategoriaId = 2,
                         CategoriaProdutoId = 2,
-                        Imagens = new List<string> { 
-                            "https://picsum.photos/300/300?random=3&blur=0" 
-                        }
+                        Imagens = new List<string>()
                     },
                     new Produto
                     {
                         Nome = "Coleira Ajustável Premium",
-                        Descricao = "Coleira confortável e resistente com fivela de liberação rápida.",
+                        Descricao = "Coleira confortável e resistente com fivela de liberação rápida. Disponível em várias cores.",
                         Preco = 29.90m,
                         Estoque = 30,
                         Status = StatusProduto.ATIVO,
                         CategoriaId = 5,
                         CategoriaProdutoId = 5,
-                        Imagens = new List<string> { 
-                            "https://picsum.photos/300/300?random=4&blur=0" 
-                        }
+                        Imagens = new List<string>()
                     },
                     new Produto
                     {
-                        Nome = "Produto em Rascunho",
-                        Descricao = "Este produto ainda está sendo finalizado.",
+                        Nome = "Shampoo Pet Care Natural",
+                        Descricao = "Shampoo hipoalergênico para pets com pele sensível. Fórmula natural com extratos de camomila.",
+                        Preco = 24.90m,
+                        Estoque = 40,
+                        Status = StatusProduto.ATIVO,
+                        CategoriaId = 4,
+                        CategoriaProdutoId = 4,
+                        Imagens = new List<string>()
+                    },
+                    new Produto
+                    {
+                        Nome = "Produto em Desenvolvimento",
+                        Descricao = "Este produto ainda está sendo finalizado e testado pela nossa equipe.",
                         Preco = 19.90m,
-                        Estoque = 10,
+                        Estoque = 0,
                         Status = StatusProduto.RASCUNHO,
                         CategoriaId = 1,
                         CategoriaProdutoId = 1,

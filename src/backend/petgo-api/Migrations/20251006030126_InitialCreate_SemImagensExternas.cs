@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace petgo.api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate_WithValidImages : Migration
+    public partial class InitialCreate_SemImagensExternas : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
