@@ -46,7 +46,7 @@ namespace petgo.api.Models
         [Required]
         public required string Estado { get; set; }
         
-        public List<string> Fotos { get; set; } = new List<string>();
+        public string FotosJson { get; set; } = "[]";
         
         [Required]
         public required string Observacoes { get; set; }

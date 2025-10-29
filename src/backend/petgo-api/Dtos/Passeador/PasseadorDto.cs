@@ -10,15 +10,15 @@ namespace petgo.api.Dtos.Passeador
     {
         // Dados do Passeador
         public int UsuarioId { get; set; }
-        public  required string Descricao { get; set; }
+        public  string Descricao { get; set; } = string.Empty;
         public decimal ValorCobrado { get; set; }
         public double AvaliacaoMedia { get; set; }
         public int QuantidadeAvaliacoes { get; set; }
 
         // Dados do Usuário 
-        public required string Nome { get; set; }
-        public required string FotoPerfil { get; set; }
-        public required string Telefone { get; set; }
+        public string Nome { get; set; } = string.Empty;
+        public string FotoPerfil { get; set; } = string.Empty;
+        public string Telefone { get; set; } = string.Empty;
 
 
         public List<ServicoPasseadorDto> Servicos { get; set; } = new List<ServicoPasseadorDto>();

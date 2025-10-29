@@ -124,6 +124,7 @@ namespace petgo.api.Data
                 entity.HasIndex(p => p.ValorCobrado);
             });
 
+            // Configurar Usuario
             modelBuilder.Entity<Usuario>(entity =>
             {
                 entity.HasKey(e => e.Id);
@@ -146,7 +147,7 @@ namespace petgo.api.Data
                     .HasMaxLength(20);
 
                 entity.Property(e => e.FotoPerfil)
-                    .IsRequired()
+                    .IsRequired(false)
                     .HasMaxLength(500);
 
                 entity.Property(e => e.Tipo)
@@ -182,6 +183,7 @@ namespace petgo.api.Data
                 entity.HasIndex(e => e.Tipo);
             });
 
+            // Configurar Serviço Passeador
             modelBuilder.Entity<ServicoPasseador>(entity =>
             {
                 entity.HasKey(e => e.Id);
@@ -206,7 +208,161 @@ namespace petgo.api.Data
 
                 // Index para Perfomance
                 entity.HasIndex(s => s.TipoServico);
-                entity.HasIndex(s => s.Ativo);        
+                entity.HasIndex(s => s.Ativo);
+            });
+
+            // Configurar Pet
+            modelBuilder.Entity<Pet>(entity =>
+        {
+            entity.HasKey(p => p.Id);
+            entity.Property(p => p.Id).ValueGeneratedOnAdd();
+
+
+            entity.Property(p => p.Nome)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(p => p.Raca)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(p => p.Cidade)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(p => p.Estado)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(p => p.Observacoes)
+                .IsRequired(false)
+                .HasMaxLength(1000);
+
+
+            entity.Property(p => p.Especie)
+                .IsRequired()
+                .HasConversion<string>()
+                .HasMaxLength(50);
+
+            entity.Property(p => p.Porte)
+                .IsRequired()
+                .HasConversion<string>()
+                .HasMaxLength(50);
+
+
+            entity.Property(p => p.idadeMeses)
+                .IsRequired();
+
+            // Configurar imagens como JSON
+            entity.Property(p => p.FotosJson)
+                .IsRequired()
+                .HasDefaultValue("[]");
+
+            // Relacionamento com AnuncioDoacao
+            entity.HasOne(p => p.AnuncioDoacao)
+                .WithOne(a => a.Pet)
+                .HasForeignKey<AnuncioDoacao>(a => a.PetId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+            // Configurar AnuncioDoacao
+            modelBuilder.Entity<AnuncioDoacao>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+
+                entity.Property(e => e.Descricao)
+                    .IsRequired()
+                    .HasMaxLength(2000);
+
+                entity.Property(e => e.ContatoWhatsapp)
+                    .IsRequired()
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.Status)
+                    .IsRequired()
+                    .HasConversion<string>()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Moderacao)
+                    .IsRequired()
+                    .HasConversion<string>()
+                    .HasMaxLength(50);
+
+                // Index para Performance
+                entity.HasIndex(e => e.Status);
+                entity.HasIndex(e => e.Moderacao);
+            });
+
+            // Configurar Avaliacao
+            modelBuilder.Entity<Avaliacao>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.AlvoTipo)
+                    .IsRequired()
+                    .HasConversion<string>()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.AlvoId)
+                    .IsRequired();
+
+                entity.Property(e => e.Nota)
+                    .IsRequired();
+                entity.ToTable(t => t.HasCheckConstraint("CK_Avaliacao_Nota", "[Nota] >= 1 AND [Nota] <= 5"));
+
+                // Strings
+                entity.Property(e => e.Titulo)
+                    .IsRequired()
+                    .HasMaxLength(150);
+
+                entity.Property(e => e.Comentario)
+                    .IsRequired()
+                    .HasMaxLength(2500);
+
+                entity.Property(e => e.AutorNome)
+                    .IsRequired(false)
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.DataCriacao)
+                    .IsRequired()
+                    .HasDefaultValueSql("datetime('now')");
+
+                // index para Performance
+                entity.HasIndex(e => new { e.AlvoTipo, e.AlvoId })
+                    .HasDatabaseName("IX_Avaliacao_Alvo");
+            });
+
+            // Configurar Endereco
+            modelBuilder.Entity<Endereco>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Rua)
+                    .IsRequired()
+                    .HasMaxLength(200);
+
+                entity.Property(e => e.Estado)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.Cep)
+                    .IsRequired()
+                    .HasMaxLength(9);
+
+                entity.Property(e => e.Pais)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                // Relacionamento com Usuario
+                entity.HasOne(e => e.Usuario)
+                    .WithMany(u => u.Enderecos)
+                    .HasForeignKey(e => e.UsuarioId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
             });
         }
     }

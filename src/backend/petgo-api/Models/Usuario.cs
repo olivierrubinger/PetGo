@@ -29,8 +29,7 @@ namespace petgo.api.Models
         [Required]
         public TipoUsuario Tipo { get; set; }
         
-        [Required]
-        public required string FotoPerfil { get; set; }
+        public string? FotoPerfil { get; set; }
         
         [Required]
         public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
