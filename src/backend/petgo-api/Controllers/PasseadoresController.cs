@@ -34,7 +34,7 @@ namespace petgo.api.Controllers
                        Id = s.Id,
                        Titulo = s.Titulo,
                        Descricao = s.Descricao,
-                       TipoServico = s.TipoServico.ToString()
+                       TipoServico = (int)s.TipoServico
                    }).ToList()
     };
 
