@@ -1,3 +1,4 @@
+using System; 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
@@ -16,9 +17,29 @@ namespace petgo.api.Models
         [StringLength(500)]
         public string Descricao { get; set; } = string.Empty;
 
+        // Adoção/Pet
+        [StringLength(50)]
+        public string? Especie { get; set; } 
+
+        [StringLength(100)]
+        public string? Raca { get; set; } 
+
+        public DateTime? DataNascimento { get; set; } 
+
+        public bool Castrado { get; set; } = false;
+        
+        public bool Vacinado { get; set; } = false;
+
+        [StringLength(50)]
+        public string? Porte { get; set; } 
+
+        [StringLength(500)]
+        public string? Saude { get; set; } 
+        // Fim dos novos campos para Pet
+
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal Preco { get; set; }
+        public decimal Preco { get; set; } // Preço 0.00 para Adoção
 
         [Required]
         public int Estoque { get; set; }

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using petgo.api.Data;
 using petgo.api.Models;
+using petgo.api.DTOs; 
 
 namespace petgo.api.Controllers
 {
@@ -38,53 +39,54 @@ namespace petgo.api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Produto>> Create(Produto produto)
+        public async Task<ActionResult<Produto>> Create(PetCreateDto petDto)
         {
+            
             try
             {
-                // Validações básicas
-                if (string.IsNullOrWhiteSpace(produto.Nome))
+            
+                if (petDto.Preco < 0)
                 {
-                    return BadRequest("Nome é obrigatório");
-                }
                 
-                if (string.IsNullOrWhiteSpace(produto.Descricao))
-                {
-                    return BadRequest("Descrição é obrigatória");
-                }
-                
-                if (produto.Preco <= 0)
-                {
-                    return BadRequest("Preço deve ser maior que zero");
-                }
-                
-                if (produto.Estoque < 0)
-                {
-                    return BadRequest("Estoque não pode ser negativo");
+                    return BadRequest("Preço não pode ser negativo.");
                 }
 
-                // Verificar se categoria existe
                 var categoriaExiste = await _context.CategoriasProdutos
-                    .AnyAsync(c => c.Id == produto.CategoriaProdutoId);
+                    .AnyAsync(c => c.Id == petDto.CategoriaId);
                 
                 if (!categoriaExiste)
                 {
-                    return BadRequest("Categoria não encontrada");
+                    return BadRequest("Categoria não encontrada. Verifique o CategoriaId.");
                 }
+                var produto = new Produto
+                {
+                    Nome = petDto.Nome,
+                    Descricao = petDto.Descricao,
+                    Preco = petDto.Preco,
+                    Estoque = petDto.Estoque,
+                    Status = StatusProduto.ATIVO, 
+                    CategoriaId = petDto.CategoriaId,
+                    CategoriaProdutoId = petDto.CategoriaId, 
 
-                // Garantir consistência entre campos de categoria
-                produto.CategoriaId = produto.CategoriaProdutoId;
+                    Especie = petDto.Especie,
+                    Raca = petDto.Raca,
+                    DataNascimento = petDto.DataNascimento,
+                    Castrado = petDto.Castrado,
+                    Vacinado = petDto.Vacinado,
+                    Porte = petDto.Porte,
+                    Saude = petDto.Saude,
+
+    
+                    Imagens = petDto.Imagens ?? new List<string>(),
+                };
                 
-                // Inicializar lista de imagens se null
-                produto.Imagens ??= new List<string>();
-
-                // Limpar ID para criação
+                
                 produto.Id = 0;
 
                 _context.Produtos.Add(produto);
                 await _context.SaveChangesAsync();
 
-                // Recarregar produto com categoria
+            
                 var produtoCriado = await _context.Produtos
                     .Include(p => p.CategoriaProduto)
                     .FirstOrDefaultAsync(p => p.Id == produto.Id);
@@ -99,11 +101,12 @@ namespace petgo.api.Controllers
         }
 
         [HttpPut("{id}")]
+        
         public async Task<ActionResult<Produto>> Update(int id, Produto produto)
         {
             try
             {
-                // Verificar se IDs coincidem
+                // Verifica se IDs coincidem
                 if (id != produto.Id && produto.Id != 0)
                 {
                     return BadRequest("ID do produto não confere");
@@ -127,9 +130,9 @@ namespace petgo.api.Controllers
                     return BadRequest("Descrição é obrigatória");
                 }
                 
-                if (produto.Preco <= 0)
+                if (produto.Preco < 0)
                 {
-                    return BadRequest("Preço deve ser maior que zero");
+                    return BadRequest("Preço não pode ser negativo");
                 }
                 
                 if (produto.Estoque < 0)
@@ -146,7 +149,6 @@ namespace petgo.api.Controllers
                     return BadRequest("Categoria não encontrada");
                 }
 
-                // Atualizar campos
                 produtoDb.Nome = produto.Nome;
                 produtoDb.Descricao = produto.Descricao;
                 produtoDb.Preco = produto.Preco;
@@ -155,7 +157,15 @@ namespace petgo.api.Controllers
                 produtoDb.CategoriaId = produto.CategoriaProdutoId;
                 produtoDb.CategoriaProdutoId = produto.CategoriaProdutoId;
                 
-                // Atualizar imagens (importante!)
+                produtoDb.Especie = produto.Especie;
+                produtoDb.Raca = produto.Raca;
+                produtoDb.DataNascimento = produto.DataNascimento;
+                produtoDb.Castrado = produto.Castrado;
+                produtoDb.Vacinado = produto.Vacinado;
+                produtoDb.Porte = produto.Porte;
+                produtoDb.Saude = produto.Saude;
+                
+                // Atualizar imagens
                 produtoDb.Imagens = produto.Imagens ?? new List<string>();
 
                 await _context.SaveChangesAsync();

@@ -4,8 +4,9 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "../lib/utils";
-import { Menu, X, Heart, Package, Users, Home } from "lucide-react";
+import { Menu, X, Heart, Package, Users, Home, PawPrint } from "lucide-react"; 
 
+//menu principal
 const navigationItems = [
   {
     name: "Home",
@@ -25,7 +26,7 @@ const navigationItems = [
   {
     name: "Adoção",
     href: "/adocao",
-    icon: Heart,
+    icon: PawPrint, 
   },
   {
     name: "Passeadores",
@@ -38,6 +39,7 @@ export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
+  // Verifica qual link está ativo
   const isActiveLink = (href: string) => {
     if (href === "/") {
       return pathname === "/";
@@ -57,7 +59,7 @@ export function Navigation() {
             <span className="text-2xl font-bold text-gray-900">PetGo</span>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* 🖥️ Menu Desktop */}
           <div className="hidden md:flex space-x-1">
             {navigationItems.map((item) => {
               const Icon = item.icon;
@@ -79,7 +81,7 @@ export function Navigation() {
             })}
           </div>
 
-          {/* User Actions */}
+          {/* Ações do usuário (desktop) */}
           <div className="hidden md:flex items-center space-x-4">
             <button className="text-gray-600 hover:text-gray-900 transition-colors">
               Login
@@ -89,7 +91,7 @@ export function Navigation() {
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Botão menu mobile */}
           <button
             className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
             onClick={() => setIsOpen(!isOpen)}
@@ -103,7 +105,7 @@ export function Navigation() {
           </button>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Menu Mobile */}
         {isOpen && (
           <div className="md:hidden py-4 border-t border-gray-200">
             <div className="space-y-2">
@@ -128,7 +130,7 @@ export function Navigation() {
               })}
             </div>
 
-            {/* Mobile User Actions */}
+            {/* Ações Mobile */}
             <div className="pt-4 border-t border-gray-200 mt-4 space-y-2">
               <button className="w-full text-left px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
                 Login
