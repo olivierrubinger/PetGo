@@ -11,10 +11,10 @@ namespace petgo.api.Dtos.Pet
         public int UsuarioId { get; set; }
         public string Nome { get; set; } = string.Empty;
         
-        public string Especie { get; set; } = string.Empty;
+        public int Especie { get; set; } 
         public string Raca { get; set; } = string.Empty;
         public int idadeMeses { get; set; }
-        public string Porte { get; set; } = string.Empty;
+        public int Porte { get; set; } 
         
         public string Cidade { get; set; } = string.Empty;
         public string Estado { get; set; } = string.Empty;

@@ -10,6 +10,6 @@ namespace petgo.api.Dtos.Passeador
         public int Id { get; set; }
         public required string Titulo { get; set; }
         public required string Descricao { get; set; }
-        public required string TipoServico { get; set; }
+        public int TipoServico { get; set; }
     }
 }

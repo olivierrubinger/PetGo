@@ -15,7 +15,7 @@ namespace petgo.api.Dtos.Usuario
         public string Email { get; set; } = string.Empty;
         public string Telefone { get; set; } = string.Empty;
         public string? FotoPerfil { get; set; }
-        public string Tipo { get; set; } = string.Empty;
+        public int Tipo { get; set; }
 
         public List<EnderecoDto> Enderecos { get; set; } = [];
         public List<PetDto> Pets { get; set; } = [];

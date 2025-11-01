@@ -36,7 +36,7 @@
                     Email = usuario.Email,
                     Telefone = usuario.Telefone,
                     FotoPerfil = usuario.FotoPerfil,
-                    Tipo = usuario.Tipo.ToString(), // Conversão de Enum
+                    Tipo = (int)usuario.Tipo, 
 
                     // Mapeia a sub-lista de Enderecos
                     Enderecos = usuario.Enderecos.Select(e => new EnderecoDto
@@ -55,10 +55,10 @@
                         Id = p.Id,
                         UsuarioId = p.UsuarioId,
                         Nome = p.Nome,
-                        Especie = p.Especie.ToString(),
+                        Especie = (int)p.Especie,
                         Raca = p.Raca,
                         idadeMeses = p.idadeMeses,
-                        Porte = p.Porte.ToString(),
+                        Porte = (int)p.Porte,
                         Cidade = p.Cidade,
                         Estado = p.Estado,
                         Observacoes = p.Observacoes,
@@ -84,7 +84,7 @@
                             Id = s.Id,
                             Titulo = s.Titulo,
                             Descricao = s.Descricao,
-                            TipoServico = s.TipoServico.ToString()
+                            TipoServico = (int)s.TipoServico
                         }).ToList() ?? [] // Garante que não quebre se Servicos for nulo
                     }
                 };
@@ -145,7 +145,7 @@
                         Email = usuario.Email,
                         Telefone = usuario.Telefone,
                         FotoPerfil = usuario.FotoPerfil,
-                        Tipo = usuario.Tipo.ToString(),
+                        Tipo = (int)usuario.Tipo,
                         Enderecos = [],
                         Pets = [],
                         Passeador = null
@@ -259,7 +259,7 @@
                     Email = usuario.Email,
                     Telefone = usuario.Telefone,
                     FotoPerfil = usuario.FotoPerfil,
-                    Tipo = usuario.Tipo.ToString()
+                    Tipo = (int)usuario.Tipo
                 };
 
                 return Ok(new LoginResponseDto
