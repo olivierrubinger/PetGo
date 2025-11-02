@@ -4,7 +4,12 @@ using petgo.api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// APENAS PostgreSQL (Supabase)
+// FORÇAR IPv4 ANTES DE QUALQUER CONEXÃO (sem usar ServicePointManager obsoleto)
+AppContext.SetSwitch("System.Net.DisableIPv6", true);
+AppContext.SetSwitch("System.Net.PreferIPv4Stack", true);
+AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", false);
+
+// APENAS PostgreSQL (Supabase) - FORÇAR IPv4
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 if (string.IsNullOrEmpty(connectionString))
@@ -22,7 +27,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
             maxRetryDelay: TimeSpan.FromSeconds(30),
             errorCodesToAdd: null
         );
-        npgsqlOptions.CommandTimeout(60); // Timeout de 60 segundos
+        npgsqlOptions.CommandTimeout(60);
     });
 });
 
@@ -86,7 +91,7 @@ using (var scope = app.Services.CreateScope())
     {
         Console.WriteLine($"❌ Erro ao inicializar banco: {ex.Message}");
         Console.WriteLine($"Stack: {ex.StackTrace}");
-        throw; // Re-throw para não iniciar API com banco quebrado
+        throw;
     }
 }
 

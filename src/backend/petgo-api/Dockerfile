@@ -2,6 +2,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
+# Desabilitar IPv6 no build
+ENV DOTNET_SYSTEM_NET_DISABLEIPV6=1
+
 # Copiar csproj e restaurar
 COPY ["petgo.api.csproj", "./"]
 RUN dotnet restore "petgo.api.csproj"
@@ -21,14 +24,16 @@ WORKDIR /app
 # Instalar curl para health checks
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
+# DESABILITAR IPv6 NO SISTEMA
+RUN echo "precedence ::ffff:0:0/96  100" >> /etc/gai.conf
+
 COPY --from=publish /app/publish .
 
-# Porta do Railway (importante: usar variável $PORT)
+# Variáveis de ambiente - FORÇAR IPv4
 ENV ASPNETCORE_URLS=http://+:$PORT
 ENV ASPNETCORE_ENVIRONMENT=Production
-
-# Forçar uso de IPv4
-ENV DOTNET_SYSTEM_NET_SOCKETS_INLINE_COMPLETIONS=1
-ENV DOTNET_USE_POLLING_FILE_WATCHER=1
+ENV DOTNET_SYSTEM_NET_DISABLEIPV6=1
+ENV DOTNET_SYSTEM_NET_HTTP_SOCKETSHTTPHANDLER_HTTP2SUPPORT=false
+ENV COMPlus_EnableDiagnostics=0
 
 ENTRYPOINT ["dotnet", "petgo.api.dll"]
