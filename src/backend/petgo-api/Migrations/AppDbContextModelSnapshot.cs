@@ -244,7 +244,6 @@ namespace petgo.api.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<string>("Observacoes")
-                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
@@ -279,26 +278,13 @@ namespace petgo.api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Castrado")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("CategoriaId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("CategoriaProdutoId")
                         .HasColumnType("integer");
-
-                    b.Property<DateTime?>("DataNascimento")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
-
-                    b.Property<string>("Especie")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
 
                     b.Property<int>("Estoque")
                         .HasColumnType("integer");
@@ -307,34 +293,18 @@ namespace petgo.api.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("jsonb")
-                        .HasDefaultValue("[]")
-                        .HasColumnName("ImagensJson");
+                        .HasDefaultValue("[]");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<string>("Porte")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
                     b.Property<decimal>("Preco")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Raca")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("Saude")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
                     b.Property<int>("Status")
                         .HasColumnType("integer");
-
-                    b.Property<bool>("Vacinado")
-                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
@@ -489,13 +459,13 @@ namespace petgo.api.Migrations
 
             modelBuilder.Entity("petgo.api.Models.Produto", b =>
                 {
-                    b.HasOne("petgo.api.Models.CategoriaProduto", "CategoriaProduto")
+                    b.HasOne("petgo.api.Models.CategoriaProduto", "Categoria")
                         .WithMany()
                         .HasForeignKey("CategoriaProdutoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("CategoriaProduto");
+                    b.Navigation("Categoria");
                 });
 
             modelBuilder.Entity("petgo.api.Models.ServicoPasseador", b =>

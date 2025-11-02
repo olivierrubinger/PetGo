@@ -31,63 +31,17 @@ namespace petgo.api.Data
             {
                 entity.ToTable("Produtos");
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
-
-                entity.Property(e => e.Nome)
-                    .IsRequired()
-                    .HasMaxLength(100);
-
-                entity.Property(e => e.Descricao)
-                    .IsRequired()
-                    .HasMaxLength(500);
+                entity.Property(e => e.Nome).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Preco).HasColumnType("decimal(18,2)");
+                entity.Property(e => e.ImagensJson).HasColumnType("jsonb").HasDefaultValue("[]");
                 
-                entity.Property(e => e.Especie)
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Raca)
-                    .HasMaxLength(100);
-
-                entity.Property(e => e.Porte)
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Saude)
-                    .HasMaxLength(500);
-
-                entity.Property(e => e.DataNascimento);
-                entity.Property(e => e.Castrado);
-                entity.Property(e => e.Vacinado);
-                
-                entity.Property(e => e.Preco)
-                    .IsRequired()
-                    .HasColumnType("decimal(18,2)");
-
-                entity.Property(e => e.Estoque)
-                    .IsRequired();
-
-                entity.Property(e => e.Status)
-                    .IsRequired()
-                    .HasConversion<int>();
-
-                entity.Property(e => e.CategoriaId)
-                    .IsRequired();
-
-                entity.Property(e => e.CategoriaProdutoId)
-                    .IsRequired();
-
-                entity.Property(e => e.ImagensJson)
-                    .HasColumnName("ImagensJson")
-                    .HasColumnType("jsonb")
-                    .HasDefaultValue("[]");
-
-                entity.HasOne(e => e.CategoriaProduto)
-                    .WithMany()
-                    .HasForeignKey(e => e.CategoriaProdutoId)
-                    .OnDelete(DeleteBehavior.Restrict);
-
-                // Índices para performance
                 entity.HasIndex(e => e.Nome);
                 entity.HasIndex(e => e.Status);
-                entity.HasIndex(e => e.CategoriaProdutoId);
+
+                entity.HasOne(p => p.Categoria)
+                    .WithMany()
+                    .HasForeignKey(p => p.CategoriaProdutoId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             // ============================================

@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace petgo.api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -73,17 +73,9 @@ namespace petgo.api.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Nome = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Descricao = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    Especie = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-                    Raca = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    DataNascimento = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Castrado = table.Column<bool>(type: "boolean", nullable: false),
-                    Vacinado = table.Column<bool>(type: "boolean", nullable: false),
-                    Porte = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-                    Saude = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
                     Preco = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
                     Estoque = table.Column<int>(type: "integer", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    CategoriaId = table.Column<int>(type: "integer", nullable: false),
                     CategoriaProdutoId = table.Column<int>(type: "integer", nullable: false),
                     ImagensJson = table.Column<string>(type: "jsonb", nullable: false, defaultValue: "[]")
                 },
@@ -156,8 +148,8 @@ namespace petgo.api.Migrations
                     Porte = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Cidade = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Estado = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    FotosJson = table.Column<string>(type: "jsonb", nullable: false, defaultValue: "[]"),
-                    Observacoes = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false)
+                    Observacoes = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true),
+                    FotosJson = table.Column<string>(type: "jsonb", nullable: false, defaultValue: "[]")
                 },
                 constraints: table =>
                 {

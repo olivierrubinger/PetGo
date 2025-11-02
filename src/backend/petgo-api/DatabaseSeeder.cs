@@ -10,6 +10,7 @@ namespace petgo.api.Services
         {
             Console.WriteLine("🌱 Iniciando seed do banco de dados...");
 
+            // Seed Categorias
             if (!await context.CategoriasProdutos.AnyAsync())
             {
                 Console.WriteLine("📦 Criando categorias...");
@@ -53,6 +54,7 @@ namespace petgo.api.Services
                 Console.WriteLine("✅ Categorias já existem no banco.");
             }
 
+            // Seed Produtos
             if (!await context.Produtos.AnyAsync())
             {
                 Console.WriteLine("📦 Criando produtos de exemplo...");
@@ -66,8 +68,7 @@ namespace petgo.api.Services
                         Preco = 89.90m,
                         Estoque = 50,
                         Status = StatusProduto.ATIVO,
-                        CategoriaId = 1,
-                        CategoriaProdutoId = 1,
+                        CategoriaProdutoId = 1, // ← APENAS esta FK
                         ImagensJson = "[]" 
                     },
                     new Produto
@@ -77,7 +78,6 @@ namespace petgo.api.Services
                         Preco = 45.50m,
                         Estoque = 25,
                         Status = StatusProduto.ATIVO,
-                        CategoriaId = 2,
                         CategoriaProdutoId = 2,
                         ImagensJson = "[]"
                     },
@@ -88,7 +88,6 @@ namespace petgo.api.Services
                         Preco = 29.90m,
                         Estoque = 30,
                         Status = StatusProduto.ATIVO,
-                        CategoriaId = 5,
                         CategoriaProdutoId = 5,
                         ImagensJson = "[]"
                     },
@@ -99,7 +98,6 @@ namespace petgo.api.Services
                         Preco = 24.90m,
                         Estoque = 40,
                         Status = StatusProduto.ATIVO,
-                        CategoriaId = 4,
                         CategoriaProdutoId = 4,
                         ImagensJson = "[]"
                     },
@@ -110,7 +108,6 @@ namespace petgo.api.Services
                         Preco = 129.90m,
                         Estoque = 15,
                         Status = StatusProduto.ATIVO,
-                        CategoriaId = 3,
                         CategoriaProdutoId = 3,
                         ImagensJson = "[]"
                     },
@@ -121,7 +118,6 @@ namespace petgo.api.Services
                         Preco = 19.90m,
                         Estoque = 60,
                         Status = StatusProduto.ATIVO,
-                        CategoriaId = 1,
                         CategoriaProdutoId = 1,
                         ImagensJson = "[]"
                     },
@@ -132,7 +128,6 @@ namespace petgo.api.Services
                         Preco = 59.90m,
                         Estoque = 20,
                         Status = StatusProduto.ATIVO,
-                        CategoriaId = 5,
                         CategoriaProdutoId = 5,
                         ImagensJson = "[]"
                     },
@@ -143,7 +138,6 @@ namespace petgo.api.Services
                         Preco = 0.00m,
                         Estoque = 0,
                         Status = StatusProduto.RASCUNHO,
-                        CategoriaId = 1,
                         CategoriaProdutoId = 1,
                         ImagensJson = "[]"
                     }

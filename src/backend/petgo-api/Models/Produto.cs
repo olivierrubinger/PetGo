@@ -1,114 +1,55 @@
-using System; 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json;
 
 namespace petgo.api.Models
 {
+    public enum StatusProduto
+    {
+        RASCUNHO = 0,
+        ATIVO = 1,
+        INATIVO = 2
+    }
+
     public class Produto
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
-        [StringLength(100)]
+        [MaxLength(100)]
         public string Nome { get; set; } = string.Empty;
 
         [Required]
-        [StringLength(500)]
+        [MaxLength(500)]
         public string Descricao { get; set; } = string.Empty;
-
-        // Adoção/Pet
-        [StringLength(50)]
-        public string? Especie { get; set; } 
-
-        [StringLength(100)]
-        public string? Raca { get; set; } 
-
-        public DateTime? DataNascimento { get; set; } 
-
-        public bool Castrado { get; set; } = false;
-        
-        public bool Vacinado { get; set; } = false;
-
-        [StringLength(50)]
-        public string? Porte { get; set; } 
-
-        [StringLength(500)]
-        public string? Saude { get; set; } 
-        // Fim dos novos campos para Pet
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal Preco { get; set; } // Preço 0.00 para Adoção
+        public decimal Preco { get; set; }
 
         [Required]
         public int Estoque { get; set; }
 
-        [Required]
-        public StatusProduto Status { get; set; }
+        public StatusProduto Status { get; set; } = StatusProduto.ATIVO;
 
-        // Campos de categoria - ambos para compatibilidade
-        [Required]
-        public int CategoriaId { get; set; }
-        
-        [Required]
+        // Foreign Keys
         public int CategoriaProdutoId { get; set; }
 
-        // Relacionamento
-        public CategoriaProduto? CategoriaProduto { get; set; }
+        // Navigation Property - ADICIONAR ESTA PROPRIEDADE!
+        [ForeignKey("CategoriaProdutoId")]
+        public CategoriaProduto? Categoria { get; set; }
 
-        // Imagens como JSON
-        private string _imagensJson = "[]";
-
-        [Column("ImagensJson")]
-        public string ImagensJson
-        {
-            get => _imagensJson;
-            set
-            {
-                _imagensJson = value ?? "[]";
-                try
-                {
-                    Imagens = JsonSerializer.Deserialize<List<string>>(value ?? "[]") ?? new List<string>();
-                }
-                catch
-                {
-                    Imagens = new List<string>();
-                }
-            }
-        }
+        // Imagens em JSON
+        [Column(TypeName = "jsonb")]
+        public string ImagensJson { get; set; } = "[]";
 
         [NotMapped]
         public List<string> Imagens
         {
-            get
-            {
-                try
-                {
-                    return JsonSerializer.Deserialize<List<string>>(_imagensJson) ?? new List<string>();
-                }
-                catch
-                {
-                    return new List<string>();
-                }
-            }
-            set
-            {
-                try
-                {
-                    _imagensJson = JsonSerializer.Serialize(value ?? new List<string>());
-                }
-                catch
-                {
-                    _imagensJson = "[]";
-                }
-            }
+            get => string.IsNullOrEmpty(ImagensJson) 
+                ? new List<string>() 
+                : System.Text.Json.JsonSerializer.Deserialize<List<string>>(ImagensJson) ?? new List<string>();
+            set => ImagensJson = System.Text.Json.JsonSerializer.Serialize(value);
         }
-    }
-
-    public enum StatusProduto
-    {
-        ATIVO = 0,
-        RASCUNHO = 1
     }
 }
