@@ -1,9 +1,0 @@
-[build]
-builder = "dockerfile"
-dockerfilePath = "src/backend/petgo-api/Dockerfile"
-buildCommand = ""
-
-[deploy]
-startCommand = ""
-restartPolicyType = "on_failure"
-restartPolicyMaxRetries = 10

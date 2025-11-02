@@ -3,17 +3,16 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
 # Copy csproj and restore
-COPY ["src/backend/petgo-api/petgo-api.csproj", "src/backend/petgo-api/"]
-RUN dotnet restore "src/backend/petgo-api/petgo-api.csproj"
+COPY ["petgo.api.csproj", "./"]
+RUN dotnet restore "petgo.api.csproj"
 
 # Copy everything and build
-COPY ["src/backend/petgo-api/", "src/backend/petgo-api/"]
-WORKDIR /src/src/backend/petgo-api
-RUN dotnet build "petgo-api.csproj" -c Release -o /app/build
+COPY . .
+RUN dotnet build "petgo.api.csproj" -c Release -o /app/build
 
 # Publish
 FROM build AS publish
-RUN dotnet publish "petgo-api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "petgo.api.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 # Runtime Stage
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
@@ -32,4 +31,4 @@ ENV ASPNETCORE_ENVIRONMENT=Production
 
 EXPOSE 8080
 
-ENTRYPOINT ["dotnet", "petgo-api.dll"]
+ENTRYPOINT ["dotnet", "petgo.api.dll"]
