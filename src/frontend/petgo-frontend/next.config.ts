@@ -10,13 +10,6 @@ const nextConfig: NextConfig = {
     pagesBufferLength: 2,
   },
 
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-
   // Configurações de imagem - CORRIGIDO
   images: {
     remotePatterns: [

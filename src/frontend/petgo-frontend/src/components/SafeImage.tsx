@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import NextImage from "next/image";
 
 interface SafeImageProps {
   src: string;
@@ -33,10 +34,8 @@ export function SafeImage({
       return;
     }
 
-
     setImageState("loading");
 
-    
     const img = new Image();
 
     img.onload = () => {
@@ -118,9 +117,10 @@ export function SafeImage({
   }
 
   return (
-    <img
+    <NextImage
       src={imgSrc}
       alt={alt}
+      fill
       className={className}
       style={style}
       draggable={false}

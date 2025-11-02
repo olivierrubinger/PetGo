@@ -4,6 +4,7 @@ import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ErrorBoundary from "./ErrorBoundary";
+import { ApiError } from "../types";
 
 // Configurar QueryClient com tratamento de erros melhorado
 const queryClient = new QueryClient({
@@ -12,10 +13,11 @@ const queryClient = new QueryClient({
       staleTime: 1000 * 60 * 5, // 5 minutos
       gcTime: 1000 * 60 * 10, // 10 minutos
       refetchOnWindowFocus: false,
-      retry: (failureCount, error: any) => {
+      retry: (failureCount, error: Error) => {
+        const apiError = error as unknown as ApiError;
         // Não fazer retry para erros 4xx
-        if (error?.status >= 400 && error?.status < 500) {
-          console.error("❌ Client error, não fazendo retry:", error);
+        if (apiError?.status >= 400 && apiError?.status < 500) {
+          console.error("❌ Client error, não fazendo retry:", apiError);
           return false;
         }
         // Máximo 3 tentativas para erros de rede
@@ -24,13 +26,14 @@ const queryClient = new QueryClient({
       retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
     },
     mutations: {
-      retry: (failureCount, error: any) => {
-        if (error?.status >= 400 && error?.status < 500) {
+      retry: (failureCount, error: Error) => {
+        const apiError = error as unknown as ApiError;
+        if (apiError?.status >= 400 && apiError?.status < 500) {
           return false;
         }
         return failureCount < 2;
       },
-      onError: (error: any) => {
+      onError: (error: Error) => {
         console.error("🚨 Mutation error:", error);
       },
     },
@@ -39,7 +42,7 @@ const queryClient = new QueryClient({
 
 // Global error handler para queries
 queryClient.setMutationDefaults(["produtos"], {
-  onError: (error: any) => {
+  onError: (error: Error) => {
     console.error("🚨 Produto mutation error:", error);
   },
 });

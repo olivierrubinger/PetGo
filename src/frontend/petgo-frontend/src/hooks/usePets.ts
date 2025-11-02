@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { petService } from "../services/pet.service";
-import { Pet, CreatePetInput, UpdatePetInput } from "../types";
+import { CreatePetInput, UpdatePetInput, ApiError } from "../types";
 import { toast } from "../lib/toast";
 
 // Query Keys
@@ -51,7 +51,7 @@ export function useCreatePet() {
       queryClient.setQueryData(PET_QUERY_KEYS.detail(newPet.id), newPet);
       toast.success("Pet cadastrado com sucesso!");
     },
-    onError: (error: any) => {
+    onError: (error: ApiError) => {
       toast.error(error.message || "Erro ao cadastrar pet");
     },
   });
@@ -69,7 +69,7 @@ export function useUpdatePet() {
       queryClient.invalidateQueries({ queryKey: PET_QUERY_KEYS.lists() });
       toast.success("Pet atualizado com sucesso!");
     },
-    onError: (error: any) => {
+    onError: (error: ApiError) => {
       toast.error(error.message || "Erro ao atualizar pet");
     },
   });
@@ -86,7 +86,7 @@ export function useDeletePet() {
       queryClient.invalidateQueries({ queryKey: PET_QUERY_KEYS.lists() });
       toast.success("Pet removido com sucesso!");
     },
-    onError: (error: any) => {
+    onError: (error: ApiError) => {
       toast.error(error.message || "Erro ao remover pet");
     },
   });

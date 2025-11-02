@@ -65,7 +65,8 @@ api.interceptors.response.use(
         break;
       default:
         apiError.message =
-          (error.response?.data as any)?.message || error.message;
+          (error.response?.data as { message?: string })?.message ||
+          error.message;
     }
 
     return Promise.reject(apiError);
@@ -77,8 +78,9 @@ export default api;
 // Helper functions para facilitar o uso
 export const apiClient = {
   get: <T>(url: string) => api.get<ApiResponse<T>>(url),
-  post: <T>(url: string, data?: any) => api.post<ApiResponse<T>>(url, data),
-  put: <T>(url: string, data?: any) => api.put<ApiResponse<T>>(url, data),
-  patch: <T>(url: string, data?: any) => api.patch<ApiResponse<T>>(url, data),
+  post: <T>(url: string, data?: unknown) => api.post<ApiResponse<T>>(url, data),
+  put: <T>(url: string, data?: unknown) => api.put<ApiResponse<T>>(url, data),
+  patch: <T>(url: string, data?: unknown) =>
+    api.patch<ApiResponse<T>>(url, data),
   delete: <T>(url: string) => api.delete<ApiResponse<T>>(url),
 };

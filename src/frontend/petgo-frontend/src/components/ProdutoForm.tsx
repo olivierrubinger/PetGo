@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "./ui/Button";
 import { LoadingSpinner } from "./ui/LoadingSpinner";
 import { X, Trash2, Image as ImageIcon, Upload } from "lucide-react";
-import { StatusProduto } from "../types";
+import { StatusProduto, Produto } from "../types";
 
 // Schema de validação
 const produtoFormSchema = z.object({
@@ -27,7 +28,7 @@ const produtoFormSchema = z.object({
 type ProdutoFormData = z.infer<typeof produtoFormSchema>;
 
 interface ProdutoFormProps {
-  produto?: any;
+  produto?: Produto;
   onSubmit: (data: ProdutoFormData) => void;
   onCancel: () => void;
   isLoading?: boolean;
@@ -123,11 +124,13 @@ export function ProdutoForm({
       const base64Images = await Promise.all(uploadPromises);
 
       setValue("imagens", [...imagens, ...base64Images]);
-    } catch (error: any) {
+    } catch (error) {
       console.error("Erro ao fazer upload das imagens:", error);
-      alert(
-        error.message || "Erro ao fazer upload das imagens. Tente novamente."
-      );
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Erro ao fazer upload das imagens. Tente novamente.";
+      alert(errorMessage);
     } finally {
       setUploadingImage(false);
       // Limpar o input
@@ -292,14 +295,17 @@ export function ProdutoForm({
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {imagens.map((base64Image, index) => (
                     <div key={index} className="relative group">
-                      <img
-                        src={base64Image}
-                        alt={`Produto ${index + 1}`}
-                        className="w-full h-24 object-cover rounded-lg border-2 border-gray-200 bg-gray-100"
-                        onError={(e) => {
-                          e.currentTarget.style.display = "none";
-                        }}
-                      />
+                      <div className="relative w-full h-24 rounded-lg border-2 border-gray-200 bg-gray-100 overflow-hidden">
+                        <Image
+                          src={base64Image}
+                          alt={`Produto ${index + 1}`}
+                          fill
+                          className="object-cover"
+                          onError={(e) => {
+                            e.currentTarget.style.display = "none";
+                          }}
+                        />
+                      </div>
                       <button
                         type="button"
                         onClick={() => handleImageRemove(index)}

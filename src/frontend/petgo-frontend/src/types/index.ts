@@ -117,7 +117,12 @@ export interface ApiResponse<T> {
 export interface ApiError {
   message: string;
   status: number;
-  details?: any;
+  details?: unknown;
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
 }
 
 // Pagination

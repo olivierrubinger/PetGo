@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { produtoService } from "../services/produto.service";
 import { toast } from "../lib/toast";
-import { Produto, CreateProdutoInput, UpdateProdutoInput } from "../types";
+import { CreateProdutoInput, UpdateProdutoInput, ApiError } from "../types";
 
 // Query Keys para consistência
 export const PRODUTO_QUERY_KEYS = {
@@ -24,12 +24,13 @@ export function useProdutos(page = 1, pageSize = 10) {
         const result = await produtoService.getAll(page, pageSize);
         console.log("✅ Produtos carregados:", result);
         return result;
-      } catch (error: any) {
+      } catch (error) {
         console.error("❌ Erro ao carregar produtos:", error);
 
+        const apiError = error as ApiError;
         const errorMessage =
-          error?.response?.data?.message ||
-          error?.message ||
+          apiError?.response?.data?.message ||
+          apiError?.message ||
           "Erro ao carregar produtos";
 
         throw new Error(errorMessage);
@@ -51,11 +52,12 @@ export function useProduto(id: number) {
     queryFn: async () => {
       try {
         return await produtoService.getById(id);
-      } catch (error: any) {
+      } catch (error) {
         console.error("❌ Erro ao carregar produto:", error);
+        const apiError = error as ApiError;
         const errorMessage =
-          error?.response?.data?.message ||
-          error?.message ||
+          apiError?.response?.data?.message ||
+          apiError?.message ||
           "Erro ao carregar produto";
         throw new Error(errorMessage);
       }
@@ -93,7 +95,7 @@ export function useCreateProduto() {
 
       toast.success("Produto criado com sucesso!");
     },
-    onError: (error: any) => {
+    onError: (error: ApiError) => {
       console.error("🚨 Erro ao criar produto:", error);
       toast.error(error.message || "Erro ao criar produto");
     },
@@ -117,7 +119,7 @@ export function useUpdateProduto() {
 
       toast.success("Produto atualizado com sucesso!");
     },
-    onError: (error: any) => {
+    onError: (error: ApiError) => {
       console.error("🚨 Erro ao atualizar produto:", error);
       toast.error(error.message || "Erro ao atualizar produto");
     },
@@ -133,11 +135,12 @@ export function useDeleteProduto() {
       try {
         console.log("🗑️ Deletando produto:", id);
         return await produtoService.delete(id);
-      } catch (error: any) {
+      } catch (error) {
         console.error("❌ Erro ao deletar produto:", error);
+        const apiError = error as ApiError;
         const errorMessage =
-          error?.response?.data?.message ||
-          error?.message ||
+          apiError?.response?.data?.message ||
+          apiError?.message ||
           "Erro ao deletar produto";
         throw new Error(errorMessage);
       }
@@ -152,7 +155,7 @@ export function useDeleteProduto() {
 
       toast.success("Produto deletado com sucesso!");
     },
-    onError: (error: any, id) => {
+    onError: (error: ApiError, id: number) => {
       console.error("🚨 useDeleteProduto error:", { error, id });
       toast.error(`Erro ao deletar produto: ${error.message}`);
     },

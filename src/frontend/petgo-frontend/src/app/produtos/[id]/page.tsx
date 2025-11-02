@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useProduto, useDeleteProduto } from "../../../hooks/useProdutos";
 import { LoadingSpinner } from "../../../components/ui/LoadingSpinner";
 import { Button } from "../../../components/ui/Button";
 import { formatCurrency } from "../../../lib/utils";
-import { StatusProduto } from "../../../types";
+import { StatusProduto, ApiError } from "../../../types";
 import {
   ArrowLeft,
   Package,
@@ -144,7 +145,7 @@ export default function ProdutoPage() {
         onSuccess: () => {
           router.push("/produtos");
         },
-        onError: (error: any) => {
+        onError: (error: ApiError) => {
           alert("Erro ao excluir produto: " + error.message);
         },
       });
@@ -195,10 +196,12 @@ export default function ProdutoPage() {
               <div className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden">
                 {imagemAtual ? (
                   <>
-                    <img
+                    <Image
                       src={imagemAtual}
                       alt={produto.nome}
-                      className="w-full h-full object-cover"
+                      fill
+                      className="object-cover"
+                      priority
                     />
                     {produto.imagens.length > 1 && (
                       <>
@@ -237,10 +240,12 @@ export default function ProdutoPage() {
                           : "border-gray-200 hover:border-gray-300"
                       }`}
                     >
-                      <img
+                      <Image
                         src={imagem}
                         alt={`${produto.nome} ${index + 1}`}
-                        className="w-full h-full object-cover"
+                        width={64}
+                        height={64}
+                        className="object-cover"
                       />
                     </button>
                   ))}

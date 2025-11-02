@@ -3,7 +3,7 @@ import {
   Produto,
   CreateProdutoInput,
   UpdateProdutoInput,
-  PaginatedResponse,
+  ApiError,
 } from "../types";
 
 class ProdutoService {
@@ -37,9 +37,10 @@ class ProdutoService {
       const response = await api.post(this.baseUrl, produto);
       console.log("✅ Produto criado:", response.data);
       return response.data;
-    } catch (error: any) {
-      console.error("❌ Erro ao criar produto:", error);
-      console.error("📋 Response data:", error?.response?.data);
+    } catch (error) {
+      const apiError = error as ApiError;
+      console.error("❌ Erro ao criar produto:", apiError);
+      console.error("📋 Response data:", apiError?.details);
       throw error;
     }
   }
@@ -57,13 +58,13 @@ class ProdutoService {
       const response = await api.put(`${this.baseUrl}/${id}`, produtoComId);
       console.log("✅ Produto atualizado:", response.data);
       return response.data;
-    } catch (error: any) {
-      console.error("❌ Erro ao atualizar produto:", error);
+    } catch (error) {
+      const apiError = error as ApiError;
+      console.error("❌ Erro ao atualizar produto:", apiError);
       console.error("🆔 ID tentativa:", id);
       console.error("📋 Dados enviados:", produto);
-      console.error("📋 Response data:", error?.response?.data);
-      console.error("📋 Status:", error?.response?.status);
-      console.error("📋 Headers:", error?.response?.headers);
+      console.error("📋 Response data:", apiError?.details);
+      console.error("📋 Status:", apiError?.status);
       throw error;
     }
   }
