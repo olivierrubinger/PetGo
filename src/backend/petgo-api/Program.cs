@@ -4,17 +4,50 @@ using petgo.api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.MaxDepth = 64;
+    });
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// CORS - Adicionar domínios permitidos
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.WithOrigins(
+                    // Development (localhost)
+                    "http://localhost:3000",
+                    "https://localhost:3000",
+                    "http://localhost:5173",
+                    
+                    // Production (Vercel)
+                    "https://petgo-frontend.vercel.app",
+                    "https://petgo-production.vercel.app",
+                    "https://*.vercel.app"
+                  )
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        });
+});
+
 // APENAS PostgreSQL (Supabase) - Connection String
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 if (string.IsNullOrEmpty(connectionString))
 {
-    throw new InvalidOperationException("Connection string 'DefaultConnection' não foi encontrada.");
+    throw new InvalidOperationException("Connection string 'DefaultConnection' não encontrada.");
 }
 
 Console.WriteLine("🐘 Usando PostgreSQL (Supabase)");
 
-// FORÇAR IPv4 - APENAS no DbContext (não globalmente)
+// Adicionar DbContext com retry e timeout
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseNpgsql(connectionString, npgsqlOptions =>
@@ -28,34 +61,29 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     });
 });
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll",
-        policy =>
-        {
-            policy.WithOrigins(
-                    "http://localhost:3000",
-                    "https://localhost:3000",
-                    "http://localhost:5173",
-                    "https://petgo-frontend.vercel.app",
-                    "https://*.vercel.app"
-                  )
-                  .AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowCredentials();
-        });
-});
-
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.MaxDepth = 64;
-    });
-
 var app = builder.Build();
+
+// Configure the HTTP request pipeline
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+else
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+// IMPORTANTE: CORS ANTES de Authorization
+app.UseCors("AllowAll");
+
+app.UseHttpsRedirection();
+app.UseRouting();
+app.UseAuthorization();
+app.MapControllers();
 
 // Aplicar migrations e seed automaticamente
 using (var scope = app.Services.CreateScope())
@@ -67,10 +95,12 @@ using (var scope = app.Services.CreateScope())
         Console.WriteLine("📦 Verificando migrations...");
         
         // Aplicar migrations pendentes
-        if (context.Database.GetPendingMigrations().Any())
+        var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+        if (pendingMigrations.Any())
         {
-            Console.WriteLine("📦 Aplicando migrations...");
+            Console.WriteLine($"📦 Aplicando {pendingMigrations.Count()} migrations...");
             await context.Database.MigrateAsync();
+            Console.WriteLine("✅ Migrations aplicadas!");
         }
         else
         {
@@ -83,6 +113,10 @@ using (var scope = app.Services.CreateScope())
             Console.WriteLine("🌱 Executando seed inicial...");
             await DatabaseSeeder.SeedAsync(context);
         }
+        else
+        {
+            Console.WriteLine("✅ Banco já contém dados.");
+        }
     }
     catch (Exception ex)
     {
@@ -92,25 +126,9 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-else
-{
-    app.UseExceptionHandler("/Home/Error");
-}
-
-app.UseSwagger();
-app.UseSwaggerUI();
-
-app.UseCors("AllowAll");
-app.UseRouting();
-app.UseAuthorization();
-app.MapControllers();
-
 Console.WriteLine($"🚀 PetGo API iniciada!");
 Console.WriteLine($"📍 Ambiente: {app.Environment.EnvironmentName}");
 Console.WriteLine($"🗄️ Database: PostgreSQL (Supabase)");
+Console.WriteLine($"🌐 CORS: http://localhost:3000, https://*.vercel.app");
 
 app.Run();
