@@ -27,8 +27,7 @@ builder.Services.AddCors(options =>
                     "http://localhost:5173",
                     
                     // Production (Vercel)
-                    "https://petgo-frontend.vercel.app",
-                    "https://petgo-production.vercel.app",
+                    "https://pet-go-puc.vercel.app/",
                     "https://*.vercel.app"
                   )
                   .AllowAnyHeader()
