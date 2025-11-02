@@ -1,7 +1,0 @@
-{
-  "configProperties": {
-    "System.Net.DisableIPv6": true,
-    "System.Net.PreferIPv4Stack": true,
-    "System.Net.Http.SocketsHttpHandler.Http2Support": false
-  }
-}

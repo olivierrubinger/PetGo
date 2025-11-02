@@ -4,12 +4,7 @@ using petgo.api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// FORÇAR IPv4 ANTES DE QUALQUER CONEXÃO (sem usar ServicePointManager obsoleto)
-AppContext.SetSwitch("System.Net.DisableIPv6", true);
-AppContext.SetSwitch("System.Net.PreferIPv4Stack", true);
-AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", false);
-
-// APENAS PostgreSQL (Supabase) - FORÇAR IPv4
+// APENAS PostgreSQL (Supabase) - Connection String
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 if (string.IsNullOrEmpty(connectionString))
@@ -18,6 +13,8 @@ if (string.IsNullOrEmpty(connectionString))
 }
 
 Console.WriteLine("🐘 Usando PostgreSQL (Supabase)");
+
+// FORÇAR IPv4 - APENAS no DbContext (não globalmente)
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseNpgsql(connectionString, npgsqlOptions =>
