@@ -8,25 +8,55 @@ namespace petgo.api.Services
     {
         public static async Task SeedAsync(AppDbContext context)
         {
-            // Criar categorias se não existirem
+            Console.WriteLine("🌱 Iniciando seed do banco de dados...");
+
             if (!await context.CategoriasProdutos.AnyAsync())
             {
+                Console.WriteLine("📦 Criando categorias...");
+                
                 var categorias = new[]
                 {
-                    new CategoriaProduto { Nome = "Ração e Alimentação" },
-                    new CategoriaProduto { Nome = "Brinquedos" },
-                    new CategoriaProduto { Nome = "Acessórios" },
-                    new CategoriaProduto { Nome = "Higiene e Cuidados" },
-                    new CategoriaProduto { Nome = "Coleiras e Guias" }
+                    new CategoriaProduto 
+                    { 
+                        Nome = "Ração e Alimentação",
+                        Descricao = "Rações, petiscos e suplementos para pets"
+                    },
+                    new CategoriaProduto 
+                    { 
+                        Nome = "Brinquedos",
+                        Descricao = "Brinquedos interativos e educativos"
+                    },
+                    new CategoriaProduto 
+                    { 
+                        Nome = "Acessórios",
+                        Descricao = "Camas, cobertores e acessórios diversos"
+                    },
+                    new CategoriaProduto 
+                    { 
+                        Nome = "Higiene e Cuidados",
+                        Descricao = "Produtos de higiene e cuidados veterinários"
+                    },
+                    new CategoriaProduto 
+                    { 
+                        Nome = "Coleiras e Guias",
+                        Descricao = "Coleiras, guias e peitorais"
+                    }
                 };
 
                 await context.CategoriasProdutos.AddRangeAsync(categorias);
                 await context.SaveChangesAsync();
+                
+                Console.WriteLine($"✅ {categorias.Length} categorias criadas!");
+            }
+            else
+            {
+                Console.WriteLine("✅ Categorias já existem no banco.");
             }
 
-            // Criar produtos de exemplo se não existirem (SEM IMAGENS inicialmente)
             if (!await context.Produtos.AnyAsync())
             {
+                Console.WriteLine("📦 Criando produtos de exemplo...");
+
                 var produtos = new[]
                 {
                     new Produto
@@ -38,7 +68,7 @@ namespace petgo.api.Services
                         Status = StatusProduto.ATIVO,
                         CategoriaId = 1,
                         CategoriaProdutoId = 1,
-                        Imagens = new List<string>() 
+                        ImagensJson = "[]" 
                     },
                     new Produto
                     {
@@ -49,7 +79,7 @@ namespace petgo.api.Services
                         Status = StatusProduto.ATIVO,
                         CategoriaId = 2,
                         CategoriaProdutoId = 2,
-                        Imagens = new List<string>()
+                        ImagensJson = "[]"
                     },
                     new Produto
                     {
@@ -60,7 +90,7 @@ namespace petgo.api.Services
                         Status = StatusProduto.ATIVO,
                         CategoriaId = 5,
                         CategoriaProdutoId = 5,
-                        Imagens = new List<string>()
+                        ImagensJson = "[]"
                     },
                     new Produto
                     {
@@ -71,24 +101,65 @@ namespace petgo.api.Services
                         Status = StatusProduto.ATIVO,
                         CategoriaId = 4,
                         CategoriaProdutoId = 4,
-                        Imagens = new List<string>()
+                        ImagensJson = "[]"
+                    },
+                    new Produto
+                    {
+                        Nome = "Cama Confort Plus para Pets",
+                        Descricao = "Cama super macia e confortável, perfeita para o descanso do seu pet. Tecido antialérgico.",
+                        Preco = 129.90m,
+                        Estoque = 15,
+                        Status = StatusProduto.ATIVO,
+                        CategoriaId = 3,
+                        CategoriaProdutoId = 3,
+                        ImagensJson = "[]"
+                    },
+                    new Produto
+                    {
+                        Nome = "Petiscos Naturais Sabor Frango",
+                        Descricao = "Petiscos 100% naturais feitos com peito de frango desidratado. Sem conservantes artificiais.",
+                        Preco = 19.90m,
+                        Estoque = 60,
+                        Status = StatusProduto.ATIVO,
+                        CategoriaId = 1,
+                        CategoriaProdutoId = 1,
+                        ImagensJson = "[]"
+                    },
+                    new Produto
+                    {
+                        Nome = "Guia Retrátil Automática 5m",
+                        Descricao = "Guia retrátil resistente com sistema de trava. Suporta até 30kg. Ideal para passeios.",
+                        Preco = 59.90m,
+                        Estoque = 20,
+                        Status = StatusProduto.ATIVO,
+                        CategoriaId = 5,
+                        CategoriaProdutoId = 5,
+                        ImagensJson = "[]"
                     },
                     new Produto
                     {
                         Nome = "Produto em Desenvolvimento",
-                        Descricao = "Este produto ainda está sendo finalizado e testado pela nossa equipe.",
-                        Preco = 19.90m,
+                        Descricao = "Este produto ainda está sendo finalizado e testado pela nossa equipe. Em breve estará disponível!",
+                        Preco = 0.00m,
                         Estoque = 0,
                         Status = StatusProduto.RASCUNHO,
                         CategoriaId = 1,
                         CategoriaProdutoId = 1,
-                        Imagens = new List<string>()
+                        ImagensJson = "[]"
                     }
                 };
 
                 await context.Produtos.AddRangeAsync(produtos);
                 await context.SaveChangesAsync();
+                
+                Console.WriteLine($"✅ {produtos.Length} produtos criados!");
             }
+            else
+            {
+                Console.WriteLine("✅ Produtos já existem no banco.");
+            }
+
+            Console.WriteLine("🎉 Seed concluído com sucesso!");
         }
     }
 }

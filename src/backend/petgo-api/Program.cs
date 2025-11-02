@@ -1,17 +1,29 @@
 using Microsoft.EntityFrameworkCore;
-using petgo.api.Controllers;
 using petgo.api.Data;
 using petgo.api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Usar SQLite para desenvolvimento
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
-    ?? "Data Source=petgo.db";
+// APENAS PostgreSQL (Supabase)
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("Connection string 'DefaultConnection' não foi encontrada.");
+}
+
+Console.WriteLine("🐘 Usando PostgreSQL (Supabase)");
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlite(connectionString);
+    options.UseNpgsql(connectionString, npgsqlOptions =>
+    {
+        npgsqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(30),
+            errorCodesToAdd: null
+        );
+        npgsqlOptions.CommandTimeout(60); // Timeout de 60 segundos
+    });
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -19,14 +31,15 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowNextJs",
+    options.AddPolicy("AllowAll",
         policy =>
         {
             policy.WithOrigins(
-                    "http://localhost:3000",   
-                    "https://localhost:3000",   
-                    "http://localhost:5173",   
-                    "https://petgo-frontend.vercel.app" 
+                    "http://localhost:3000",
+                    "https://localhost:3000",
+                    "http://localhost:5173",
+                    "https://petgo-frontend.vercel.app",
+                    "https://*.vercel.app"
                   )
                   .AllowAnyHeader()
                   .AllowAnyMethod()
@@ -34,18 +47,51 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.MaxDepth = 64;
+    });
+
 var app = builder.Build();
 
-// Seed database em desenvolvimento
+// Aplicar migrations e seed automaticamente
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    
+    try
+    {
+        Console.WriteLine("📦 Verificando migrations...");
+        
+        // Aplicar migrations pendentes
+        if (context.Database.GetPendingMigrations().Any())
+        {
+            Console.WriteLine("📦 Aplicando migrations...");
+            await context.Database.MigrateAsync();
+        }
+        else
+        {
+            Console.WriteLine("✅ Banco de dados atualizado!");
+        }
+        
+        // Seed apenas se banco estiver vazio
+        if (!await context.Produtos.AnyAsync())
+        {
+            Console.WriteLine("🌱 Executando seed inicial...");
+            await DatabaseSeeder.SeedAsync(context);
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Erro ao inicializar banco: {ex.Message}");
+        Console.WriteLine($"Stack: {ex.StackTrace}");
+        throw; // Re-throw para não iniciar API com banco quebrado
+    }
+}
+
 if (app.Environment.IsDevelopment())
 {
-    using (var scope = app.Services.CreateScope())
-    {
-        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        await DatabaseSeeder.SeedAsync(context);
-    }
-    
     app.UseDeveloperExceptionPage();
 }
 else
@@ -56,12 +102,13 @@ else
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
-
-app.UseCors("AllowNextJs"); 
-
+app.UseCors("AllowAll");
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
+
+Console.WriteLine($"🚀 PetGo API iniciada!");
+Console.WriteLine($"📍 Ambiente: {app.Environment.EnvironmentName}");
+Console.WriteLine($"🗄️ Database: PostgreSQL (Supabase)");
 
 app.Run();
