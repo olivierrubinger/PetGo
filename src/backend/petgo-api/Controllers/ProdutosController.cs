@@ -33,15 +33,12 @@ namespace petgo.api.Controllers
                 query = query.Where(p => p.CategoriaProdutoId == categoriaId.Value);
             }
 
-            // Filtrar por status (padrão: apenas ATIVO)
+            // Filtrar por status (se especificado)
             if (status.HasValue)
             {
                 query = query.Where(p => p.Status == status.Value);
             }
-            else
-            {
-                query = query.Where(p => p.Status == StatusProduto.ATIVO);
-            }
+            // Se não especificar status, retorna TODOS os produtos (ATIVO + RASCUNHO)
 
             // Busca por nome ou descrição
             if (!string.IsNullOrEmpty(busca))

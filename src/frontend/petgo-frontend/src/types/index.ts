@@ -20,8 +20,9 @@ export enum PortePet {
 }
 
 export enum StatusProduto {
-  ATIVO = 0,
-  RASCUNHO = 1,
+  RASCUNHO = 0,
+  ATIVO = 1,
+  INATIVO = 2,
 }
 
 export enum StatusAnuncio {

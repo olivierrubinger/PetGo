@@ -75,8 +75,8 @@ export default function ProdutosContent() {
 
     const matchesStatus =
       filterStatus === "all" ||
-      (filterStatus === "ativo" && produto.status === 0) ||
-      (filterStatus === "rascunho" && produto.status === 1);
+      (filterStatus === "ativo" && produto.status === 1) || // ATIVO = 1
+      (filterStatus === "rascunho" && produto.status === 0); // RASCUNHO = 0
 
     return matchesSearch && matchesStatus;
   });
@@ -122,20 +122,26 @@ export default function ProdutosContent() {
     };
 
     if (modal.mode === "create") {
-      createMutation.mutate(normalizedData, {
-        onSuccess: () => {
-          handleModalClose();
-        },
-      });
-    } else if (modal.mode === "edit" && modal.produto) {
-      updateMutation.mutate(
-        { id: modal.produto.id, data: normalizedData },
-        {
+      // Prevenir duplicação: só criar se não estiver criando
+      if (!createMutation.isPending) {
+        createMutation.mutate(normalizedData, {
           onSuccess: () => {
             handleModalClose();
           },
-        }
-      );
+        });
+      }
+    } else if (modal.mode === "edit" && modal.produto) {
+      // Prevenir duplicação: só atualizar se não estiver atualizando
+      if (!updateMutation.isPending) {
+        updateMutation.mutate(
+          { id: modal.produto.id, data: normalizedData },
+          {
+            onSuccess: () => {
+              handleModalClose();
+            },
+          }
+        );
+      }
     }
   };
 
