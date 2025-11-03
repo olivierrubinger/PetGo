@@ -14,7 +14,7 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// CORS - Adicionar domínios permitidos
+// CORS - Configuração CORRETA para Vercel
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -26,10 +26,10 @@ builder.Services.AddCors(options =>
                     "https://localhost:3000",
                     "http://localhost:5173",
                     
-                    // Production (Vercel)
-                    "https://pet-go-puc.vercel.app",
-                    "https://*.vercel.app"
+                    // Production (Vercel) - URL EXATA sem wildcard
+                    "https://pet-go-puc.vercel.app"
                   )
+                  .SetIsOriginAllowedToAllowWildcardSubdomains() // ← Permite subdomínios do Vercel
                   .AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowCredentials();
@@ -128,6 +128,6 @@ using (var scope = app.Services.CreateScope())
 Console.WriteLine($"🚀 PetGo API iniciada!");
 Console.WriteLine($"📍 Ambiente: {app.Environment.EnvironmentName}");
 Console.WriteLine($"🗄️ Database: PostgreSQL (Supabase)");
-Console.WriteLine($"🌐 CORS: http://localhost:3000, https://*.vercel.app");
+Console.WriteLine($"🌐 CORS: localhost + https://pet-go-puc.vercel.app");
 
 app.Run();
