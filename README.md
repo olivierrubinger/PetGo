@@ -8,24 +8,24 @@
 
 ## 🌐 Deploy em Produção
 
-| Serviço | URL | Status |
-|---------|-----|--------|
-| **Frontend (Vercel)** | [https://pet-go-puc.vercel.app](https://pet-go-puc.vercel.app) | ✅ Ativo |
-| **Backend (Railway)** | [https://petgo-production.up.railway.app](https://petgo-production.up.railway.app) | ✅ Ativo |
+| Serviço                | URL                                                                                                | Status   |
+| ---------------------- | -------------------------------------------------------------------------------------------------- | -------- |
+| **Frontend (Vercel)**  | [https://pet-go-puc.vercel.app](https://pet-go-puc.vercel.app)                                     | ✅ Ativo |
+| **Backend (Railway)**  | [https://petgo-production.up.railway.app](https://petgo-production.up.railway.app)                 | ✅ Ativo |
 | **API Docs (Swagger)** | [https://petgo-production.up.railway.app/swagger](https://petgo-production.up.railway.app/swagger) | ✅ Ativo |
-| **Banco de Dados** | Supabase PostgreSQL | ✅ Ativo |
+| **Banco de Dados**     | Supabase PostgreSQL                                                                                | ✅ Ativo |
 
 ---
 
 ## Integrantes
 
-* Olivier Lopes Rubinger  
-* Ligia de Castro Martins  
-* Marcello Abritta Nogueira Rezende  
+- Olivier Lopes Rubinger
+- Ligia de Castro Martins
+- Marcello Abritta Nogueira Rezende
 
 ## Orientador
 
-* Luiz Alberto Ferreira Gomes
+- Luiz Alberto Ferreira Gomes
 
 ---
 
@@ -33,48 +33,47 @@
 
 Para **tutores de animais de estimação**, cujo problema é a **falta de tempo para passeios, dificuldade em encontrar serviços confiáveis e acesso limitado a produtos e adoções seguras**.  
 O **PetGo** é uma **plataforma digital integrada** que **facilita passeios, promove adoções responsáveis e conecta serviços especializados**.  
-Diferentemente das soluções fragmentadas, que combinam redes sociais, lojas genéricas e serviços isolados, o PetGo oferece **um ecossistema único** que promove a confiança e o bem-estar dos pets e suas famílias.  
+Diferentemente das soluções fragmentadas, que combinam redes sociais, lojas genéricas e serviços isolados, o PetGo oferece **um ecossistema único** que promove a confiança e o bem-estar dos pets e suas famílias.
 
 ---
 
 ## Etapa 1: Requisitos do produto
 
-- [Problemas e dores atuais](docs/problemas.md)  
-- [Expectativas com o produto](docs/expectativas.md)  
-- [Personas do produto](docs/personas.md)  
-- [Entendendo as funcionalidades](docs/funcionalidades.md)  
-- [Trade-off de requisitos não funcionais](docs/tradeoffs.md)  
-- [Diagrama de Contexto](docs/diagrama-de-contexto.md)  
+- [Problemas e dores atuais](docs/problemas.md)
+- [Expectativas com o produto](docs/expectativas.md)
+- [Personas do produto](docs/personas.md)
+- [Entendendo as funcionalidades](docs/funcionalidades.md)
+- [Trade-off de requisitos não funcionais](docs/tradeoffs.md)
+- [Diagrama de Contexto](docs/diagrama-de-contexto.md)
 
 ---
 
 ### Etapa 2: Integração de APIs com banco de dados e serviços externos
 
-- [Diagrama de Contêiner](docs/diagrama-de-conteiner.md)  
-- [Especificação das APIs](docs/apis.md)  
-- [Diagrama Entidade-Relacionamento](docs/projeto-do-banco-de-dados.md)  
-- [Roteiro de implementação](docs/roteiro-de-implementacao-etapa-2.md)  
+- [Diagrama de Contêiner](docs/diagrama-de-conteiner.md)
+- [Especificação das APIs](docs/apis.md)
+- [Diagrama Entidade-Relacionamento](docs/projeto-do-banco-de-dados.md)
+- [Roteiro de implementação](docs/roteiro-de-implementacao-etapa-2.md)
 
 ---
 
 ### Etapa 3: Arquitetura da aplicação em nuvem
 
-- [Roteiro de implementação](docs/roteiro-de-implementacao-etapa-3.md)  
+- [Roteiro de implementação](docs/roteiro-de-implementacao-etapa-3.md)
 
 ---
 
 ### Etapa 4: Implantação da aplicação em nuvem
 
-- [Roteiro de implementação](docs/roteiro-de-implementacao.md)  
+- [Roteiro de implementação](docs/roteiro-de-implementacao.md)
 
 ---
 
 ### Etapa 5: Entrega e apresentação do produto
 
-- [Roteiro para entrega e apresentação](docs/roteiro-de-entrega-e-apresentacao.md)  
+- [Roteiro para entrega e apresentação](docs/roteiro-de-entrega-e-apresentacao.md)
 
 ---
-
 
 ## 📋 Sobre o Projeto
 
@@ -93,16 +92,13 @@ Diferentemente das soluções fragmentadas, que combinam redes sociais, lojas ge
 - **Frontend**: Next.js 15 (React/TypeScript) com Tailwind CSS
   - Deploy: **Vercel** ([https://pet-go-puc.vercel.app](https://pet-go-puc.vercel.app))
   - CI/CD: Automático via GitHub
-  
 - **Backend**: ASP.NET Core 9.0 (C#) com Entity Framework Core
   - Deploy: **Railway** ([https://petgo-production.up.railway.app](https://petgo-production.up.railway.app))
   - CI/CD: Automático via GitHub
-  
 - **Banco de Dados**: **Supabase PostgreSQL**
   - Managed PostgreSQL 15
   - Connection Pooler (PgBouncer)
   - Backups automáticos
-  
 - **API**: REST com documentação Swagger/OpenAPI
   - Swagger UI: [https://petgo-production.up.railway.app/swagger](https://petgo-production.up.railway.app/swagger)
 
@@ -147,11 +143,13 @@ dotnet ef database update
 dotnet run
 ```
 
-**🌐 Backend estará disponível em:** 
+**🌐 Backend estará disponível em:**
+
 - API: `http://localhost:5021`
 - Swagger UI: `http://localhost:5021/swagger`
 
 **📊 Produção:**
+
 - API: `https://petgo-production.up.railway.app`
 - Swagger: `https://petgo-production.up.railway.app/swagger`
 
@@ -172,7 +170,8 @@ npm install
 npm run dev
 ```
 
-**🌐 Frontend estará disponível em:** 
+**🌐 Frontend estará disponível em:**
+
 - Desenvolvimento: `http://localhost:3000`
 - Produção: `https://pet-go-puc.vercel.app`
 
@@ -265,31 +264,34 @@ PetGo/
 ## 🔗 **Endpoints da API**
 
 ### **Produtos**
-| Método | Endpoint                | Descrição                    |
-|--------|------------------------|------------------------------|
-| GET    | `/api/produtos`        | Listar todos os produtos     |
-| GET    | `/api/produtos/{id}`   | Obter produto específico     |
-| POST   | `/api/produtos`        | Criar novo produto           |
-| PUT    | `/api/produtos/{id}`   | Atualizar produto            |
-| DELETE | `/api/produtos/{id}`   | Deletar produto              |
+
+| Método | Endpoint             | Descrição                |
+| ------ | -------------------- | ------------------------ |
+| GET    | `/api/produtos`      | Listar todos os produtos |
+| GET    | `/api/produtos/{id}` | Obter produto específico |
+| POST   | `/api/produtos`      | Criar novo produto       |
+| PUT    | `/api/produtos/{id}` | Atualizar produto        |
+| DELETE | `/api/produtos/{id}` | Deletar produto          |
 
 ### **Usuários**
-| Método | Endpoint              | Descrição                    |
-|--------|-----------------------|------------------------------|
-| GET    | `/api/usuarios`       | Listar todos os usuários     |
-| GET    | `/api/usuarios/{id}`  | Obter usuário específico     |
-| POST   | `/api/usuarios`       | Criar novo usuário           |
-| PUT    | `/api/usuarios/{id}`  | Atualizar usuário            |
-| DELETE | `/api/usuarios/{id}`  | Deletar usuário              |
+
+| Método | Endpoint             | Descrição                |
+| ------ | -------------------- | ------------------------ |
+| GET    | `/api/usuarios`      | Listar todos os usuários |
+| GET    | `/api/usuarios/{id}` | Obter usuário específico |
+| POST   | `/api/usuarios`      | Criar novo usuário       |
+| PUT    | `/api/usuarios/{id}` | Atualizar usuário        |
+| DELETE | `/api/usuarios/{id}` | Deletar usuário          |
 
 ### **Pets**
-| Método | Endpoint           | Descrição                    |
-|--------|--------------------|------------------------------|
-| GET    | `/api/pets`        | Listar todos os pets         |
-| GET    | `/api/pets/{id}`   | Obter pet específico         |
-| POST   | `/api/pets`        | Criar novo pet               |
-| PUT    | `/api/pets/{id}`   | Atualizar pet                |
-| DELETE | `/api/pets/{id}`   | Deletar pet                  |
+
+| Método | Endpoint         | Descrição            |
+| ------ | ---------------- | -------------------- |
+| GET    | `/api/pets`      | Listar todos os pets |
+| GET    | `/api/pets/{id}` | Obter pet específico |
+| POST   | `/api/pets`      | Criar novo pet       |
+| PUT    | `/api/pets/{id}` | Atualizar pet        |
+| DELETE | `/api/pets/{id}` | Deletar pet          |
 
 ---
 
@@ -314,6 +316,7 @@ npm test
 ## 🌐 **Tecnologias Utilizadas**
 
 ### **Backend**
+
 - **ASP.NET Core 9.0** - Framework web
 - **Entity Framework Core 9.0** - ORM
 - **Npgsql** - PostgreSQL driver para .NET
@@ -322,6 +325,7 @@ npm test
 - **Railway** - Plataforma de deploy
 
 ### **Frontend**
+
 - **Next.js 15** - Framework React com App Router
 - **TypeScript 5** - Linguagem tipada
 - **Tailwind CSS 4** - Framework CSS utilitário
@@ -333,7 +337,8 @@ npm test
 - **Vercel** - Plataforma de deploy
 
 ### **DevOps & Qualidade**
-- **ESLint** - Linting JavaScript/TypeScript  
+
+- **ESLint** - Linting JavaScript/TypeScript
 - **Prettier** - Formatação de código
 - **Husky** - Git hooks
 - **Docker** - Containerização (futuro)
@@ -421,6 +426,6 @@ createdb petgo
 
 ### Referências bibliográficas
 
-- CAROLI, Paulo. **Lean Inception: Saiba como alinhar pessoas e construir o produto certo**. Disponível em: [https://caroli.org/lean-inception-3/](https://caroli.org/lean-inception-3/). Acessado em: 12 de agosto de 2024.  
-- BROWN, Simon. **O modelo C4 de documentação para Arquitetura de Software**. Disponível em: [https://www.infoq.com/br/articles/C4-architecture-model/](https://www.infoq.com/br/articles/C4-architecture-model/). Acessado em: 12 de agosto de 2024.  
-- DRESHER, Tamir; ZUKER, Amir; FRIEDMAN, Shay. **Hands-on full stack web development with ASP.NET Core:** learn end-to-end web development with leading frontend frameworks, such as Angular, React, and Vue. Birmingham, UK: Packt Publishing, 2018. E-book. ISBN 9781788622882.  
+- CAROLI, Paulo. **Lean Inception: Saiba como alinhar pessoas e construir o produto certo**. Disponível em: [https://caroli.org/lean-inception-3/](https://caroli.org/lean-inception-3/). Acessado em: 12 de agosto de 2024.
+- BROWN, Simon. **O modelo C4 de documentação para Arquitetura de Software**. Disponível em: [https://www.infoq.com/br/articles/C4-architecture-model/](https://www.infoq.com/br/articles/C4-architecture-model/). Acessado em: 12 de agosto de 2024.
+- DRESHER, Tamir; ZUKER, Amir; FRIEDMAN, Shay. **Hands-on full stack web development with ASP.NET Core:** learn end-to-end web development with leading frontend frameworks, such as Angular, React, and Vue. Birmingham, UK: Packt Publishing, 2018. E-book. ISBN 9781788622882.
