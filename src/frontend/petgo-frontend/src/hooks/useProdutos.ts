@@ -36,8 +36,10 @@ export function useProdutos(page = 1, pageSize = 10) {
         throw new Error(errorMessage);
       }
     },
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 10,
+    staleTime: 0, // Sempre buscar dados frescos
+    gcTime: 1000 * 60 * 5, // Manter em cache por 5 minutos
+    refetchOnMount: true, // Refetch ao montar componente
+    refetchOnWindowFocus: false, // Não refetch ao focar janela
     retry: (failureCount, error) => {
       console.error(`🔄 Tentativa ${failureCount} falhou:`, error);
       return failureCount < 2;
@@ -84,10 +86,15 @@ export function useCreateProduto() {
   return useMutation({
     mutationFn: (produto: CreateProdutoInput) => produtoService.create(produto),
     onSuccess: (newProduto) => {
-      // Invalidar queries relacionadas
-      queryClient.invalidateQueries({ queryKey: PRODUTO_QUERY_KEYS.all });
+      console.log("✅ Produto criado com sucesso:", newProduto);
 
-      // Adicionar o novo produto ao cache
+      // Invalidar TODAS as queries de produtos para forçar refetch
+      queryClient.invalidateQueries({
+        queryKey: PRODUTO_QUERY_KEYS.lists(),
+        refetchType: "active",
+      });
+
+      // Adicionar o novo produto ao cache de detalhes
       queryClient.setQueryData(
         PRODUTO_QUERY_KEYS.detail(newProduto.id),
         newProduto
@@ -111,8 +118,13 @@ export function useUpdateProduto() {
     mutationFn: ({ id, data }: { id: number; data: UpdateProdutoInput }) =>
       produtoService.update(id, data),
     onSuccess: (updatedProduto, { id }) => {
-      // Invalidar queries relacionadas
-      queryClient.invalidateQueries({ queryKey: PRODUTO_QUERY_KEYS.all });
+      console.log("✅ Produto atualizado com sucesso:", updatedProduto);
+
+      // Invalidar TODAS as listas para forçar refetch
+      queryClient.invalidateQueries({
+        queryKey: PRODUTO_QUERY_KEYS.lists(),
+        refetchType: "active",
+      });
 
       // Atualizar o produto específico no cache
       queryClient.setQueryData(PRODUTO_QUERY_KEYS.detail(id), updatedProduto);
@@ -147,8 +159,12 @@ export function useDeleteProduto() {
     },
     onSuccess: (data, id) => {
       console.log("✅ Produto deletado:", id);
-      // Invalidar queries relacionadas
-      queryClient.invalidateQueries({ queryKey: PRODUTO_QUERY_KEYS.all });
+
+      // Invalidar TODAS as listas de produtos para forçar refetch
+      queryClient.invalidateQueries({
+        queryKey: PRODUTO_QUERY_KEYS.lists(),
+        refetchType: "active",
+      });
 
       // Remover produto específico do cache
       queryClient.removeQueries({ queryKey: PRODUTO_QUERY_KEYS.detail(id) });

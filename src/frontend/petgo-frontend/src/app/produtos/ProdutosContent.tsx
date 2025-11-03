@@ -11,7 +11,7 @@ import {
 } from "../../hooks/useProdutos";
 import { ProdutoCard } from "../../components/ProdutoCard";
 import { ProdutoForm } from "../../components/ProdutoForm";
-import { LoadingSpinner } from "../../components/ui/LoadingSpinner";
+import { ProdutosGridSkeleton } from "../../components/ProdutoSkeleton";
 import { Button } from "../../components/ui/Button";
 import { Plus, Search, Filter, Package, Heart } from "lucide-react";
 import { Produto, StatusProduto } from "../../types";
@@ -141,10 +141,23 @@ export default function ProdutosContent() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
-        <div className="text-center">
-          <LoadingSpinner size="lg" />
-          <p className="mt-4 text-gray-600">Carregando produtos...</p>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header skeleton */}
+          <div className="text-center mb-12 space-y-4">
+            <div className="inline-flex items-center gap-3 justify-center">
+              <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+              <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 animate-pulse">
+                Carregando produtos...
+              </h1>
+            </div>
+            <p className="text-gray-600 animate-pulse">
+              Conectando ao servidor 🚀
+            </p>
+          </div>
+
+          {/* Grid skeleton */}
+          <ProdutosGridSkeleton count={9} />
         </div>
       </div>
     );
