@@ -26,13 +26,14 @@ builder.Services.AddCors(options =>
                     "https://localhost:3000",
                     "http://localhost:5173",
                     
-                    // Production (Vercel) - URL EXATA sem wildcard
+                    // Production (Vercel) - URL EXATA
                     "https://pet-go-puc.vercel.app"
                   )
-                  .SetIsOriginAllowedToAllowWildcardSubdomains() // ← Permite subdomínios do Vercel
                   .AllowAnyHeader()
                   .AllowAnyMethod()
-                  .AllowCredentials();
+                  .AllowCredentials()
+                  .WithExposedHeaders("*") // Expor todos os headers
+                  .SetPreflightMaxAge(TimeSpan.FromMinutes(10)); // Cache preflight por 10min
         });
 });
 

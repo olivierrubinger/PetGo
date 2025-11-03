@@ -52,6 +52,7 @@ export function ProdutoForm({
   title,
 }: ProdutoFormProps) {
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     register,
@@ -146,11 +147,23 @@ export function ProdutoForm({
   };
 
   const onFormSubmit = (data: ProdutoFormData) => {
+    // Prevenir double-submit
+    if (isSubmitting || isLoading) {
+      console.warn("⚠️ Formulário já está sendo enviado");
+      return;
+    }
+
+    setIsSubmitting(true);
+
     const formattedData = {
       ...data,
       categoriaId: data.categoriaProdutoId,
     };
+
     onSubmit(formattedData);
+
+    // Reset após 3 segundos (fallback)
+    setTimeout(() => setIsSubmitting(false), 3000);
   };
 
   return (
@@ -406,8 +419,8 @@ export function ProdutoForm({
             </Button>
             <Button
               type="submit"
-              loading={isLoading}
-              disabled={isLoading || uploadingImage}
+              loading={isLoading || isSubmitting}
+              disabled={isLoading || uploadingImage || isSubmitting}
             >
               {produto ? "Atualizar Produto" : "Criar Produto"}
             </Button>

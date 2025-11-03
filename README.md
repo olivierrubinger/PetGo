@@ -6,6 +6,17 @@
 
 ---
 
+## 🌐 Deploy em Produção
+
+| Serviço | URL | Status |
+|---------|-----|--------|
+| **Frontend (Vercel)** | [https://pet-go-puc.vercel.app](https://pet-go-puc.vercel.app) | ✅ Ativo |
+| **Backend (Railway)** | [https://petgo-production.up.railway.app](https://petgo-production.up.railway.app) | ✅ Ativo |
+| **API Docs (Swagger)** | [https://petgo-production.up.railway.app/swagger](https://petgo-production.up.railway.app/swagger) | ✅ Ativo |
+| **Banco de Dados** | Supabase PostgreSQL | ✅ Ativo |
+
+---
+
 ## Integrantes
 
 * Olivier Lopes Rubinger  
@@ -77,10 +88,23 @@ Diferentemente das soluções fragmentadas, que combinam redes sociais, lojas ge
 
 ## 🏗️ Arquitetura do Sistema
 
-- **Backend**: ASP.NET Core 9.0 (C#) com Entity Framework Core
+### **Stack Tecnológica**
+
 - **Frontend**: Next.js 15 (React/TypeScript) com Tailwind CSS
-- **Banco de Dados**: SQLite (desenvolvimento) / SQL Server (produção)
+  - Deploy: **Vercel** ([https://pet-go-puc.vercel.app](https://pet-go-puc.vercel.app))
+  - CI/CD: Automático via GitHub
+  
+- **Backend**: ASP.NET Core 9.0 (C#) com Entity Framework Core
+  - Deploy: **Railway** ([https://petgo-production.up.railway.app](https://petgo-production.up.railway.app))
+  - CI/CD: Automático via GitHub
+  
+- **Banco de Dados**: **Supabase PostgreSQL**
+  - Managed PostgreSQL 15
+  - Connection Pooler (PgBouncer)
+  - Backups automáticos
+  
 - **API**: REST com documentação Swagger/OpenAPI
+  - Swagger UI: [https://petgo-production.up.railway.app/swagger](https://petgo-production.up.railway.app/swagger)
 
 ---
 
@@ -110,8 +134,13 @@ cd src/backend/petgo-api
 # Restaurar dependências
 dotnet restore
 
+# Configurar connection string do banco de dados
+# Edite appsettings.json ou appsettings.Development.json
+# Exemplo com Supabase PostgreSQL:
+# "DefaultConnection": "Host=db.xxx.supabase.co;Port=5432;Database=postgres;Username=postgres.xxx;Password=xxx;SSL Mode=Require"
+
 # Criar e aplicar migrations (primeira execução)
-dotnet ef migrations add InitialCreate_PetGo
+dotnet ef migrations add InitialCreate
 dotnet ef database update
 
 # Executar a API
@@ -122,6 +151,10 @@ dotnet run
 - API: `http://localhost:5021`
 - Swagger UI: `http://localhost:5021/swagger`
 
+**📊 Produção:**
+- API: `https://petgo-production.up.railway.app`
+- Swagger: `https://petgo-production.up.railway.app/swagger`
+
 ### 3️⃣ **Configurar e Executar o Frontend (Next.js)**
 
 ```bash
@@ -131,11 +164,17 @@ cd src/frontend/petgo-frontend
 # Instalar dependências
 npm install
 
+# Configurar variável de ambiente
+# Crie o arquivo .env.local com:
+# NEXT_PUBLIC_API_URL=http://localhost:5021
+
 # Executar o frontend em modo desenvolvimento
 npm run dev
 ```
 
-**🌐 Frontend estará disponível em:** `http://localhost:3000`
+**🌐 Frontend estará disponível em:** 
+- Desenvolvimento: `http://localhost:3000`
+- Produção: `https://pet-go-puc.vercel.app`
 
 ---
 
@@ -276,19 +315,22 @@ npm test
 
 ### **Backend**
 - **ASP.NET Core 9.0** - Framework web
-- **Entity Framework Core** - ORM
-- **SQLite** - Banco de dados (desenvolvimento)
+- **Entity Framework Core 9.0** - ORM
+- **Npgsql** - PostgreSQL driver para .NET
+- **Supabase PostgreSQL 15** - Banco de dados gerenciado
 - **Swagger/OpenAPI** - Documentação da API
-- **Serilog** - Logging estruturado
+- **Railway** - Plataforma de deploy
 
 ### **Frontend**
-- **Next.js 15** - Framework React
-- **TypeScript** - Linguagem tipada
-- **Tailwind CSS** - Framework CSS
-- **React Query (TanStack Query)** - Gerenciamento de estado servidor
+- **Next.js 15** - Framework React com App Router
+- **TypeScript 5** - Linguagem tipada
+- **Tailwind CSS 4** - Framework CSS utilitário
+- **React Query (TanStack Query v5)** - Gerenciamento de estado servidor
 - **React Hook Form** - Gerenciamento de formulários
 - **Zod** - Validação de schemas
+- **Axios** - Cliente HTTP
 - **Lucide React** - Ícones
+- **Vercel** - Plataforma de deploy
 
 ### **DevOps & Qualidade**
 - **ESLint** - Linting JavaScript/TypeScript  
@@ -302,25 +344,77 @@ npm test
 
 ### **Variáveis de Ambiente**
 
-Crie um arquivo `.env.local` na pasta do frontend:
+#### **Frontend (.env.local)**
 
 ```env
-# Frontend
+# API Configuration
 NEXT_PUBLIC_API_URL=http://localhost:5021
-NEXT_TELEMETRY_DISABLED=1
+
+# Production
+# NEXT_PUBLIC_API_URL=https://petgo-production.up.railway.app
+
+# App Configuration
+NEXT_PUBLIC_APP_NAME=PetGo
+NEXT_PUBLIC_APP_VERSION=1.0.0
 
 # Desenvolvimento
 NODE_ENV=development
+NEXT_TELEMETRY_DISABLED=1
 ```
 
-### **Configuração do Banco de Dados**
-
-O projeto usa SQLite por padrão. Para usar SQL Server, altere a connection string no `appsettings.json`:
+#### **Backend (appsettings.json)**
 
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=(localdb)\\MSSQLLocalDB;Database=PetGoDB;Trusted_Connection=true;"
+    "DefaultConnection": "Host=localhost;Port=5432;Database=petgo;Username=postgres;Password=postgres"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  }
+}
+```
+
+#### **Produção (Railway Environment Variables)**
+
+```env
+# Supabase PostgreSQL Connection
+ConnectionStrings__DefaultConnection=Host=aws-0-us-east-1.pooler.supabase.com;Port=6543;Database=postgres;Username=postgres.xxx;Password=xxx;SSL Mode=Require;Trust Server Certificate=true
+
+# ASP.NET Configuration
+ASPNETCORE_ENVIRONMENT=Production
+ASPNETCORE_URLS=http://0.0.0.0:$PORT
+```
+
+### **Configuração do Banco de Dados**
+
+O projeto usa **Supabase PostgreSQL** em produção e pode usar PostgreSQL local em desenvolvimento.
+
+#### **Supabase (Produção)**
+
+1. Acesse [https://supabase.com](https://supabase.com)
+2. Crie um novo projeto
+3. Copie a **Connection String** (use o **Connection Pooler** para Railway)
+4. Configure no Railway como variável de ambiente
+
+#### **PostgreSQL Local (Desenvolvimento)**
+
+```bash
+# Instale o PostgreSQL
+# Windows: https://www.postgresql.org/download/windows/
+# Mac: brew install postgresql
+# Linux: sudo apt-get install postgresql
+
+# Crie o banco de dados
+createdb petgo
+
+# Configure a connection string no appsettings.Development.json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=5432;Database=petgo;Username=postgres;Password=postgres"
   }
 }
 ```

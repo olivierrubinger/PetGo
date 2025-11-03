@@ -115,6 +115,12 @@ export default function ProdutosContent() {
   };
 
   const handleFormSubmit = (data: ProdutoFormData) => {
+    // Prevenir múltiplos submits
+    if (createMutation.isPending || updateMutation.isPending) {
+      console.warn("⚠️ Já existe uma operação em andamento");
+      return;
+    }
+
     // Normalizar dados para garantir que imagens seja sempre array
     const normalizedData = {
       ...data,
@@ -122,26 +128,34 @@ export default function ProdutosContent() {
     };
 
     if (modal.mode === "create") {
-      // Prevenir duplicação: só criar se não estiver criando
-      if (!createMutation.isPending) {
-        createMutation.mutate(normalizedData, {
-          onSuccess: () => {
-            handleModalClose();
-          },
-        });
-      }
+      createMutation.mutate(normalizedData, {
+        onSuccess: () => {
+          console.log("✅ Produto criado! Fechando modal e recarregando...");
+          handleModalClose();
+          // Forçar reload da página para garantir que o produto apareça
+          window.location.reload();
+        },
+        onError: (error) => {
+          console.error("❌ Erro ao criar produto:", error);
+        },
+      });
     } else if (modal.mode === "edit" && modal.produto) {
-      // Prevenir duplicação: só atualizar se não estiver atualizando
-      if (!updateMutation.isPending) {
-        updateMutation.mutate(
-          { id: modal.produto.id, data: normalizedData },
-          {
-            onSuccess: () => {
-              handleModalClose();
-            },
-          }
-        );
-      }
+      updateMutation.mutate(
+        { id: modal.produto.id, data: normalizedData },
+        {
+          onSuccess: () => {
+            console.log(
+              "✅ Produto atualizado! Fechando modal e recarregando..."
+            );
+            handleModalClose();
+            // Forçar reload da página
+            window.location.reload();
+          },
+          onError: (error) => {
+            console.error("❌ Erro ao atualizar produto:", error);
+          },
+        }
+      );
     }
   };
 
