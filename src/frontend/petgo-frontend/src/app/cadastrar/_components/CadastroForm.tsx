@@ -20,7 +20,7 @@ const cadastroFormSchema = z.object({
       (val) => val !== TipoUsuario.ADMIN,
       { message: "Tipo de usuário inválido." }
     ),
-    fotoPerfil: z.array(z.string()).optional().nullable(),
+    fotoPerfil: z.string().optional().nullable(),
 })
 .refine((data) => data.senha === data.confirmarSenha, {
     message: "As senhas não conferem",

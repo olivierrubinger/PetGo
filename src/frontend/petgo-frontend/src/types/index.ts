@@ -153,3 +153,15 @@ export interface Avaliacao {
   comentario: string;
   data: string;
 }
+
+export interface LoginDto {
+    email: string;
+    senha: string;
+}
+
+export interface LoginResponseDto {
+    token: string;
+    usuario: Usuario; 
+}
+
+

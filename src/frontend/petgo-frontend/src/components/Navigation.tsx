@@ -4,7 +4,17 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "../lib/utils";
-import { Menu, X, Heart, Package, Users, Home, PawPrint } from "lucide-react"; 
+import {
+  Menu,
+  X,
+  Heart,
+  Package,
+  Users,
+  Home,
+  PawPrint,
+  UserPlus,
+  LogIn,
+} from "lucide-react";
 
 //menu principal
 const navigationItems = [
@@ -26,7 +36,7 @@ const navigationItems = [
   {
     name: "Adoção",
     href: "/adocao",
-    icon: PawPrint, 
+    icon: PawPrint,
   },
   {
     name: "Passeadores",
@@ -83,12 +93,20 @@ export function Navigation() {
 
           {/* Ações do usuário (desktop) */}
           <div className="hidden md:flex items-center space-x-4">
-            <button className="text-gray-600 hover:text-gray-900 transition-colors">
-              Login
-            </button>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-              Cadastrar
-            </button>
+            <Link
+              href="/cadastrar"
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-1"
+            >
+              <UserPlus className="h-4 w-4" />
+              <span>Cadastrar</span>
+            </Link>
+            <Link
+              href="/login"
+              className="text-gray-600 hover:text-gray-900 transition-colors flex items-center space-x-1"
+            >
+              <LogIn className="h-4 w-4" />
+              <span>Login</span>
+            </Link>
           </div>
 
           {/* Botão menu mobile */}
@@ -132,12 +150,23 @@ export function Navigation() {
 
             {/* Ações Mobile */}
             <div className="pt-4 border-t border-gray-200 mt-4 space-y-2">
-              <button className="w-full text-left px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
-                Login
-              </button>
-              <button className="w-full text-left px-4 py-3 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                Cadastrar
-              </button>
+              <Link
+                href="/cadastrar"
+                onClick={() => setIsOpen(false)}
+                className="w-full text-left px-4 py-3 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+              >
+                <UserPlus className="h-4 w-4" />
+                <span>Cadastrar</span>
+              </Link>
+              
+              <Link
+                href="/login"
+                onClick={() => setIsOpen(false)}
+                className="w-full text-left px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors flex items-center space-x-2"
+              >
+                <LogIn className="h-4 w-4" />
+                <span>Login</span>
+              </Link>
             </div>
           </div>
         )}

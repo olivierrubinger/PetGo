@@ -2,26 +2,42 @@
 
 import { Button } from "@/components/ui/Button";
 import { CadastroFormData, useCadastroForm } from "./_components/CadastroForm";
-import { extractPhoneNumber, formatPhone } from "@/lib/utils";
+import { extractPhoneNumber } from "@/lib/utils";
 import { FormField } from "@/components/ui/FormField";
 import { PhoneField } from "@/components/ui/PhoneField";
-import { useState } from "react";
 import { Clipboard } from "lucide-react";
 import { ProfilePhotoInput } from "@/components/ProfilePhotoInput";
 import { TipoUsuario } from "@/types";
+import { useCadastroUsuario } from "@/hooks/useUsuario";
+import { useRouter } from "next/navigation";
+
 
 export default function CadastroPage() {
   const form = useCadastroForm();
+  const router = useRouter();
 
-  const fotoPerfilUrl = form.watch('fotoPerfil') as (string | null);
+  const registerMutation = useCadastroUsuario();
+  const fotoPerfilUrl = form.watch("fotoPerfil") as string | null;
 
-  const [loading, setLoading] = useState(false);
-
-  const onFormSubmit = (data: CadastroFormData) => {
+  const onFormSubmit = async (data: CadastroFormData) => {
     const extractValue = extractPhoneNumber(data.telefone || "");
     const { confirmarSenha, ...apiData } = data;
 
-    console.log({ ...apiData, telefone: extractValue });
+    const finalApiData = {
+      ...apiData,
+      telefone: extractValue,
+    };
+
+    try {
+      await registerMutation.mutateAsync(finalApiData);
+
+      form.reset();
+        setTimeout(() => {
+        router.push("/login");
+      }, 3000);
+    } catch (err) {
+      console.error("Erro capturado no componente:", err);
+    }
   };
 
   return (
@@ -35,6 +51,7 @@ export default function CadastroPage() {
           Cadastre-se!
         </h1>
       </div>
+
       <div className=" flex items-center justify-center p-4">
         <form
           onSubmit={form.handleSubmit(onFormSubmit)}
@@ -45,6 +62,7 @@ export default function CadastroPage() {
             currentUrl={fotoPerfilUrl}
             setValue={form.setValue}
           />
+
           <FormField
             label="Nome Completo"
             name="nome"
@@ -68,6 +86,7 @@ export default function CadastroPage() {
             control={form.control}
             errors={form.formState.errors}
           />
+
           <div>
             <label
               htmlFor="tipoUsuario"
@@ -75,18 +94,17 @@ export default function CadastroPage() {
             >
               Tipo de Cadastro *
             </label>
+
             <select
               id="tipoUsuario"
               {...form.register("tipoUsuario", { valueAsNumber: true })}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500"
             >
-              <option value={TipoUsuario.CLIENTE}>
-                Sou Cliente 
-              </option>
-              <option value={TipoUsuario.PASSEADOR}>
-                Sou Passeador 
-              </option>
+              <option value={TipoUsuario.CLIENTE}>Sou Cliente</option>
+
+              <option value={TipoUsuario.PASSEADOR}>Sou Passeador</option>
             </select>
+
             {form.formState.errors.tipoUsuario && (
               <p className="mt-1 text-sm text-red-600">
                 {form.formState.errors.tipoUsuario.message}
@@ -115,8 +133,9 @@ export default function CadastroPage() {
           <Button
             type="submit"
             className="w-full  bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-2 rounded-lg hover:to-indigo-700 shadow-lg"
+            disabled={registerMutation.isPending}
           >
-            Cadastrar
+            {registerMutation.isPending ? "Carregando..." : "Cadastrar"}
           </Button>
         </form>
       </div>

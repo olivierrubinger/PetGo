@@ -120,7 +120,7 @@ namespace petgo.api.Controllers
                 return BadRequest(new { message = "Este email já está cadastrado." });
             }
 
-            if (usuarioDto.Tipo == (int)TipoUsuario.ADMIN)
+            if (usuarioDto.TipoUsuario == (int)TipoUsuario.ADMIN)
             {
                 return BadRequest(new { message = "Não é permitido registrar-se como Administrador" });
             }
@@ -133,7 +133,7 @@ namespace petgo.api.Controllers
                 Email = usuarioDto.Email,
                 Telefone = usuarioDto.Telefone,
                 Senha = senhaHash,
-                Tipo = (TipoUsuario)usuarioDto.Tipo,
+                Tipo = (TipoUsuario)usuarioDto.TipoUsuario,
                 FotoPerfil = usuarioDto.FotoPerfil,
                 DataCriacao = DateTime.UtcNow
             };

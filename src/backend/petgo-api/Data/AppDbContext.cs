@@ -125,9 +125,7 @@ namespace petgo.api.Data
                 entity.Property(e => e.Telefone)
                     .IsRequired()
                     .HasMaxLength(20);
-
-                entity.Property(e => e.FotoPerfil)
-                    .HasMaxLength(500);
+            
 
                 entity.Property(e => e.Tipo)
                     .IsRequired()
