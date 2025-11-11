@@ -3,11 +3,12 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { TipoUsuario } from "@/types";
 
 // Schema de validação
 const cadastroFormSchema = z.object({
     nome: z.string().min(1, "Nome é obrigatório").max(100, "Nome muito longo"),
-    email: z.email().min(1, "O formato do e-mail é inválido"),
+    email: z.string().min(1, "Email é obrigatório").email("O formato do e-mail é inválido"),
     telefone: z.string()
     .min(15, "O telefone é obrigatório (com DDD)"),
     senha: z.string()
@@ -15,6 +16,11 @@ const cadastroFormSchema = z.object({
     confirmarSenha: z
       .string()
       .min(6, "A confirmação da senha é obrigatória"),
+    tipoUsuario: z.nativeEnum(TipoUsuario).refine(
+      (val) => val !== TipoUsuario.ADMIN,
+      { message: "Tipo de usuário inválido." }
+    ),
+    fotoPerfil: z.array(z.string()).optional().nullable(),
 })
 .refine((data) => data.senha === data.confirmarSenha, {
     message: "As senhas não conferem",
@@ -39,7 +45,9 @@ export function useCadastroForm() {
       email: "",
       telefone: "",
       senha: "",
-      confirmarSenha: ""
+      confirmarSenha: "",
+      tipoUsuario: TipoUsuario.CLIENTE,
+      fotoPerfil: null
     }
   })
 }

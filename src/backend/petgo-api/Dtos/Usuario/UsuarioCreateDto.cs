@@ -23,5 +23,8 @@ namespace petgo.api.Dtos.Usuario
 
         [Required(ErrorMessage = "O telefone é obrigatório"), MaxLength(20)]
         public required string Telefone { get; set; }
+        [Required(ErrorMessage = "O tipo de usuário é obrigatório")]
+        public int Tipo { get; set; }
+        public string? FotoPerfil { get; set; }
     }
 }
