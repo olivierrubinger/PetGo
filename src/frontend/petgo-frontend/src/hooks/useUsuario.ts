@@ -5,6 +5,7 @@ import { CadastroFormData } from "@/app/cadastrar/_components/CadastroForm";
 import { toast } from "sonner";
 import { LoginFormData } from "@/app/login/_components/LoginForm";
 import api from "@/lib/api";
+import { useAuth } from "@/components/AuthContext";
 
 export const USUARIO_QUERY_KEYS = {
   all: ["usuarios"] as const,
@@ -38,15 +39,13 @@ export function useCadastroUsuario() {
 }
 
 export function useLoginUsuario() {
+  const { loginContext } = useAuth();
+
   return useMutation<LoginResponseDto, ApiError, LoginFormData>({
     mutationFn: (data) => usuarioService.login(data),
 
     onSuccess: (data) => {
-      localStorage.setItem("auth_token", data.token);
-
-      api.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
-
-      localStorage.setItem("user_info", JSON.stringify(data.usuario));
+      loginContext(data.token, data.usuario);
 
       toast.success("Login realizado com sucesso!");
     },

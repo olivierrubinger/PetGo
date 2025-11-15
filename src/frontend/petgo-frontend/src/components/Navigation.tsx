@@ -14,7 +14,10 @@ import {
   PawPrint,
   UserPlus,
   LogIn,
+  LogOut,
+  User,
 } from "lucide-react";
+import { useAuth } from "./AuthContext";
 
 //menu principal
 const navigationItems = [
@@ -48,6 +51,11 @@ const navigationItems = [
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const { isAuthenticated, user, logoutContext, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <header className="h-16 bg-white"></header>; // Um "placeholder"
+  }
 
   // Verifica qual link está ativo
   const isActiveLink = (href: string) => {
@@ -93,20 +101,45 @@ export function Navigation() {
 
           {/* Ações do usuário (desktop) */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link
-              href="/cadastrar"
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-1"
-            >
-              <UserPlus className="h-4 w-4" />
-              <span>Cadastrar</span>
-            </Link>
-            <Link
-              href="/login"
-              className="text-gray-600 hover:text-gray-900 transition-colors flex items-center space-x-1"
-            >
-              <LogIn className="h-4 w-4" />
-              <span>Login</span>
-            </Link>
+            {isAuthenticated ? (
+              // ---- SE ESTIVER LOGADO (DESKTOP) ----
+              <>
+                <span className="text-sm text-gray-700">
+                  Olá, {user?.nome}!
+                </span>
+                <Link
+                  href="/perfil"
+                  className="text-gray-600 hover:text-gray-900 transition-colors flex items-center space-x-1"
+                >
+                  <User className="h-4 w-4" />
+                  <span>Perfil</span>
+                </Link>
+                <button
+                  onClick={logoutContext}
+                  className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors flex items-center space-x-1"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>Sair</span>
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/cadastrar"
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-1"
+                >
+                  <UserPlus className="h-4 w-4" />
+                  <span>Cadastrar</span>
+                </Link>
+                <Link
+                  href="/login"
+                  className="text-gray-600 hover:text-gray-900 transition-colors flex items-center space-x-1"
+                >
+                  <LogIn className="h-4 w-4" />
+                  <span>Login</span>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Botão menu mobile */}
@@ -150,23 +183,49 @@ export function Navigation() {
 
             {/* Ações Mobile */}
             <div className="pt-4 border-t border-gray-200 mt-4 space-y-2">
-              <Link
-                href="/cadastrar"
-                onClick={() => setIsOpen(false)}
-                className="w-full text-left px-4 py-3 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
-              >
-                <UserPlus className="h-4 w-4" />
-                <span>Cadastrar</span>
-              </Link>
-              
-              <Link
-                href="/login"
-                onClick={() => setIsOpen(false)}
-                className="w-full text-left px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors flex items-center space-x-2"
-              >
-                <LogIn className="h-4 w-4" />
-                <span>Login</span>
-              </Link>
+              {isAuthenticated ? (
+                // ---- SE ESTIVER LOGADO (MOBILE) ----
+                <>
+                  <Link
+                    href="/perfil"
+                    onClick={() => setIsOpen(false)}
+                    className="w-full text-left px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors flex items-center space-x-2"
+                  >
+                    <User className="h-4 w-4" />
+                    <span>Perfil</span>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      logoutContext();
+                      setIsOpen(false);
+                    }}
+                    className="w-full text-left px-4 py-3 text-sm font-medium bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center space-x-2"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    <span>Sair</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/cadastrar"
+                    onClick={() => setIsOpen(false)}
+                    className="w-full text-left px-4 py-3 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+                  >
+                    <UserPlus className="h-4 w-4" />
+                    <span>Cadastrar</span>
+                  </Link>
+
+                  <Link
+                    href="/login"
+                    onClick={() => setIsOpen(false)}
+                    className="w-full text-left px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors flex items-center space-x-2"
+                  >
+                    <LogIn className="h-4 w-4" />
+                    <span>Login</span>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         )}

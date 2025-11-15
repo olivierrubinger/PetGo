@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ErrorBoundary from "./ErrorBoundary";
 import { ApiError } from "../types";
+import { AuthProvider } from "./AuthContext";
 
 // Configurar QueryClient com tratamento de erros melhorado
 const queryClient = new QueryClient({
@@ -55,7 +56,9 @@ export function Providers({ children }: ProvidersProps) {
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
         {/* Mostrar DevTools apenas em desenvolvimento */}
         {process.env.NODE_ENV === "development" && (
           <ReactQueryDevtools initialIsOpen={false} />
