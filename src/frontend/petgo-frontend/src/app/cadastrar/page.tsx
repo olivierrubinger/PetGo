@@ -48,7 +48,7 @@ export default function CadastroPage() {
         </div>
 
         <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent text-center ">
-          Cadastre-se!
+          Cadastre-se
         </h1>
       </div>
 
