@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "petgo.api", "src\backend\pe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{3E72BF5C-0B5E-D5BD-DCAE-6B991004B4A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "todoz.test", "src\test\petgo-test\todoz.test.csproj", "{5F8B1961-AB61-5B60-5939-AD252B95A9A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "petgo.test", "src\test\petgo-test\petgo.test.csproj", "{5F8B1961-AB61-5B60-5939-AD252B95A9A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

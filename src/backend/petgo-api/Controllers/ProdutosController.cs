@@ -18,7 +18,7 @@ namespace petgo.api.Controllers
 
         // GET: api/Produtos
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<object>>> GetProdutos(
+        public async Task<IActionResult> GetProdutos(
             [FromQuery] int? categoriaId = null,
             [FromQuery] StatusProduto? status = null,
             [FromQuery] string? busca = null)
@@ -74,7 +74,7 @@ namespace petgo.api.Controllers
 
         // GET: api/Produtos/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<object>> GetProduto(int id)
+        public async Task<IActionResult> GetProduto(int id)
         {
             var produto = await _context.Produtos
                 .Include(p => p.Categoria)
