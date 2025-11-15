@@ -149,9 +149,11 @@ export default function HomePage() {
           <p className="text-xl mb-8 opacity-90">
             Junte-se a milhares de donos de pets que já confiam no PetGo
           </p>
-          <button className="bg-white text-blue-600 px-8 py-4 rounded-xl hover:bg-gray-100 transition-all duration-300 font-semibold text-lg transform hover:scale-105">
-            Cadastre-se Gratuitamente
-          </button>
+          <Link href="/cadastrar">
+            <button className="bg-white text-blue-600 px-8 py-4 rounded-xl hover:bg-gray-100 transition-all duration-300 font-semibold text-lg transform hover:scale-105">
+              Cadastre-se Gratuitamente
+            </button>
+          </Link>
         </div>
       </section>
     </div>
