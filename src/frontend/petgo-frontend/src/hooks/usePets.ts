@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { petService } from "../services/pet.service";
-import { CreatePetInput, UpdatePetInput, ApiError } from "../types";
+import { CreatePetInput, UpdatePetInput, ApiError, Pet } from "../types";
 import { toast } from "../lib/toast";
 
 // Query Keys
@@ -44,9 +44,11 @@ export function usePetsByUser(userId: number) {
 export function useCreatePet() {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (pet: CreatePetInput) => petService.create(pet),
-    onSuccess: (newPet) => {
+  return useMutation<Pet, ApiError, CreatePetInput>({
+    mutationFn: async (pet: CreatePetInput): Promise<Pet> => {
+      return await petService.create(pet);
+    },
+    onSuccess: (newPet: Pet) => {
       queryClient.invalidateQueries({ queryKey: PET_QUERY_KEYS.all });
       queryClient.setQueryData(PET_QUERY_KEYS.detail(newPet.id), newPet);
       toast.success("Pet cadastrado com sucesso!");

@@ -22,5 +22,8 @@ namespace petgo.api.Dtos.Usuario
 
         [Range(0, 1000, ErrorMessage = "O valor deve ser entre 0 e 1000")]
         public decimal? ValorCobrado { get; set; }
+
+        // Lista de tipos de serviço oferecidos pelo passeador (0-3: PASSEIO, CUIDADO_DIARIO, HOSPEDAGEM, OUTRO)
+        public List<int>? TiposServico { get; set; }
     }
 }

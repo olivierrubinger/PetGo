@@ -39,16 +39,23 @@ export default function PerfilPage() {
   const isPasseador = user.tipo === TipoUsuario.PASSEADOR;
 
   const onFormSubmit = async (data: UpdateProfileFormData) => {
+    // Converter tiposServico de string[] para number[]
+    const processedData = {
+      ...data,
+      tiposServico: data.tiposServico?.map((t) => 
+        typeof t === "string" ? parseInt(t, 10) : t
+      ),
+    };
+    
     try {
       await updateMutation.mutateAsync({
         id: user.id,
-        data: data,
+        data: processedData,
       });
     } catch (err) {
-      console.error("Erro capturado no componente:", err);
+      console.error("Erro ao atualizar perfil:", err);
     }
   };
-
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
@@ -128,6 +135,41 @@ export default function PerfilPage() {
                 {form.formState.errors.valorCobrado && (
                   <p className="mt-1 text-sm text-red-600">
                     {form.formState.errors.valorCobrado.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Tipos de Serviço */}
+              <div>
+                <label className="block text-sm font-medium text-gray-900 mb-2">
+                  Tipos de Serviço Oferecidos
+                </label>
+                <div className="space-y-2">
+                  {[
+                    { value: 0, label: "Passeio" },
+                    { value: 1, label: "Cuidado Diário" },
+                    { value: 2, label: "Hospedagem" },
+                    { value: 3, label: "Outro" },
+                  ].map((servico) => (
+                    <label
+                      key={servico.value}
+                      className="flex items-center gap-2 p-2 rounded-lg hover:bg-blue-100 cursor-pointer transition-colors"
+                    >
+                      <input
+                        type="checkbox"
+                        value={servico.value}
+                        {...form.register("tiposServico")}
+                        className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                      />
+                      <span className="text-sm text-gray-700">
+                        {servico.label}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+                {form.formState.errors.tiposServico && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {form.formState.errors.tiposServico.message}
                   </p>
                 )}
               </div>

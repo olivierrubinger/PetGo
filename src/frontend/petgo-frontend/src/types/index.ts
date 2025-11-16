@@ -81,7 +81,7 @@ export const EnderecoSchema = z.object({
   pais: z.string(),
 });
 
-export const UsuarioSchema= z.object({
+export const UsuarioSchema = z.object({
   id: z.number(),
   nome: z.string().min(1, "Nome é obrigatório"),
   email: z.string().email("Email inválido"),
@@ -108,7 +108,7 @@ export const PetSchema: z.ZodType = z.object({
   fotos: z.array(z.string()),
   observacoes: z.string(),
   usuario: z.lazy(() => UsuarioSchema).optional(),
-  anuncioDoacao: z.lazy(() => AnuncioDoacaoSchema).optional(),
+  anuncioDoacao: z.lazy(() => AnuncioDoacaoSchema).optional(),
 });
 
 export const ProdutoSchema = z.object({
@@ -141,6 +141,7 @@ export type Produto = z.infer<typeof ProdutoSchema>;
 export type AnuncioDoacao = z.infer<typeof AnuncioDoacaoSchema>;
 
 export type PasseadorDto = z.infer<typeof PasseadorSchema>;
+export type Passeador = PasseadorDto; // Alias para compatibilidade
 export type ServicoPasseadorDto = z.infer<typeof ServicoPasseadorSchema>;
 export type EnderecoDto = z.infer<typeof EnderecoSchema>;
 
@@ -149,6 +150,16 @@ export type CreateProdutoInput = Omit<Produto, "id" | "categoriaProduto">;
 export type UpdateProdutoInput = Partial<CreateProdutoInput>;
 export type CreatePetInput = Omit<Pet, "id" | "usuario" | "anuncioDoacao">;
 export type UpdatePetInput = Partial<CreatePetInput>;
+
+// Types para passeadores
+export type CreatePasseadorInput = {
+  usuarioId: number;
+  descricao: string;
+  valorCobrado: number;
+};
+export type UpdatePasseadorInput = Partial<
+  Omit<CreatePasseadorInput, "usuarioId">
+>;
 
 // API Response types
 export interface ApiResponse<T> {
@@ -197,13 +208,11 @@ export interface Avaliacao {
 }
 
 export interface LoginDto {
-    email: string;
-    senha: string;
+  email: string;
+  senha: string;
 }
 
 export interface LoginResponseDto {
-    token: string;
-    usuario: Usuario; 
+  token: string;
+  usuario: Usuario;
 }
-
-

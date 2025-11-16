@@ -174,9 +174,7 @@ namespace petgo.api.Data
                     .HasMaxLength(1500);
 
                 entity.Property(e => e.TipoServico)
-                    .IsRequired()
-                    .HasConversion<string>()
-                    .HasMaxLength(50);
+                    .IsRequired();
 
                 entity.Property(e => e.Ativo)
                     .IsRequired()

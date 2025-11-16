@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { usuarioService } from "../services/usuario.service";
-import { Usuario, ApiError, LoginResponseDto } from "../types";
+import { Usuario, ApiError, LoginResponseDto, TipoUsuario } from "../types";
 import { CadastroFormData } from "@/app/cadastrar/_components/CadastroForm";
 import { toast } from "sonner";
 import { LoginFormData } from "@/app/login/_components/LoginForm";
@@ -77,6 +77,12 @@ export function useUpdateUsuario() {
       loginContext(null, updatedUsuario);
 
       queryClient.invalidateQueries({ queryKey: ["usuario", "me"] });
+      
+      // Se o usuário atualizado for um passeador, invalidar a lista de passeadores
+      if (updatedUsuario.tipo === TipoUsuario.PASSEADOR) {
+        queryClient.invalidateQueries({ queryKey: ["passeadores"] });
+      }
+      
       toast.success("Perfil atualizado com sucesso!");
     },
 

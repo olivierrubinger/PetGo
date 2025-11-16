@@ -126,6 +126,30 @@ namespace petgo.api.Controllers
                 return BadRequest(new { message = "Não é permitido registrar-se como Administrador" });
             }
 
+            // Validação específica para passeadores
+            if (usuarioDto.TipoUsuario == (int)TipoUsuario.PASSEADOR)
+            {
+                if (string.IsNullOrWhiteSpace(usuarioDto.DescricaoPasseador))
+                {
+                    return BadRequest(new { message = "A descrição é obrigatória para passeadores." });
+                }
+
+                if (usuarioDto.DescricaoPasseador.Length < 20 || usuarioDto.DescricaoPasseador.Length > 1500)
+                {
+                    return BadRequest(new { message = "A descrição deve ter entre 20 e 1500 caracteres." });
+                }
+
+                if (!usuarioDto.ValorCobradoPasseador.HasValue)
+                {
+                    return BadRequest(new { message = "O valor cobrado é obrigatório para passeadores." });
+                }
+
+                if (usuarioDto.ValorCobradoPasseador < 1.00m || usuarioDto.ValorCobradoPasseador > 10000.00m)
+                {
+                    return BadRequest(new { message = "O valor deve ser entre R$1,00 e R$10.000,00." });
+                }
+            }
+
             string senhaHash = BCrypt.Net.BCrypt.HashPassword(usuarioDto.Senha);
 
             var usuario = new Usuario
@@ -144,6 +168,40 @@ namespace petgo.api.Controllers
                 _context.Usuarios.Add(usuario);
                 await _context.SaveChangesAsync();
 
+                // Se for passeador, criar perfil de passeador automaticamente
+                if (usuario.Tipo == TipoUsuario.PASSEADOR)
+                {
+                    var passeador = new Passeador
+                    {
+                        UsuarioId = usuario.Id,
+                        Descricao = usuarioDto.DescricaoPasseador!,
+                        ValorCobrado = usuarioDto.ValorCobradoPasseador!.Value,
+                        AvaliacaoMedia = 0.0,
+                        QuantidadeAvaliacoes = 0
+                    };
+
+                    _context.Passeadores.Add(passeador);
+                    await _context.SaveChangesAsync();
+
+                    // Criar serviços se foram fornecidos
+                    if (usuarioDto.TiposServico != null && usuarioDto.TiposServico.Count > 0)
+                    {
+                        foreach (var tipoServico in usuarioDto.TiposServico)
+                        {
+                            var servico = new ServicoPasseador
+                            {
+                                PasseadorId = passeador.UsuarioId,
+                                Titulo = ((TipoServico)tipoServico).ToString().Replace("_", " "),
+                                Descricao = $"Serviço de {((TipoServico)tipoServico).ToString().Replace("_", " ").ToLower()}",
+                                TipoServico = (TipoServico)tipoServico,
+                                Ativo = true
+                            };
+                            _context.ServicoPasseadores.Add(servico);
+                        }
+                        await _context.SaveChangesAsync();
+                    }
+                }
+
                 // Retorno sem SENHA
                 var usuarioRetorno = new UsuarioDto
                 {
@@ -155,7 +213,18 @@ namespace petgo.api.Controllers
                     Tipo = (int)usuario.Tipo,
                     Enderecos = [],
                     Pets = [],
-                    Passeador = null
+                    Passeador = usuario.Tipo == TipoUsuario.PASSEADOR ? new PasseadorDto
+                    {
+                        UsuarioId = usuario.Id,
+                        Descricao = usuarioDto.DescricaoPasseador!,
+                        ValorCobrado = usuarioDto.ValorCobradoPasseador!.Value,
+                        AvaliacaoMedia = 0.0,
+                        QuantidadeAvaliacoes = 0,
+                        Nome = usuario.Nome,
+                        FotoPerfil = usuario.FotoPerfil,
+                        Telefone = usuario.Telefone,
+                        Servicos = []
+                    } : null
                 };
 
                 return CreatedAtAction(nameof(GetById), new { id = usuarioRetorno.Id }, usuarioRetorno);
@@ -201,6 +270,7 @@ namespace petgo.api.Controllers
 
             var usuario = await _context.Usuarios
                                             .Include(u => u.Passeador)
+                                                .ThenInclude(p => p.Servicos)
                                             .FirstOrDefaultAsync(u => u.Id == id);
 
             if (usuario == null)
@@ -237,6 +307,31 @@ namespace petgo.api.Controllers
                 if (usuarioDto.ValorCobrado != null)
                 {
                     usuario.Passeador.ValorCobrado = usuarioDto.ValorCobrado.Value;
+                }
+
+                // Atualizar serviços se foram fornecidos
+                if (usuarioDto.TiposServico != null)
+                {
+                    // Remover serviços existentes
+                    var servicosExistentes = await _context.ServicoPasseadores
+                        .Where(s => s.PasseadorId == usuario.Id)
+                        .ToListAsync();
+                    
+                    _context.ServicoPasseadores.RemoveRange(servicosExistentes);
+
+                    // Adicionar novos serviços
+                    foreach (var tipoServico in usuarioDto.TiposServico)
+                    {
+                        var servico = new ServicoPasseador
+                        {
+                            PasseadorId = usuario.Id,
+                            Titulo = ((TipoServico)tipoServico).ToString().Replace("_", " "),
+                            Descricao = $"Serviço de {((TipoServico)tipoServico).ToString().Replace("_", " ").ToLower()}",
+                            TipoServico = (TipoServico)tipoServico,
+                            Ativo = true
+                        };
+                        _context.ServicoPasseadores.Add(servico);
+                    }
                 }
             }
 
@@ -297,6 +392,8 @@ namespace petgo.api.Controllers
         public async Task<ActionResult<LoginResponseDto>> Login(LoginDto loginDto)
         {
             var usuario = await _context.Usuarios
+                                    .Include(u => u.Passeador)
+                                        .ThenInclude(p => p.Servicos)
                                     .AsNoTracking()
                                     .FirstOrDefaultAsync(u => u.Email == loginDto.Email);
 
@@ -307,15 +404,8 @@ namespace petgo.api.Controllers
 
             var tokenString = GenerateJwtToken(usuario);
 
-            var usuarioDto = new UsuarioDto
-            {
-                Id = usuario.Id,
-                Nome = usuario.Nome,
-                Email = usuario.Email,
-                Telefone = usuario.Telefone,
-                FotoPerfil = usuario.FotoPerfil,
-                Tipo = (int)usuario.Tipo
-            };
+            // Usar o método helper para mapear o usuário completo com passeador
+            var usuarioDto = MapUsuarioToDto(usuario);
 
             return Ok(new LoginResponseDto
             {

@@ -45,7 +45,6 @@ class UsuarioService {
     }
 
    async update(id: number, data: UpdateProfileFormData): Promise<Usuario> {
-    console.log("ID RECEBIDO NO SERVIÇO:", id);
         try {
             // O endpoint é /api/Usuarios/{id} (PUT)
             const response = await api.put<Usuario>(`${this.baseUrl}/${id}`, data);
