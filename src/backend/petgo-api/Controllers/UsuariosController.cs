@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -188,9 +189,18 @@ namespace petgo.api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateUsuario(int id, UsuarioUpdateDto usuarioDto)
+        [Authorize]
+        public async Task<ActionResult<UsuarioDto>> UpdateUsuario(int id, UsuarioUpdateDto usuarioDto)
         {
-            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
+            var userIdClaim = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+            if (string.IsNullOrEmpty(userIdClaim) || int.Parse(userIdClaim) != id)
+            {
+                return Unauthorized(new { message = "Você não tem permissão para editar este perfil." });
+            }
+
+            var usuario = await _context.Usuarios
+                                            .Include(u => u.Passeador)
+                                            .FirstOrDefaultAsync(u => u.Id == id);
 
             if (usuario == null)
             {
@@ -201,11 +211,33 @@ namespace petgo.api.Controllers
             usuario.Telefone = usuarioDto.Telefone;
             usuario.FotoPerfil = usuarioDto.FotoPerfil;
 
+            if (usuario.Tipo == TipoUsuario.PASSEADOR && usuario.Passeador != null)
+            {
+                if (usuarioDto.Descricao != null)
+                {
+                    usuario.Passeador.Descricao = usuarioDto.Descricao;
+                }
+                if (usuarioDto.ValorCobrado != null)
+                {
+                    usuario.Passeador.ValorCobrado = usuarioDto.ValorCobrado.Value; 
+                }
+            }
+
             try
             {
                 await _context.SaveChangesAsync();
 
-                return NoContent();
+                var usuarioAtualizado = await _context.Usuarios
+                    .Include(u => u.Enderecos)
+                    .Include(u => u.Pets)
+                    .Include(u => u.Passeador)
+                        .ThenInclude(p => p.Servicos)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(u => u.Id == id);
+
+                var usuarioRetornoDto = MapUsuarioToDto(usuarioAtualizado!);
+
+                return Ok(usuarioRetornoDto);
             }
             catch (Exception ex)
             {

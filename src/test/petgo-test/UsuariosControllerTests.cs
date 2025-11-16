@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -25,43 +28,54 @@ namespace petgo.test
         public async Task Setup()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                            .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                            .Options;
-
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
             _context = new AppDbContext(options);
-            string senhaHash = BCrypt.Net.BCrypt.HashPassword("senha123");
 
-            _context.Usuarios.Add(new Usuario
+            var myConfiguration = new Dictionary<string, string?>
             {
-                Id = 1,
-                Nome = "Usuario Teste",
-                Email = "teste@gmail.com",
-                Senha = senhaHash,
-                Telefone = "123456789",
-                Tipo = TipoUsuario.CLIENTE,
-                DataCriacao = DateTime.UtcNow
-            });
-
-            await _context.SaveChangesAsync();
-            _context.ChangeTracker.Clear();
-
-            var inMemorySettings = new Dictionary<string, string?> {
-            {"Jwt:Key", "UMA_CHAVE_FALSA_PARA_TESTES_BEM_LONGA_E_SEGURA_123456789"},
-            {"Jwt:Issuer", "petgo.api"},
-            {"Jwt:Audience", "petgo.app"}
+                {"Jwt:Key", "UMA_CHAVE_FALSA_PARA_TESTES_BEM_LONGA_E_SEGURA_123456789"},
+                {"Jwt:Issuer", "TestIssuer"},
+                {"Jwt:Audience", "TestAudience"}
             };
-
             _config = new ConfigurationBuilder()
-               .AddInMemoryCollection(inMemorySettings)
-               .Build();
+                .AddInMemoryCollection(myConfiguration)
+                .Build();
+
+            var hashCliente = BCrypt.Net.BCrypt.HashPassword("senha_cliente_123");
+            var hashPasseador = BCrypt.Net.BCrypt.HashPassword("senha_passeador_123");
+
+            _context.Usuarios.AddRange(
+                new Usuario { Id = 1, Nome = "Cliente Teste", Email = "cliente@teste.com", Tipo = TipoUsuario.CLIENTE, Telefone = "11999992222", Senha = hashCliente },
+                new Usuario { Id = 2, Nome = "Passeador Teste", Email = "passeador@teste.com", Tipo = TipoUsuario.PASSEADOR, Telefone = "11999991111", Senha = hashPasseador }
+            );
+            _context.Passeadores.Add(
+                new Passeador { UsuarioId = 2, Descricao = "Descricao Antiga", ValorCobrado = 25.0m }
+            );
+            await _context.SaveChangesAsync();
 
             _controller = new UsuariosController(_context, _config);
         }
-
         [TearDown]
         public void TearDown()
         {
             _context.Dispose();
+        }
+
+        private void MockUser(int id, string tipoUsuario)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, id.ToString()),
+                new Claim(ClaimTypes.Role, tipoUsuario)
+            };
+            var identity = new ClaimsIdentity(claims, "TestAuth");
+            var claimsPrincipal = new ClaimsPrincipal(identity);
+
+            _controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = claimsPrincipal }
+            };
         }
 
         [Test]
@@ -101,7 +115,7 @@ namespace petgo.test
             var usuarioDtoDuplicado = new UsuarioCreateDto
             {
                 Nome = "Usuario Fantasma",
-                Email = "teste@gmail.com",
+                Email = "cliente@teste.com",
                 Senha = "senhaQualquer123",
                 Telefone = "000000000",
                 TipoUsuario = (int)TipoUsuario.CLIENTE
@@ -118,7 +132,7 @@ namespace petgo.test
             Assert.That(responseValue, Has.Property("message").EqualTo("Este email já está cadastrado."));
 
             var count = await _context.Usuarios.CountAsync();
-            Assert.That(count, Is.EqualTo(1));
+            Assert.That(count, Is.EqualTo(2));
         }
 
         [Test]
@@ -126,8 +140,8 @@ namespace petgo.test
         {
             var loginDto = new LoginDto
             {
-                Email = "teste@gmail.com",
-                Senha = "senha123"
+                Email = "cliente@teste.com",
+                Senha = "senha_cliente_123"
             };
 
             var result = await _controller.Login(loginDto);
@@ -142,7 +156,7 @@ namespace petgo.test
             {
                 Assert.That(loginResponse.Token, Is.Not.Empty, "O Token JWT estava vazio");
 
-                Assert.That(loginResponse.Usuario.Email, Is.EqualTo("teste@gmail.com"));
+                Assert.That(loginResponse.Usuario.Email, Is.EqualTo("cliente@teste.com"));
             });
         }
 
@@ -151,7 +165,7 @@ namespace petgo.test
         {
             var loginDto = new LoginDto
             {
-                Email = "teste@email.com",
+                Email = "cliente@teste.com",
                 Senha = "senha-errada-123"
             };
 
@@ -172,7 +186,7 @@ namespace petgo.test
             var usuarioDto = okResult.Value as UsuarioDto;
             Assert.That(usuarioDto, Is.Not.Null, "O UsuarioDto estava nulo");
             Assert.That(usuarioDto.Id, Is.EqualTo(1));
-            Assert.That(usuarioDto.Email, Is.EqualTo("teste@gmail.com"));
+            Assert.That(usuarioDto.Email, Is.EqualTo("cliente@teste.com"));
         }
 
         [Test]
@@ -196,15 +210,17 @@ namespace petgo.test
             var usuariosList = okResult.Value as IEnumerable<UsuarioDto>;
             Assert.That(usuariosList, Is.Not.Null, "A lista de UsuarioDto estava nula");
 
-            Assert.That(usuariosList.Count(), Is.EqualTo(1));
+            Assert.That(usuariosList.Count(), Is.EqualTo(2));
 
-            var primeiroUsuario = usuariosList.First();
-            Assert.That(primeiroUsuario.Email, Is.EqualTo("teste@gmail.com"));
+            var primeiroUsuario = usuariosList.First(u => u.Id == 1);
+            Assert.That(primeiroUsuario.Email, Is.EqualTo("cliente@teste.com"));
         }
 
         [Test]
-        public async Task UpdateUsuario_WhenDataIsValid_ReturnsNoContent()
+        public async Task UpdateUsuario_WhenDataIsValid_ReturnsOkWithDto()
         {
+            MockUser(1, "CLIENTE");
+
             var updateDto = new UsuarioUpdateDto
             {
                 Nome = "Nome Atualizado",
@@ -213,7 +229,7 @@ namespace petgo.test
             };
 
             var result = await _controller.UpdateUsuario(1, updateDto);
-            Assert.That(result, Is.InstanceOf<NoContentResult>(), "A resposta não foi NoContent");
+            Assert.That(result.Result, Is.InstanceOf<OkObjectResult>(), "A resposta não foi NoContent");
 
             _context.ChangeTracker.Clear();
 
@@ -238,8 +254,37 @@ namespace petgo.test
                 FotoPerfil = "http://foto.fantasma/url"
             };
 
+            MockUser(idQueNaoExiste, "CLIENTE");
+
             var result = await _controller.UpdateUsuario(idQueNaoExiste, updateDto);
-            Assert.That(result, Is.InstanceOf<NotFoundObjectResult>(), "A resposta não foi NotFoundObjectResult");
+            Assert.That(result.Result, Is.InstanceOf<NotFoundObjectResult>(), "A resposta não foi NotFoundObjectResult");
+        }
+
+        [Test]
+        public async Task UpdateUsuario_WhenUserIsPasseador_UpdatesPasseadorFields()
+        {
+            MockUser(2, "PASSEADOR");
+
+            var dto = new UsuarioUpdateDto
+            {
+                Nome = "Passeador Nome Novo",
+                Telefone = "987",
+                Descricao = "Nova Descrição",
+                ValorCobrado = 50.0m
+            };
+
+            // Act
+            var result = await _controller.UpdateUsuario(2, dto);
+
+            Assert.That(result.Result, Is.TypeOf<OkObjectResult>());
+
+            var passeadorDoDb = await _context.Passeadores.FindAsync(2);
+            Assert.That(passeadorDoDb, Is.Not.Null);
+            Assert.Multiple(() =>
+            {
+                Assert.That(passeadorDoDb.Descricao, Is.EqualTo("Nova Descrição"));
+                Assert.That(passeadorDoDb.ValorCobrado, Is.EqualTo(50.0m));
+            });
         }
 
         [Test]

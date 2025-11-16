@@ -20,7 +20,7 @@ export default function LoginPage() {
       form.reset();
       setTimeout(() => {
         router.push("/");
-      }, 2000);
+      }, 1000);
     } catch (err) {
       console.error("Erro capturado no componente:", err);
     }
