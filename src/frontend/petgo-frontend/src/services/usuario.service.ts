@@ -7,6 +7,7 @@ import {
     ApiError,
     TipoUsuario,
 } from "../types"; 
+import { UpdateProfileFormData } from "@/app/perfil/_components/PerfilForm";
 
 export type CadastroApiPayload = {
   nome: string;
@@ -42,8 +43,21 @@ class UsuarioService {
             throw apiError;
         }
     }
-    
 
+   async update(id: number, data: UpdateProfileFormData): Promise<Usuario> {
+    console.log("ID RECEBIDO NO SERVIÇO:", id);
+        try {
+            // O endpoint é /api/Usuarios/{id} (PUT)
+            const response = await api.put<Usuario>(`${this.baseUrl}/${id}`, data);
+            
+            return response.data; 
+        } catch (error) {
+            const apiError = error as ApiError;
+            console.error("❌ Erro ao atualizar perfil:", apiError);
+            throw apiError;
+        }
+    }
 }
+    
 
 export const usuarioService = new UsuarioService();

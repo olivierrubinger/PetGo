@@ -66,8 +66,8 @@ namespace petgo.test
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, id.ToString()),
-                new Claim(ClaimTypes.Role, tipoUsuario)
+                new Claim(System.Security.Claims.ClaimTypes.NameIdentifier, id.ToString()), 
+                new Claim(System.Security.Claims.ClaimTypes.Role, tipoUsuario)
             };
             var identity = new ClaimsIdentity(claims, "TestAuth");
             var claimsPrincipal = new ClaimsPrincipal(identity);

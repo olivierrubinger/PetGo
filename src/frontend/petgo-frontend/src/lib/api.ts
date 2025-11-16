@@ -12,12 +12,13 @@ const api = axios.create({
 
 // Request interceptor para adicionar token de autenticação
 api.interceptors.request.use(
-(config) => {
-    const token = localStorage.getItem('auth_token'); // CORREÇÃO: Usando a chave correta 'auth_token'
+  (config) => {
+    const token = localStorage.getItem("auth_token");
 
     if (token) {
+      // Força a inclusão do token, eliminando a condição de verificação
       config.headers.Authorization = `Bearer ${token}`;
-    } 
+    }
 
     console.log(
       `🚀 API Request: ${config.method?.toUpperCase()} ${config.url}`

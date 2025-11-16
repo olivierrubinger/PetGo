@@ -192,7 +192,8 @@ namespace petgo.api.Controllers
         [Authorize]
         public async Task<ActionResult<UsuarioDto>> UpdateUsuario(int id, UsuarioUpdateDto usuarioDto)
         {
-            var userIdClaim = User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             if (string.IsNullOrEmpty(userIdClaim) || int.Parse(userIdClaim) != id)
             {
                 return Unauthorized(new { message = "Você não tem permissão para editar este perfil." });

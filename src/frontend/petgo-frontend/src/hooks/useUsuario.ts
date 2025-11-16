@@ -1,15 +1,21 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { usuarioService } from "../services/usuario.service";
 import { Usuario, ApiError, LoginResponseDto } from "../types";
 import { CadastroFormData } from "@/app/cadastrar/_components/CadastroForm";
 import { toast } from "sonner";
 import { LoginFormData } from "@/app/login/_components/LoginForm";
 import { useAuth } from "@/components/AuthContext";
+import { UpdateProfileFormData } from "@/app/perfil/_components/PerfilForm";
 
 export const USUARIO_QUERY_KEYS = {
   all: ["usuarios"] as const,
   login: ["login"] as const,
 };
+
+interface UpdateMutationPayload {
+  id: number;
+  data: UpdateProfileFormData;
+}
 
 export function useCadastroUsuario() {
   return useMutation({
@@ -52,6 +58,33 @@ export function useLoginUsuario() {
     onError: (error) => {
       const errorMessage =
         error.response?.data?.message || "Email ou senha inválidos.";
+      toast.error(errorMessage);
+    },
+  });
+}
+
+export function useUpdateUsuario() {
+  const { loginContext } = useAuth();
+  const queryClient = useQueryClient();
+
+  // A mutação agora espera um objeto com { id, data }
+  return useMutation<Usuario, ApiError, UpdateMutationPayload>({
+    mutationFn: ({ id, data }) => usuarioService.update(id, data),
+
+    onSuccess: (updatedUsuario: Usuario) => {
+      // CORREÇÃO FINAL: Passamos NULL para o token, mantendo a sessão,
+      // e atualizamos apenas o objeto do usuário.
+      loginContext(null, updatedUsuario);
+
+      queryClient.invalidateQueries({ queryKey: ["usuario", "me"] });
+      toast.success("Perfil atualizado com sucesso!");
+    },
+
+    onError: (error: ApiError) => {
+      // ... (restante da lógica de erro)
+      const errorMessage =
+        error.response?.data?.message ||
+        "Ocorreu um erro ao tentar atualizar o perfil.";
       toast.error(errorMessage);
     },
   });

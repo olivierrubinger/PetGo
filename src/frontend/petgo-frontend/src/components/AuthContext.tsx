@@ -3,13 +3,19 @@
 import api from "@/lib/api";
 import { Usuario } from "@/types";
 import { useRouter } from "next/navigation";
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface AuthContextType {
-  isAuthenticated: boolean;    
-  user: Usuario | null;     
-  isLoading: boolean;          
-  loginContext: (token: string, userData: Usuario) => void; 
+  isAuthenticated: boolean;
+  user: Usuario | null;
+  isLoading: boolean;
+  loginContext: (token: string | null, userData: Usuario) => void;
   logoutContext: () => void;
 }
 
@@ -18,7 +24,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<Usuario | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true); 
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -28,9 +34,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (token && userInfo) {
         const userData: Usuario = JSON.parse(userInfo);
-        
-        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        
+
+       // api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
         setUser(userData);
         setIsAuthenticated(true);
       }
@@ -41,29 +47,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setIsLoading(false);
     }
-  }, []); 
+  }, []);
 
-  const loginContext = (token: string, userData: Usuario) => {
-    localStorage.setItem("auth_token", token);
+  const loginContext = (token: string | null, userData: Usuario) => {
+    if (token) {
+      localStorage.setItem("auth_token", token);
+      // api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    }
+
     localStorage.setItem("user_info", JSON.stringify(userData));
-    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
     setUser(userData);
     setIsAuthenticated(true);
-    
-    router.push("/"); 
+
     router.refresh();
   };
 
   const logoutContext = () => {
     localStorage.removeItem("auth_token");
     localStorage.removeItem("user_info");
-    delete api.defaults.headers.common['Authorization'];
+    delete api.defaults.headers.common["Authorization"];
 
     setUser(null);
     setIsAuthenticated(false);
 
-    router.push("/login"); 
+    router.push("/login");
   };
 
   const value = {
@@ -75,7 +83,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   if (isLoading) {
-    return null; 
+    return null;
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
