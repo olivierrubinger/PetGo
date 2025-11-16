@@ -54,7 +54,7 @@ export function useUpdateProfileForm({
 
     tiposServico:
       isPasseador && currentUser?.passeador?.servicos
-        ? currentUser.passeador.servicos.map((s) => s.tipoServico)
+        ? currentUser.passeador.servicos.map((s) => s.tipoServico.toString())
         : [],
   };
 

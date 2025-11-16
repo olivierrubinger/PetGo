@@ -77,12 +77,12 @@ export function useUpdateUsuario() {
       loginContext(null, updatedUsuario);
 
       queryClient.invalidateQueries({ queryKey: ["usuario", "me"] });
-      
+
       // Se o usuário atualizado for um passeador, invalidar a lista de passeadores
       if (updatedUsuario.tipo === TipoUsuario.PASSEADOR) {
         queryClient.invalidateQueries({ queryKey: ["passeadores"] });
       }
-      
+
       toast.success("Perfil atualizado com sucesso!");
     },
 

@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/Button";
 import { FormField } from "@/components/ui/FormField";
 import { PhoneField } from "@/components/ui/PhoneField";
 import { ProfilePhotoInput } from "@/components/ProfilePhotoInput";
+import { formatPhone } from "@/lib/utils";
 
 export default function PerfilPage() {
   const { user, isAuthenticated, isLoading } = useAuth();
@@ -25,6 +26,26 @@ export default function PerfilPage() {
       router.push("/login");
     }
   }, [isLoading, isAuthenticated, router]);
+
+  // Atualizar os valores do formulário quando o user mudar
+  useEffect(() => {
+    if (user) {
+      const isPasseador = user.tipo === TipoUsuario.PASSEADOR;
+      form.reset({
+        nome: user.nome,
+        telefone: user.telefone ? formatPhone(user.telefone) : "",
+        fotoPerfil: user.fotoPerfil || null,
+        descricao:
+          isPasseador && user.passeador ? user.passeador.descricao : null,
+        valorCobrado:
+          isPasseador && user.passeador ? user.passeador.valorCobrado : null,
+        tiposServico:
+          isPasseador && user.passeador?.servicos
+            ? user.passeador.servicos.map((s) => s.tipoServico.toString())
+            : [],
+      });
+    }
+  }, [user, form]);
 
   if (isLoading || !user) {
     return (
@@ -42,11 +63,11 @@ export default function PerfilPage() {
     // Converter tiposServico de string[] para number[]
     const processedData = {
       ...data,
-      tiposServico: data.tiposServico?.map((t) => 
+      tiposServico: data.tiposServico?.map((t) =>
         typeof t === "string" ? parseInt(t, 10) : t
       ),
     };
-    
+
     try {
       await updateMutation.mutateAsync({
         id: user.id,

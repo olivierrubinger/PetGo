@@ -31,7 +31,7 @@ export default function CadastroPage() {
       ...apiData,
       telefone: extractValue,
       // Converter tiposServico de string[] para number[]
-      tiposServico: apiData.tiposServico?.map((t) => 
+      tiposServico: apiData.tiposServico?.map((t) =>
         typeof t === "string" ? parseInt(t, 10) : t
       ),
     };
