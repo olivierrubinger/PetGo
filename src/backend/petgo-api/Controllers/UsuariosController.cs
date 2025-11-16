@@ -212,15 +212,31 @@ namespace petgo.api.Controllers
             usuario.Telefone = usuarioDto.Telefone;
             usuario.FotoPerfil = usuarioDto.FotoPerfil;
 
-            if (usuario.Tipo == TipoUsuario.PASSEADOR && usuario.Passeador != null)
+            if (usuario.Tipo == TipoUsuario.PASSEADOR)
             {
+                // 🛑 Se o Passeador não existe, crie a entidade.
+                if (usuario.Passeador == null)
+                {
+                    usuario.Passeador = new Passeador
+                    {
+                        UsuarioId = usuario.Id,
+                        // Inicialize com valores padrão ou DTO (se necessário)
+                        Descricao = string.Empty,
+                        ValorCobrado = 0.0m,
+                        Servicos = new List<ServicoPasseador>()
+                    };
+                    // Adiciona a nova entidade ao Context para ser rastreada
+                    _context.Passeadores.Add(usuario.Passeador);
+                }
+
+                // Agora que o Passeador existe (ou foi criado), atualize seus campos.
                 if (usuarioDto.Descricao != null)
                 {
                     usuario.Passeador.Descricao = usuarioDto.Descricao;
                 }
                 if (usuarioDto.ValorCobrado != null)
                 {
-                    usuario.Passeador.ValorCobrado = usuarioDto.ValorCobrado.Value; 
+                    usuario.Passeador.ValorCobrado = usuarioDto.ValorCobrado.Value;
                 }
             }
 
