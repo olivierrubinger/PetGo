@@ -16,7 +16,6 @@ namespace petgo.api.Dtos.Usuario
         MaxLength(20)]
         public string Telefone { get; set; }  = string.Empty;
 
-        [MaxLength(500)] // URL da foto
         public string? FotoPerfil { get; set; } 
         [MaxLength(500, ErrorMessage = "A descrição não pode passar de 500 caracteres")]
         public string? Descricao { get; set; } 

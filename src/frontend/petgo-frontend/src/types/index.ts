@@ -44,8 +44,44 @@ export enum AlvoTipo {
   SERVICO = 2,
 }
 
+export enum TipoServico {
+  PASSEIO = 0,
+  CUIDADO_DIARIO = 1,
+  HOSPEDAGEM = 2,
+  OUTRO = 3,
+}
+
 // Schemas Zod para validação
-export const UsuarioSchema = z.object({
+
+export const ServicoPasseadorSchema = z.object({
+  id: z.number(),
+  titulo: z.string(),
+  descricao: z.string(),
+  tipoServico: z.nativeEnum(TipoServico),
+});
+
+export const PasseadorSchema = z.object({
+  usuarioId: z.number(),
+  descricao: z.string(),
+  valorCobrado: z.number(),
+  avaliacaoMedia: z.number(),
+  quantidadeAvaliacoes: z.number(),
+  nome: z.string(),
+  fotoPerfil: z.string(),
+  telefone: z.string(),
+  servicos: z.array(ServicoPasseadorSchema),
+});
+
+export const EnderecoSchema = z.object({
+  id: z.number(),
+  usuarioId: z.number(),
+  rua: z.string(),
+  estado: z.string(),
+  cep: z.string(),
+  pais: z.string(),
+});
+
+export const UsuarioSchema= z.object({
   id: z.number(),
   nome: z.string().min(1, "Nome é obrigatório"),
   email: z.string().email("Email inválido"),
@@ -53,11 +89,13 @@ export const UsuarioSchema = z.object({
   tipo: z.nativeEnum(TipoUsuario),
   fotoPerfil: z.string(),
   dataCriacao: z.string(),
-  enderecos: z.array(z.any()).optional(),
-  pets: z.array(z.any()).optional(),
+
+  enderecos: z.array(EnderecoSchema).optional(),
+  pets: z.array(z.lazy(() => PetSchema)).optional(),
+  passeador: PasseadorSchema.nullable().optional(),
 });
 
-export const PetSchema = z.object({
+export const PetSchema: z.ZodType = z.object({
   id: z.number(),
   usuarioId: z.number(),
   nome: z.string().min(1, "Nome é obrigatório"),
@@ -69,8 +107,8 @@ export const PetSchema = z.object({
   estado: z.string().min(1, "Estado é obrigatório"),
   fotos: z.array(z.string()),
   observacoes: z.string(),
-  usuario: UsuarioSchema.optional(),
-  anuncioDoacao: z.any().optional(),
+  usuario: z.lazy(() => UsuarioSchema).optional(),
+  anuncioDoacao: z.lazy(() => AnuncioDoacaoSchema).optional(),
 });
 
 export const ProdutoSchema = z.object({
@@ -86,14 +124,14 @@ export const ProdutoSchema = z.object({
   categoriaProduto: z.any().optional(),
 });
 
-export const AnuncioDoacaoSchema = z.object({
+export const AnuncioDoacaoSchema: z.ZodType = z.object({
   id: z.number(),
   petId: z.number(),
   status: z.nativeEnum(StatusAnuncio),
   descricao: z.string().min(1, "Descrição é obrigatória"),
   contatoWhatsapp: z.string().optional(),
   moderacao: z.nativeEnum(Moderacao),
-  pet: PetSchema.optional(),
+  pet: z.lazy(() => PetSchema).optional(),
 });
 
 // Types inferidos dos schemas
@@ -101,6 +139,10 @@ export type Usuario = z.infer<typeof UsuarioSchema>;
 export type Pet = z.infer<typeof PetSchema>;
 export type Produto = z.infer<typeof ProdutoSchema>;
 export type AnuncioDoacao = z.infer<typeof AnuncioDoacaoSchema>;
+
+export type PasseadorDto = z.infer<typeof PasseadorSchema>;
+export type ServicoPasseadorDto = z.infer<typeof ServicoPasseadorSchema>;
+export type EnderecoDto = z.infer<typeof EnderecoSchema>;
 
 // Types para formulários
 export type CreateProdutoInput = Omit<Produto, "id" | "categoriaProduto">;

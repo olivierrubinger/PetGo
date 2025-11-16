@@ -1,3 +1,6 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using petgo.api.Data;
 using petgo.api.Services;
@@ -35,6 +38,30 @@ builder.Services.AddCors(options =>
                   .AllowCredentials();
         });
 });
+
+var jwtSecretKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("JwtSecretKey não configurada.");
+var key = Encoding.ASCII.GetBytes(jwtSecretKey);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = !builder.Environment.IsDevelopment(); 
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false, // Ajuste se seu JWT tiver 'iss' configurado
+        ValidateAudience = false, // Ajuste se seu JWT tiver 'aud' configurado
+        ClockSkew = TimeSpan.Zero // Remove o 'tolerance' de 5 minutos
+    };
+});
+
+builder.Services.AddAuthorization();
 
 // APENAS PostgreSQL (Supabase) - Connection String
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -81,6 +108,7 @@ app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
