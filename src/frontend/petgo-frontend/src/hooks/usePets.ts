@@ -41,23 +41,23 @@ export function usePetsByUser(userId: number) {
 }
 
 // Hook para criar pet
-export function useCreatePet() {
-  const queryClient = useQueryClient();
+// export function useCreatePet() {
+//   const queryClient = useQueryClient();
 
-  return useMutation<Pet, ApiError, CreatePetInput>({
-    mutationFn: async (pet: CreatePetInput): Promise<Pet> => {
-      return await petService.create(pet);
-    },
-    onSuccess: (newPet: Pet) => {
-      queryClient.invalidateQueries({ queryKey: PET_QUERY_KEYS.all });
-      queryClient.setQueryData(PET_QUERY_KEYS.detail(newPet.id), newPet);
-      toast.success("Pet cadastrado com sucesso!");
-    },
-    onError: (error: ApiError) => {
-      toast.error(error.message || "Erro ao cadastrar pet");
-    },
-  });
-}
+//   return useMutation<Pet, ApiError, CreatePetInput>({
+//     mutationFn: async (pet: CreatePetInput): Promise<Pet> => {
+//       return await petService.create(pet);
+//     },
+//     onSuccess: (newPet) => {
+//       queryClient.invalidateQueries({ queryKey: PET_QUERY_KEYS.all });
+//       queryClient.setQueryData(PET_QUERY_KEYS.detail(newPet.id), newPet);
+//       toast.success("Pet cadastrado com sucesso!");
+//     },
+//     onError: (error) => {
+//       toast.error(error.message || "Erro ao cadastrar pet");
+//     },
+//   });
+// }
 
 // Hook para atualizar pet
 export function useUpdatePet() {
@@ -96,19 +96,19 @@ export function useDeletePet() {
 
 // Hook combinado para operações CRUD
 export function usePetOperations() {
-  const createMutation = useCreatePet();
+  // const createMutation = useCreatePet();
   const updateMutation = useUpdatePet();
   const deleteMutation = useDeletePet();
 
   return {
-    create: createMutation.mutate,
+    // create: createMutation.mutate,
     update: updateMutation.mutate,
     delete: deleteMutation.mutate,
-    isCreating: createMutation.isPending,
+    // isCreating: createMutation.isPending,
     isUpdating: updateMutation.isPending,
     isDeleting: deleteMutation.isPending,
     isLoading:
-      createMutation.isPending ||
+      // createMutation.isPending ||
       updateMutation.isPending ||
       deleteMutation.isPending,
   };
