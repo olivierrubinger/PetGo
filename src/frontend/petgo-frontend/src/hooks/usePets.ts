@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { petService } from "../services/pet.service";
 import { CreatePetInput, UpdatePetInput, ApiError, Pet } from "../types";
 import { toast } from "../lib/toast";
+import api from "../lib/api"; 
 
 // Query Keys
 export const PET_QUERY_KEYS = {
@@ -112,4 +113,21 @@ export function usePetOperations() {
       updateMutation.isPending ||
       deleteMutation.isPending,
   };
+}
+
+// hook para busca 
+const ADOCAO_CATEGORY_ID = 4;
+
+const fetchPetsAdocao = async (): Promise<Pet[]> => {
+  const { data } = await api.get<Pet[]>('/Produtos');
+
+  return data.filter((pet: any) => pet.categoriaId === ADOCAO_CATEGORY_ID);
+};
+
+export function usePetsAdocao() {
+  return useQuery({
+    queryKey: ['pets-adocao'],
+    queryFn: fetchPetsAdocao,
+    staleTime: 1000 * 60 * 5, 
+  });
 }
