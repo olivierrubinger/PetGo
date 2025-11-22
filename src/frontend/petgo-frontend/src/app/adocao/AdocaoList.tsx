@@ -8,9 +8,10 @@ interface PetCardProps {
 }
 
 export default function PetCard({ pet, onAdopt }: PetCardProps) {
+  
   const imageUrl = pet.imagens && pet.imagens.length > 0 
     ? pet.imagens[0] 
-    : '/placeholder-pet.jpg';
+    : '/placeholder-pet.jpg'; 
 
   return (
     <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group border border-purple-100 flex flex-col h-full">

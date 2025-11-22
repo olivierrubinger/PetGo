@@ -1,93 +1,71 @@
-import Link from 'next/link';
 import Image from 'next/image';
-import api from '@/lib/api';
+import { Heart, Dog, Cat, CheckCircle } from 'lucide-react';
+import { Pet } from '@/types/pet';
 
-
-interface PetDisplay {
-  id: number;
-  name: string;
-  breed: string;
-  age: number | string;
-  imageUrl: string;
+interface PetCardProps {
+  pet: Pet;
+  onAdopt: (id: number) => void;
 }
 
-
-const ADOCAO_CATEGORY_ID = 4;
-
-async function getPets(): Promise<PetDisplay[]> {
-  try {
- 
-    const response = await api.get('/Produtos');
-
-    
-    const data = response.data
-      .filter((item: any) => item.categoriaId === ADOCAO_CATEGORY_ID)
-      .map((item: any) => ({
-        id: item.id,
-        name: item.nome,       
-        breed: item.raca || 'Raça não informada',       
-        age: 0,                 
-        imageUrl: item.imagens && item.imagens.length > 0 ? item.imagens[0] : '/placeholder-pet.jpg'
-      }));
-
-    return data;
-  } catch (error) {
-    console.error('Falha ao buscar pets:', error);
-    return [];
-  }
-}
-
-// Componente da Página
-export default async function AdocaoPage() {
-  const pets = await getPets();
+export default function PetCard({ pet, onAdopt }: PetCardProps) {
+  const imageUrl = pet.imagens && pet.imagens.length > 0 
+    ? pet.imagens[0] 
+    : '/placeholder-pet.jpg'; 
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold text-center mb-12">
-        Pets Disponíveis para Adoção
-      </h1>
+    <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group border border-purple-100 flex flex-col h-full">
+      {/* Imagem */}
+      <div className="relative h-64 bg-gray-100 overflow-hidden">
+        <Image
+          src={imageUrl}
+          alt={`Foto de ${pet.nome}`}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-110"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
+        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-gray-700 shadow-md">
+          {pet.sexo || 'Indefinido'}
+        </div>
+      </div>
 
-      {pets.length === 0 ? (
-        <div className="text-center py-10">
-          <p className="text-xl text-gray-600">
-            Nenhum pet encontrado nesta categoria no momento.
-          </p>
-          <p className="text-sm text-gray-400 mt-2">
-            Verifique se o backend está rodando e se há pets cadastrados com Categoria ID 4.
-          </p>
+      {/* Conteúdo */}
+      <div className="p-6 flex flex-col flex-grow">
+        <div className="flex justify-between items-start mb-2">
+          <h2 className="text-2xl font-bold text-gray-900">{pet.nome}</h2>
+          <div className="flex items-center gap-1 text-gray-500 text-sm">
+            {pet.especie === 'Cão' ? <Dog size={20} className="text-orange-500" /> : <Cat size={20} className="text-sky-500" />}
+          </div>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {pets.map((pet) => (
-            <Link
-              href={`/adocao/${pet.id}`}
-              key={pet.id}
-              className="block bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-xl border border-gray-100"
-            >
-              <div className="relative h-60 w-full bg-gray-200">
-                <Image
-                  src={pet.imageUrl}
-                  alt={`Foto de ${pet.name}`}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-              </div>
-              <div className="p-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                  {pet.name}
-                </h2>
-                <p className="text-gray-600 mb-1">
-                  <span className="font-semibold text-purple-600">Raça:</span> {pet.breed}
-                </p>
-                <p className="text-gray-600">
-                  <span className="font-semibold text-purple-600">Idade:</span> {pet.age === 0 ? 'Não informada' : `${pet.age} anos`}
-                </p>
-              </div>
-            </Link>
-          ))}
+        
+        <p className="text-md text-purple-600 font-semibold mb-4">
+          {pet.raca || 'SRD'} • {pet.idade ? `${pet.idade} anos` : 'Idade não informada'}
+        </p>
+        
+        <div className="flex flex-wrap gap-2 mb-4">
+          {pet.vacinado && (
+            <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 flex items-center gap-1">
+              <CheckCircle size={14} /> Vacinado
+            </span>
+          )}
+          {pet.castrado && (
+            <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 flex items-center gap-1">
+              <CheckCircle size={14} /> Castrado
+            </span>
+          )}
         </div>
-      )}
+
+        <p className="text-gray-600 text-sm mb-6 line-clamp-3 flex-grow">
+          {pet.descricao}
+        </p>
+
+        <button 
+          onClick={() => onAdopt(pet.id)}
+          className="w-full bg-purple-600 text-white py-3 rounded-xl font-medium shadow-lg hover:bg-purple-700 transition-colors flex items-center justify-center gap-2 mt-auto"
+        >
+          <Heart size={18} className="fill-current text-white" />
+          Quero Adotar
+        </button>
+      </div>
     </div>
   );
 }
