@@ -15,6 +15,7 @@ import { ProdutosGridSkeleton } from "../../components/ProdutoSkeleton";
 import { Button } from "../../components/ui/Button";
 import { Plus, Search, Filter, Package, Heart } from "lucide-react";
 import { Produto, StatusProduto } from "../../types";
+import { useAuth } from "../../components/AuthContext";
 
 type ModalState = {
   isOpen: boolean;
@@ -37,6 +38,8 @@ export default function ProdutosContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const editId = searchParams.get("edit");
+  const { user } = useAuth();
+  const isAdmin = user?.tipo === 2; // TipoUsuario.ADMIN = 2
 
   const { data: produtos, isLoading, error } = useProdutos();
   const deleteMutation = useDeleteProduto();
@@ -215,13 +218,15 @@ export default function ProdutosContent() {
             <Heart size={16} className="text-pink-500" />
             <span>{produtos?.length || 0} produtos disponíveis</span>
           </div>
-          <Button
-            onClick={handleCreate}
-            className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 shadow-lg"
-          >
-            <Plus size={20} className="mr-2" />
-            Novo Produto
-          </Button>
+          {isAdmin && (
+            <Button
+              onClick={handleCreate}
+              className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 shadow-lg"
+            >
+              <Plus size={20} className="mr-2" />
+              Novo Produto
+            </Button>
+          )}
         </div>
       </div>
 
@@ -290,7 +295,7 @@ export default function ProdutosContent() {
               ? "Tente ajustar os filtros de busca para encontrar o que procura"
               : "Comece adicionando alguns produtos incríveis ao seu catálogo"}
           </p>
-          {!searchTerm && filterStatus === "all" && (
+          {!searchTerm && filterStatus === "all" && isAdmin && (
             <Button
               onClick={handleCreate}
               className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 shadow-lg"

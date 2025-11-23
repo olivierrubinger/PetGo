@@ -252,8 +252,7 @@ namespace petgo.api.Data
                     .HasMaxLength(2000);
 
                 entity.Property(e => e.ContatoWhatsapp)
-                    .IsRequired()
-                    .HasMaxLength(20);
+                    .HasMaxLength(20); // Removido IsRequired() - campo é nullable
 
                 entity.Property(e => e.Status)
                     .IsRequired()

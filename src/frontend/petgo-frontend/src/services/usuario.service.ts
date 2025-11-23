@@ -25,11 +25,27 @@ class UsuarioService {
     data: Omit<CadastroFormData, "confirmarSenha">
   ): Promise<Usuario> {
     try {
-      const response = await api.post(`${this.baseUrl}/registrar`, data);
+      // Mapear para o formato esperado pelo backend (PascalCase)
+      const payload = {
+        nome: data.nome,
+        email: data.email,
+        telefone: data.telefone,
+        senha: data.senha,
+        tipoUsuario: data.tipoUsuario,
+        fotoPerfil: data.fotoPerfil || null,
+        descricaoPasseador: data.descricaoPasseador || null,
+        valorCobradoPasseador: data.valorCobradoPasseador || null,
+        tiposServico: data.tiposServico || null,
+      };
+
+      console.log("📤 Enviando dados de cadastro:", payload);
+      const response = await api.post(`${this.baseUrl}/registrar`, payload);
+      console.log("✅ Usuário registrado:", response.data);
       return response.data;
     } catch (error) {
       const apiError = error as ApiError;
       console.error("❌ Erro ao registrar usuário:", apiError);
+      console.error("📋 Response data:", apiError?.details);
       throw apiError;
     }
   }

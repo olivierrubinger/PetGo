@@ -35,6 +35,9 @@ export default function ProdutoPage() {
   const produtoId = parseInt(params.id as string);
   const { user, isAuthenticated } = useAuth();
 
+  // Verificar se o usuário é ADMIN (tipo === 2)
+  const isAdmin = isAuthenticated && user && user.tipo === 2;
+
   const { data: produto, isLoading, error } = useProduto(produtoId);
   const { data: avaliacoes = [], isLoading: isLoadingAvaliacoes } =
     useAvaliacoes(AlvoTipo.PRODUTO, produtoId);
@@ -207,15 +210,36 @@ export default function ProdutoPage() {
           <span className="text-gray-900 font-medium">{produto.nome}</span>
         </nav>
 
-        {/* Botão Voltar */}
-        <Button
-          variant="secondary"
-          className="mb-6"
-          onClick={() => router.back()}
-        >
-          <ArrowLeft size={16} className="mr-2" />
-          Voltar
-        </Button>
+        {/* Botões de Ação */}
+        <div className="flex items-center justify-between mb-6">
+          <Button variant="secondary" onClick={() => router.back()}>
+            <ArrowLeft size={16} className="mr-2" />
+            Voltar
+          </Button>
+
+          {/* Botões Admin - Apenas para usuários autenticados e ADMIN */}
+          {isAdmin && (
+            <div className="flex gap-2">
+              <Button
+                variant="secondary"
+                onClick={handleEdit}
+                className="flex items-center gap-2"
+              >
+                <Edit size={16} />
+                Editar
+              </Button>
+              <Button
+                variant="danger"
+                onClick={handleDelete}
+                className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white"
+                disabled={deleteMutation.isPending}
+              >
+                <Trash2 size={16} />
+                {deleteMutation.isPending ? "Excluindo..." : "Excluir"}
+              </Button>
+            </div>
+          )}
+        </div>
 
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           {/* Layout Principal */}
@@ -462,26 +486,28 @@ export default function ProdutoPage() {
                   </div>
                 )}
 
-              {/* Ações Admin */}
-              <div className="flex space-x-3 pt-4 border-t">
-                <Button
-                  variant="secondary"
-                  onClick={handleEdit}
-                  className="flex-1"
-                >
-                  <Edit size={16} className="mr-2" />
-                  Editar
-                </Button>
-                <Button
-                  variant="danger"
-                  onClick={handleDelete}
-                  loading={deleteMutation.isPending}
-                  className="flex-1"
-                >
-                  <Trash2 size={16} className="mr-2" />
-                  Excluir
-                </Button>
-              </div>
+              {/* Ações Admin - Apenas para usuários ADMIN autenticados */}
+              {isAdmin && (
+                <div className="flex space-x-3 pt-4 border-t">
+                  <Button
+                    variant="secondary"
+                    onClick={handleEdit}
+                    className="flex-1"
+                  >
+                    <Edit size={16} className="mr-2" />
+                    Editar
+                  </Button>
+                  <Button
+                    variant="danger"
+                    onClick={handleDelete}
+                    loading={deleteMutation.isPending}
+                    className="flex-1"
+                  >
+                    <Trash2 size={16} className="mr-2" />
+                    Excluir
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
 

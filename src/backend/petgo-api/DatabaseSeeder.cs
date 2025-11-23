@@ -243,7 +243,7 @@ namespace petgo.api.Services
             // ==========================================
             Console.WriteLine("🐾 Criando pets para adoção...");
 
-            // Buscar usuário Olivier Rubinger (ID 16)
+            // Buscar usuário Olivier Rubinger (ID 16) e torná-lo ADMIN
             var usuario = await context.Usuarios.FindAsync(16);
             if (usuario == null)
             {
@@ -252,7 +252,15 @@ namespace petgo.api.Services
                 return;
             }
             
-            Console.WriteLine($"✅ Vinculando pets ao usuário: {usuario.Nome}");
+            // Tornar o usuário ADMIN se ainda não for
+            if (usuario.Tipo != TipoUsuario.ADMIN)
+            {
+                usuario.Tipo = TipoUsuario.ADMIN;
+                await context.SaveChangesAsync();
+                Console.WriteLine($"✅ {usuario.Nome} agora é ADMIN!");
+            }
+            
+            Console.WriteLine($"✅ Vinculando pets ao usuário: {usuario.Nome} (ADMIN)");
 
             var novosPets = new[]
             {

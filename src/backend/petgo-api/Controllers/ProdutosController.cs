@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using petgo.api.Data;
 using petgo.api.Models;
 
@@ -18,6 +19,7 @@ namespace petgo.api.Controllers
 
         // GET: api/Produtos
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetProdutos(
             [FromQuery] int? categoriaId = null,
             [FromQuery] StatusProduto? status = null,
@@ -76,6 +78,7 @@ namespace petgo.api.Controllers
 
         // GET: api/Produtos/{id}
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetProduto(int id)
         {
             var produto = await _context.Produtos
@@ -112,6 +115,7 @@ namespace petgo.api.Controllers
 
         // POST: api/Produtos
         [HttpPost]
+        [Authorize(Roles = "ADMIN")]
         public async Task<ActionResult<Produto>> CreateProduto(Produto produto)
         {
             // Validar categoria
@@ -134,11 +138,20 @@ namespace petgo.api.Controllers
 
         // PUT: api/Produtos/{id}
         [HttpPut("{id}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> UpdateProduto(int id, Produto produto)
         {
             if (id != produto.Id)
             {
                 return BadRequest(new { message = "ID do produto não corresponde" });
+            }
+
+            // Buscar produto existente do banco
+            var produtoExistente = await _context.Produtos.FindAsync(id);
+            
+            if (produtoExistente == null)
+            {
+                return NotFound(new { message = "Produto não encontrado" });
             }
 
             // Validar categoria
@@ -150,7 +163,16 @@ namespace petgo.api.Controllers
                 return BadRequest(new { message = "Categoria não encontrada" });
             }
 
-            _context.Entry(produto).State = EntityState.Modified;
+            // Atualizar APENAS as propriedades editáveis
+            // Preservar AvaliacaoMedia e QuantidadeAvaliacoes
+            produtoExistente.Nome = produto.Nome;
+            produtoExistente.Descricao = produto.Descricao;
+            produtoExistente.Preco = produto.Preco;
+            produtoExistente.Estoque = produto.Estoque;
+            produtoExistente.Status = produto.Status;
+            produtoExistente.CategoriaProdutoId = produto.CategoriaProdutoId;
+            produtoExistente.ImagensJson = produto.ImagensJson;
+            // NÃO atualizar: AvaliacaoMedia, QuantidadeAvaliacoes
 
             try
             {
@@ -170,6 +192,7 @@ namespace petgo.api.Controllers
 
         // DELETE: api/Produtos/{id}
         [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> DeleteProduto(int id)
         {
             var produto = await _context.Produtos.FindAsync(id);
@@ -187,6 +210,7 @@ namespace petgo.api.Controllers
 
         // GET: api/Produtos/Categorias
         [HttpGet("Categorias")]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<CategoriaProduto>>> GetCategorias()
         {
             var categorias = await _context.CategoriasProdutos

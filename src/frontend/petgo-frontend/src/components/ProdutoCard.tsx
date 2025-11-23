@@ -7,6 +7,7 @@ import { Button } from "./ui/Button";
 import { formatCurrency, truncateText } from "../lib/utils";
 import { Edit, Trash2, Package, Eye, Star } from "lucide-react";
 import { SafeImage } from "./SafeImage";
+import { useAuth } from "./AuthContext";
 
 interface ProdutoCardProps {
   produto: Produto;
@@ -23,6 +24,9 @@ export function ProdutoCard({
   isDeleting = false,
   showActions = true,
 }: ProdutoCardProps) {
+  const { user } = useAuth();
+  const isAdmin = user?.tipo === 2; // TipoUsuario.ADMIN = 2
+
   const handleDelete = () => {
     if (window.confirm("Tem certeza que deseja excluir este produto?")) {
       onDelete?.(produto.id);
@@ -147,7 +151,7 @@ export function ProdutoCard({
           </div>
         </Link>
 
-        {showActions && (
+        {showActions && isAdmin && (
           <div className="flex gap-2">
             <Button
               variant="secondary"
