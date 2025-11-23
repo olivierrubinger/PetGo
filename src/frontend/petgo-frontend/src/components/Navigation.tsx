@@ -16,8 +16,10 @@ import {
   LogIn,
   LogOut,
   User,
+  ShoppingCart,
 } from "lucide-react";
 import { useAuth } from "./AuthContext";
+import { useCarrinhoTotal } from "@/hooks/useCarrinho";
 
 //menu principal
 const navigationItems = [
@@ -30,11 +32,6 @@ const navigationItems = [
     name: "Produtos",
     href: "/produtos",
     icon: Package,
-  },
-  {
-    name: "Pets",
-    href: "/pets",
-    icon: Heart,
   },
   {
     name: "Adoção",
@@ -52,6 +49,9 @@ export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const { isAuthenticated, user, logoutContext, isLoading } = useAuth();
+
+  // Buscar total do carrinho
+  const { data: carrinhoTotal } = useCarrinhoTotal(user?.id);
 
   if (isLoading) {
     return <header className="h-16 bg-white"></header>; // Um "placeholder"
@@ -104,6 +104,18 @@ export function Navigation() {
             {isAuthenticated ? (
               // ---- SE ESTIVER LOGADO (DESKTOP) ----
               <>
+                <Link
+                  href="/carrinho"
+                  className="relative text-gray-600 hover:text-gray-900 transition-colors"
+                  title="Carrinho"
+                >
+                  <ShoppingCart className="h-6 w-6" />
+                  {carrinhoTotal && carrinhoTotal.quantidadeItens > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                      {carrinhoTotal.quantidadeItens}
+                    </span>
+                  )}
+                </Link>
                 <span className="text-sm text-gray-700">
                   Olá, {user?.nome}!
                 </span>
@@ -186,6 +198,19 @@ export function Navigation() {
               {isAuthenticated ? (
                 // ---- SE ESTIVER LOGADO (MOBILE) ----
                 <>
+                  <Link
+                    href="/carrinho"
+                    onClick={() => setIsOpen(false)}
+                    className="w-full text-left px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors flex items-center space-x-2"
+                  >
+                    <ShoppingCart className="h-4 w-4" />
+                    <span>Carrinho</span>
+                    {carrinhoTotal && carrinhoTotal.quantidadeItens > 0 && (
+                      <span className="ml-auto bg-blue-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                        {carrinhoTotal.quantidadeItens}
+                      </span>
+                    )}
+                  </Link>
                   <Link
                     href="/perfil"
                     onClick={() => setIsOpen(false)}

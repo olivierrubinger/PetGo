@@ -65,6 +65,8 @@ namespace petgo.api.Controllers
                         p.Categoria.Nome,
                         p.Categoria.Descricao
                     } : null,
+                    p.AvaliacaoMedia,
+                    p.QuantidadeAvaliacoes,
                     Imagens = p.Imagens
                 })
                 .ToListAsync();
@@ -94,6 +96,8 @@ namespace petgo.api.Controllers
                         p.Categoria.Nome,
                         p.Categoria.Descricao
                     } : null,
+                    p.AvaliacaoMedia,
+                    p.QuantidadeAvaliacoes,
                     Imagens = p.Imagens
                 })
                 .FirstOrDefaultAsync();

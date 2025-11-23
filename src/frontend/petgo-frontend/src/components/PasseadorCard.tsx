@@ -1,6 +1,7 @@
 import React from "react";
+import Link from "next/link";
 import { Passeador, TipoServico } from "../types";
-import { Star, Phone, Briefcase, Home, Heart } from "lucide-react";
+import { Star, Phone, Briefcase, Home, Heart, Eye } from "lucide-react";
 import { SafeImage } from "./SafeImage";
 
 interface PasseadorCardProps {
@@ -138,18 +139,25 @@ export function PasseadorCard({ passeador, onContact }: PasseadorCardProps) {
           <span>{formatarTelefone(passeador.telefone)}</span>
         </div>
 
-        {/* Ação de contato */}
-        {onContact && (
-          <div className="pt-4 border-t border-gray-100">
+        {/* Botões de ação */}
+        <div className="pt-4 border-t border-gray-100 flex gap-2">
+          <Link
+            href={`/passeadores/${passeador.usuarioId}`}
+            className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm flex items-center justify-center gap-2"
+          >
+            <Eye size={18} />
+            Ver Perfil
+          </Link>
+          {onContact && (
             <button
               onClick={() => onContact(passeador)}
-              className="w-full px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-200 font-medium text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
+              className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium text-sm flex items-center justify-center gap-2"
             >
               <Phone size={18} />
-              Contatar via WhatsApp
+              WhatsApp
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

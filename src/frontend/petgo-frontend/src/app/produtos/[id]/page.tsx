@@ -4,10 +4,15 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useProduto, useDeleteProduto } from "../../../hooks/useProdutos";
+import { useAvaliacoes } from "../../../hooks/useAvaliacoes";
+import { useAdicionarAoCarrinho } from "../../../hooks/useCarrinho";
+import { useAuth } from "../../../components/AuthContext";
+import { AlvoTipo } from "../../../types";
 import { LoadingSpinner } from "../../../components/ui/LoadingSpinner";
 import { Button } from "../../../components/ui/Button";
 import { formatCurrency } from "../../../lib/utils";
 import { StatusProduto, ApiError } from "../../../types";
+import AvaliacoesProdutoSection from "@/app/produtos/[id]/components/AvaliacoesProdutoSection";
 import {
   ArrowLeft,
   Package,
@@ -28,9 +33,13 @@ export default function ProdutoPage() {
   const params = useParams();
   const router = useRouter();
   const produtoId = parseInt(params.id as string);
+  const { user, isAuthenticated } = useAuth();
 
   const { data: produto, isLoading, error } = useProduto(produtoId);
+  const { data: avaliacoes = [], isLoading: isLoadingAvaliacoes } =
+    useAvaliacoes(AlvoTipo.PRODUTO, produtoId);
   const deleteMutation = useDeleteProduto();
+  const adicionarAoCarrinho = useAdicionarAoCarrinho();
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantidade, setQuantidade] = useState(1);
@@ -106,9 +115,30 @@ export default function ProdutoPage() {
   };
 
   const handleAddToCart = () => {
-    // TODO: Implementar lógica do carrinho
-    console.log(`Adicionando ${quantidade}x ${produto.nome} ao carrinho`);
-    alert(`${quantidade}x ${produto.nome} adicionado ao carrinho!`);
+    if (!isAuthenticated || !user) {
+      alert("Você precisa estar logado para adicionar itens ao carrinho!");
+      router.push("/login");
+      return;
+    }
+
+    adicionarAoCarrinho.mutate(
+      {
+        usuarioId: user.id,
+        produtoId: produto.id,
+        quantidade,
+      },
+      {
+        onSuccess: () => {
+          alert(`${quantidade}x ${produto.nome} adicionado ao carrinho!`);
+          setQuantidade(1); // Reset quantidade
+        },
+        onError: (error: any) => {
+          const errorMessage =
+            error.response?.data?.message || "Erro ao adicionar ao carrinho";
+          alert(errorMessage);
+        },
+      }
+    );
   };
 
   const handleToggleFavorite = () => {
@@ -297,6 +327,33 @@ export default function ProdutoPage() {
                   )}
                 </div>
 
+                {/* Avaliações */}
+                <div className="flex items-center gap-2 mb-6">
+                  <div className="flex items-center">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star
+                        key={star}
+                        className={`w-5 h-5 ${
+                          star <= Math.round(produto.avaliacaoMedia || 0)
+                            ? "text-yellow-400 fill-current"
+                            : "text-gray-300"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <span className="text-sm text-gray-600 font-medium">
+                    {produto.avaliacaoMedia > 0
+                      ? `${produto.avaliacaoMedia.toFixed(1)} (${
+                          produto.quantidadeAvaliacoes
+                        } ${
+                          produto.quantidadeAvaliacoes === 1
+                            ? "avaliação"
+                            : "avaliações"
+                        })`
+                      : "Sem avaliações"}
+                  </span>
+                </div>
+
                 {/* Preço */}
                 <div className="mb-6">
                   <div className="flex items-baseline space-x-2">
@@ -470,6 +527,15 @@ export default function ProdutoPage() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Seção de Avaliações */}
+        <div className="mt-8">
+          <AvaliacoesProdutoSection
+            produtoId={produtoId}
+            avaliacoes={avaliacoes}
+            isLoading={isLoadingAvaliacoes}
+          />
         </div>
 
         {/* Produtos Relacionados */}

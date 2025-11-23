@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Produto, StatusProduto } from "../types";
 import { Button } from "./ui/Button";
 import { formatCurrency, truncateText } from "../lib/utils";
-import { Edit, Trash2, Package, Eye } from "lucide-react";
+import { Edit, Trash2, Package, Eye, Star } from "lucide-react";
 import { SafeImage } from "./SafeImage";
 
 interface ProdutoCardProps {
@@ -104,6 +104,29 @@ export function ProdutoCard({
             <h3 className="text-lg font-semibold text-gray-900 line-clamp-1 hover:text-blue-600 transition-colors">
               {produto.nome}
             </h3>
+          </div>
+
+          {/* Avaliações */}
+          <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                  key={star}
+                  className={`w-4 h-4 ${
+                    star <= Math.round(produto.avaliacaoMedia || 0)
+                      ? "text-yellow-400 fill-current"
+                      : "text-gray-300"
+                  }`}
+                />
+              ))}
+            </div>
+            <span className="text-sm text-gray-600">
+              {produto.avaliacaoMedia > 0
+                ? `${produto.avaliacaoMedia.toFixed(1)} (${
+                    produto.quantidadeAvaliacoes
+                  })`
+                : "Sem avaliações"}
+            </span>
           </div>
 
           <p className="text-gray-600 text-sm mb-3 line-clamp-2">

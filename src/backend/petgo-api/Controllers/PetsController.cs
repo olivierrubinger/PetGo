@@ -72,6 +72,18 @@ namespace petgo.api.Controllers
             return Ok(pet);
         }
 
+        // GET: api/Pets/usuario/{usuarioId}
+        [HttpGet("usuario/{usuarioId}")]
+        public async Task<ActionResult<IEnumerable<Pet>>> GetPetsByUsuario(int usuarioId)
+        {
+            var pets = await _context.Pets
+                .Where(p => p.UsuarioId == usuarioId)
+                .OrderBy(p => p.Nome)
+                .ToListAsync();
+
+            return Ok(pets);
+        }
+
         // POST: api/Pets
         [HttpPost]
         public async Task<ActionResult<Pet>> CreatePet(Pet pet)

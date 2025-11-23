@@ -42,6 +42,17 @@ const nextConfig: NextConfig = {
         hostname: "picsum.photos",
         pathname: "/**",
       },
+      // Adicionar domínios de imagens mock para o seed
+      {
+        protocol: "https",
+        hostname: "loremflickr.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "place.dog",
+        pathname: "/**",
+      },
     ],
     formats: ["image/webp", "image/avif"],
   },

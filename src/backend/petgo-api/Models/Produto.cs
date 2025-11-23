@@ -32,6 +32,12 @@ namespace petgo.api.Models
 
         public StatusProduto Status { get; set; } = StatusProduto.ATIVO;
 
+        [Required]
+        public double AvaliacaoMedia { get; set; } = 0;
+        
+        [Required]
+        public int QuantidadeAvaliacoes { get; set; } = 0;
+
         // Foreign Keys
         public int CategoriaProdutoId { get; set; }
 

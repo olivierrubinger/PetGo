@@ -39,9 +39,9 @@ export enum Moderacao {
 }
 
 export enum AlvoTipo {
-  PRODUTO = 0,
-  PASSEADOR = 1,
-  SERVICO = 2,
+  PASSEADOR = 0,
+  SERVICO = 1,
+  PRODUTO = 2,
 }
 
 export enum TipoServico {
@@ -122,6 +122,8 @@ export const ProdutoSchema = z.object({
   status: z.nativeEnum(StatusProduto),
   categoriaProdutoId: z.number(),
   categoriaProduto: z.any().optional(),
+  avaliacaoMedia: z.number(),
+  quantidadeAvaliacoes: z.number(),
 });
 
 export const AnuncioDoacaoSchema: z.ZodType = z.object({
@@ -146,7 +148,10 @@ export type ServicoPasseadorDto = z.infer<typeof ServicoPasseadorSchema>;
 export type EnderecoDto = z.infer<typeof EnderecoSchema>;
 
 // Types para formulários
-export type CreateProdutoInput = Omit<Produto, "id" | "categoriaProduto">;
+export type CreateProdutoInput = Omit<
+  Produto,
+  "id" | "categoriaProduto" | "avaliacaoMedia" | "quantidadeAvaliacoes"
+>;
 export type UpdateProdutoInput = Partial<CreateProdutoInput>;
 export type CreatePetInput = Omit<Pet, "id" | "usuario" | "anuncioDoacao">;
 export type UpdatePetInput = Partial<CreatePetInput>;
@@ -201,10 +206,22 @@ export interface ProdutoDetalhado extends Produto {
 
 export interface Avaliacao {
   id: number;
-  usuario: string;
-  rating: number;
+  alvoTipo: AlvoTipo;
+  alvoId: number;
+  nota: number;
+  titulo: string;
   comentario: string;
-  data: string;
+  autorNome: string | null;
+  dataCriacao: string;
+}
+
+export interface CreateAvaliacaoInput {
+  alvoTipo: AlvoTipo;
+  alvoId: number;
+  nota: number;
+  titulo: string;
+  comentario: string;
+  autorNome?: string;
 }
 
 export interface LoginDto {
@@ -215,4 +232,27 @@ export interface LoginDto {
 export interface LoginResponseDto {
   token: string;
   usuario: Usuario;
+}
+
+// Carrinho de compras
+export const CarrinhoItemSchema = z.object({
+  id: z.number(),
+  usuarioId: z.number(),
+  produtoId: z.number(),
+  quantidade: z.number(),
+  dataAdicao: z.string(),
+  produto: ProdutoSchema.nullable().optional(),
+});
+
+export type CarrinhoItem = z.infer<typeof CarrinhoItemSchema>;
+
+export type CreateCarrinhoItemInput = {
+  usuarioId: number;
+  produtoId: number;
+  quantidade: number;
+};
+
+export interface CarrinhoTotal {
+  total: number;
+  quantidadeItens: number;
 }

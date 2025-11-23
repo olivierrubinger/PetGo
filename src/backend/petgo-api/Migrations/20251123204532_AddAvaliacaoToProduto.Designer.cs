@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using petgo.api.Data;
@@ -11,9 +12,11 @@ using petgo.api.Data;
 namespace petgo.api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251123204532_AddAvaliacaoToProduto")]
+    partial class AddAvaliacaoToProduto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,42 +115,6 @@ namespace petgo.api.Migrations
                         {
                             t.HasCheckConstraint("CK_Avaliacao_Nota", "\"Nota\" >= 1 AND \"Nota\" <= 5");
                         });
-                });
-
-            modelBuilder.Entity("petgo.api.Models.CarrinhoItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DataAdicao")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("NOW()");
-
-                    b.Property<int>("ProdutoId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Quantidade")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(1);
-
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProdutoId");
-
-                    b.HasIndex("UsuarioId");
-
-                    b.HasIndex("UsuarioId", "ProdutoId")
-                        .IsUnique();
-
-                    b.ToTable("CarrinhoItens", (string)null);
                 });
 
             modelBuilder.Entity("petgo.api.Models.CategoriaProduto", b =>
@@ -461,25 +428,6 @@ namespace petgo.api.Migrations
                         .IsRequired();
 
                     b.Navigation("Pet");
-                });
-
-            modelBuilder.Entity("petgo.api.Models.CarrinhoItem", b =>
-                {
-                    b.HasOne("petgo.api.Models.Produto", "Produto")
-                        .WithMany()
-                        .HasForeignKey("ProdutoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("petgo.api.Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Produto");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("petgo.api.Models.Endereco", b =>

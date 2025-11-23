@@ -12,6 +12,7 @@ namespace petgo.api.Data
         // DbSets
         public DbSet<AnuncioDoacao> AnuncioDoacoes { get; set; }
         public DbSet<Avaliacao> Avaliacoes { get; set; }
+        public DbSet<CarrinhoItem> CarrinhoItens { get; set; }
         public DbSet<CategoriaProduto> CategoriasProdutos { get; set; }
         public DbSet<Endereco> Enderecos { get; set; }
         public DbSet<Passeador> Passeadores { get; set; }
@@ -339,6 +340,41 @@ namespace petgo.api.Data
                     .WithMany(u => u.Enderecos)
                     .HasForeignKey(e => e.UsuarioId)
                     .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // ============================================
+            // CARRINHO ITEM
+            // ============================================
+            modelBuilder.Entity<CarrinhoItem>(entity =>
+            {
+                entity.ToTable("CarrinhoItens");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Quantidade)
+                    .IsRequired()
+                    .HasDefaultValue(1);
+
+                entity.Property(e => e.DataAdicao)
+                    .IsRequired()
+                    .HasDefaultValueSql("NOW()");
+
+                entity.HasOne(c => c.Usuario)
+                    .WithMany()
+                    .HasForeignKey(c => c.UsuarioId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(c => c.Produto)
+                    .WithMany()
+                    .HasForeignKey(c => c.ProdutoId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                // Índice para otimizar buscas por usuário
+                entity.HasIndex(c => c.UsuarioId);
+                
+                // Índice composto para evitar duplicatas
+                entity.HasIndex(c => new { c.UsuarioId, c.ProdutoId })
+                    .IsUnique();
             });
         }
     }
