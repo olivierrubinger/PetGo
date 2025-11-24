@@ -135,9 +135,16 @@ export default function ProdutoPage() {
           alert(`${quantidade}x ${produto.nome} adicionado ao carrinho!`);
           setQuantidade(1); // Reset quantidade
         },
-        onError: (error: any) => {
-          const errorMessage =
-            error.response?.data?.message || "Erro ao adicionar ao carrinho";
+        onError: (error: unknown) => {
+          let errorMessage = "Erro ao adicionar ao carrinho";
+          if (
+            typeof error === "object" &&
+            error !== null &&
+            "response" in error &&
+            (error as any).response?.data?.message
+          ) {
+            errorMessage = (error as { response?: { data?: { message?: string } } }).response?.data?.message || errorMessage;
+          }
           alert(errorMessage);
         },
       }

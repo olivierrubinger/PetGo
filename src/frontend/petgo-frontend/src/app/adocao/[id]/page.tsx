@@ -126,7 +126,7 @@ export default function AnuncioDetalhes() {
         <div className="container mx-auto">
           <div className="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg">
             <h3 className="font-semibold">Erro ao carregar anúncio</h3>
-            <p>{(error as any)?.message || "Anúncio não encontrado"}</p>
+            <p>{typeof error === "object" && error && "message" in error ? (error as { message?: string }).message : "Anúncio não encontrado"}</p>
             <Button
               variant="secondary"
               className="mt-4"
