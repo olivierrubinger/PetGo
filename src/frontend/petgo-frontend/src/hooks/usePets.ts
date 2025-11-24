@@ -1,8 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { petService } from "../services/pet.service";
-import { CreatePetInput, UpdatePetInput, ApiError, Pet } from "../types";
+import { UpdatePetInput, ApiError, Pet } from "../types";
 import { toast } from "../lib/toast";
-import api from "../lib/api"; 
 
 // Query Keys
 export const PET_QUERY_KEYS = {
@@ -110,24 +109,39 @@ export function usePetOperations() {
     isDeleting: deleteMutation.isPending,
     isLoading:
       // createMutation.isPending ||
-      updateMutation.isPending ||
-      deleteMutation.isPending,
+      updateMutation.isPending || deleteMutation.isPending,
   };
 }
 
-// hook para busca 
-const ADOCAO_CATEGORY_ID = 4;
-
+// hook para busca
 const fetchPetsAdocao = async (): Promise<Pet[]> => {
-  const { data } = await api.get<Pet[]>('/Produtos');
-
-  return data.filter((pet: any) => pet.categoriaId === ADOCAO_CATEGORY_ID);
+  const data = await petService.getAll();
+  if (!Array.isArray(data)) {
+    return [];
+  }
+  const result: Pet[] = [];
+  // Type assertion needed due to Zod schema type inference issue
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const pets = data as any;
+  for (let i = 0; i < pets.length; i++) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const pet = pets[i] as any as Pet;
+    if (
+      pet &&
+      typeof pet === "object" &&
+      "anuncioDoacao" in pet &&
+      pet.anuncioDoacao
+    ) {
+      result.push(pet);
+    }
+  }
+  return result;
 };
 
 export function usePetsAdocao() {
   return useQuery({
-    queryKey: ['pets-adocao'],
+    queryKey: ["pets-adocao"],
     queryFn: fetchPetsAdocao,
-    staleTime: 1000 * 60 * 5, 
+    staleTime: 1000 * 60 * 5,
   });
 }

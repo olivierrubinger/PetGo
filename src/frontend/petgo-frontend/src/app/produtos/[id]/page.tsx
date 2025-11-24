@@ -140,10 +140,10 @@ export default function ProdutoPage() {
           if (
             typeof error === "object" &&
             error !== null &&
-            "response" in error &&
-            (error as any).response?.data?.message
+            "response" in error
           ) {
-            errorMessage = (error as { response?: { data?: { message?: string } } }).response?.data?.message || errorMessage;
+            const errObj = error as { response?: { data?: { message?: string } } };
+            errorMessage = errObj.response?.data?.message || errorMessage;
           }
           alert(errorMessage);
         },

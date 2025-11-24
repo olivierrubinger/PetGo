@@ -114,7 +114,7 @@ export default function AdocaoPage() {
         <div className="container mx-auto">
           <div className="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg">
             <h3 className="font-semibold">Erro ao carregar anúncios</h3>
-            <p>{(error as any)?.message || "Erro desconhecido"}</p>
+            <p>{(error as { message?: string })?.message || "Erro desconhecido"}</p>
           </div>
         </div>
       </div>

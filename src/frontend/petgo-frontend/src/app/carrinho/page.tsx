@@ -55,9 +55,13 @@ export default function CarrinhoPage() {
     atualizarQuantidade.mutate(
       { itemId, quantidade: novaQuantidade },
       {
-        onError: (error: any) => {
+        onError: (error: unknown) => {
+          const errObj = error as {
+            response?: { data?: { message?: string } };
+            message?: string;
+          } | null;
           const errorMessage =
-            error.response?.data?.message || "Erro ao atualizar quantidade";
+            errObj?.response?.data?.message || errObj?.message || "Erro ao atualizar quantidade";
           alert(errorMessage);
         },
       }
@@ -67,9 +71,13 @@ export default function CarrinhoPage() {
   const handleRemoverItem = (itemId: number) => {
     if (window.confirm("Deseja remover este item do carrinho?")) {
       removerItem.mutate(itemId, {
-        onError: (error: any) => {
+        onError: (error: unknown) => {
+          const errObj = error as {
+            response?: { data?: { message?: string } };
+            message?: string;
+          } | null;
           const errorMessage =
-            error.response?.data?.message || "Erro ao remover item";
+            errObj?.response?.data?.message || errObj?.message || "Erro ao remover item";
           alert(errorMessage);
         },
       });
@@ -79,9 +87,13 @@ export default function CarrinhoPage() {
   const handleLimparCarrinho = () => {
     if (user && window.confirm("Deseja limpar todo o carrinho?")) {
       limparCarrinho.mutate(user.id, {
-        onError: (error: any) => {
+        onError: (error: unknown) => {
+          const errObj = error as {
+            response?: { data?: { message?: string } };
+            message?: string;
+          } | null;
           const errorMessage =
-            error.response?.data?.message || "Erro ao limpar carrinho";
+            errObj?.response?.data?.message || errObj?.message || "Erro ao limpar carrinho";
           alert(errorMessage);
         },
       });

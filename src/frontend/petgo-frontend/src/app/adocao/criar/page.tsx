@@ -157,9 +157,13 @@ export default function CriarAnuncioPage() {
       alert("Anúncio criado com sucesso!");
       router.push("/adocao");
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
+      const errObj = error as {
+        response?: { data?: { message?: string } };
+        message?: string;
+      } | null;
       const errorMessage =
-        error.response?.data?.message || "Erro ao criar anúncio";
+        errObj?.response?.data?.message || errObj?.message || "Erro ao criar anúncio";
       alert(errorMessage);
     },
   });
